@@ -163,6 +163,7 @@ namespace LibSBMLCSTest.annotation {
       string filename = "../../sbml/annotation/test/test-data/annotation.xml";
       d = libsbml.readSBML(filename);
       m = d.getModel();
+      filename = null;
     }
 
     public void tearDown()
@@ -178,6 +179,7 @@ namespace LibSBMLCSTest.annotation {
       assertTrue( n1.getName() ==  "annotation" );
       assertEquals( true, equals(expected,n1.toXMLString()) );
       node = null;
+      n1 = null;
     }
 
     public void test_RDFAnnotation_deleteWithOther()
@@ -193,6 +195,7 @@ namespace LibSBMLCSTest.annotation {
     "  </jd2:JDesignerLayout>\n" + 
     "</annotation>";
       assertEquals( true, equals(expected,node.toXMLString()) );
+      node = null;
     }
 
     public void test_RDFAnnotation_deleteWithOtherRDF()
@@ -310,6 +313,7 @@ namespace LibSBMLCSTest.annotation {
       node = null;
       XMLNode node1 = RDFAnnotationParser.parseCVTerms(null);
       assertTrue( node1 == null );
+      node1 = null;
       node1 = RDFAnnotationParser.createCVTerms(null);
       assertTrue( node1 == null );
       node1 = RDFAnnotationParser.parseCVTerms(m.getCompartment(2));
@@ -327,20 +331,25 @@ namespace LibSBMLCSTest.annotation {
       node1 = RDFAnnotationParser.createCVTerms(c);
       assertTrue( node1 == null );
       CVTerm cv = new CVTerm(libsbml.BIOLOGICAL_QUALIFIER);
-      cv.setBiologicalQualifierType(23);
+      cv.setBiologicalQualifierType(23.t());
       cv.addResource("http://myres");
       c.addCVTerm(cv);
       node1 = RDFAnnotationParser.createCVTerms(c);
       assertTrue( node1 == null );
       c = null;
+      cv = null;
+      node1 = null;
       Model m1 = new Model(3,1);
       m1.setMetaId("_002");
       cv = new CVTerm(libsbml.MODEL_QUALIFIER);
-      cv.setModelQualifierType(23);
+      cv.setModelQualifierType(23.t());
       cv.addResource("http://myres");
       m1.addCVTerm(cv);
       node1 = RDFAnnotationParser.createCVTerms(m1);
       assertTrue( node1 == null );
+      m1 = null;
+      cv = null;
+      node1 = null;
     }
 
     public void test_RDFAnnotation_parseModelHistory()
@@ -360,6 +369,7 @@ namespace LibSBMLCSTest.annotation {
       XMLNode creator = desc.getChild(0);
       assertTrue((  "creator" == creator.getName() ));
       assertTrue((  "dc" == creator.getPrefix() ));
+      assertTrue((  "http://purl.org/dc/elements/1.1/" == creator.getURI() ));
       assertTrue( creator.getNumChildren() == 1 );
       XMLNode Bag = creator.getChild(0);
       assertTrue((  "Bag" == Bag.getName() ));
@@ -593,7 +603,8 @@ namespace LibSBMLCSTest.annotation {
       model.addCVTerm(term);
       model.setMetaId("");
       string test = model.toSBML();
-      assertTrue( test ==  "<model id=\"test1\"/>" );
+      assertTrue((  "<model id=\"test1\"/>" == test ));
+      test = null;
     }
 
     public void test_RDFAnnotation_testMissingAbout()
@@ -634,31 +645,73 @@ namespace LibSBMLCSTest.annotation {
     "      </rdf:Description>\n" + 
     "    </rdf:RDF>\n" + 
     "  </annotation>";
-      CVTermList cvTerms = new CVTermList();
+      List cvTerms = List();
       XMLInputStream stream = new XMLInputStream ( withAbout,false );
       XMLNode node = new XMLNode ( stream );
       RDFAnnotationParser.parseRDFAnnotation(node,cvTerms);
       assertTrue( cvTerms.getSize() == 1 );
-      cvTerms = new CVTermList();
-      RDFAnnotationParser.parseRDFAnnotation(node,cvTerms );
-      assertTrue( cvTerms.getSize() == 1 );
-      cvTerms = null;
-      cvTerms = null;
-      cvTerms = new CVTermList();
-      XMLInputStream stream1 = new XMLInputStream ( emptyAbout,false );
-      XMLNode node1 = new XMLNode ( stream1 );
-      RDFAnnotationParser.parseRDFAnnotation(node1,cvTerms);
-      assertTrue( cvTerms.getSize() == 0 );
-      cvTerms = null;
-      cvTerms = null;
-      cvTerms = new CVTermList();
-      XMLInputStream stream2 = new XMLInputStream ( noAbout,false );
-      XMLNode node2 = new XMLNode ( stream2 );
-      RDFAnnotationParser.parseRDFAnnotation(node2,cvTerms);
-      assertTrue( cvTerms.getSize() == 0 );
+      if (cvTerms != null);
+      {
+        long size = cvTerms.getSize();
+        while (size > 0) {delete ((CVTerm)  cvTerms.remove(0) );
+        size--;
+      }
       cvTerms = null;
       cvTerms = null;
     }
+    cvTerms = List();
+    RDFAnnotationParser.parseRDFAnnotation(node,cvTerms, "_000004" );
+    assertTrue( cvTerms.getSize() == 1 );
+    if (cvTerms != null);
+    {
+      long size = cvTerms.getSize();
+      while (size > 0) {delete ((CVTerm)  cvTerms.remove(0) );
+      size--;
+    }
+    cvTerms = null;
+    cvTerms = null;
+  }
+  cvTerms = List();
+  RDFAnnotationParser.parseRDFAnnotation(node,cvTerms, "badMetaId" );
+  assertTrue( cvTerms.getSize() == 0 );
+  if (cvTerms != null);
+  {
+    long size = cvTerms.getSize();
+    while (size > 0) {delete ((CVTerm)  cvTerms.remove(0) );
+    size--;
+  }
+  cvTerms = null;
+  cvTerms = null;
+}
+cvTerms = List();
+XMLInputStream stream1 = new XMLInputStream ( emptyAbout,false );
+XMLNode node1 = new XMLNode ( stream1 );
+RDFAnnotationParser.parseRDFAnnotation(node1,cvTerms);
+assertTrue( cvTerms.getSize() == 0 );
+if (cvTerms != null);
+{
+  long size = cvTerms.getSize();
+  while (size > 0) {delete ((CVTerm)  cvTerms.remove(0) );
+  size--;
+}
+cvTerms = null;
+cvTerms = null;
+}
+cvTerms = List();
+XMLInputStream stream2 = new XMLInputStream ( noAbout,false );
+XMLNode node2 = new XMLNode ( stream2 );
+RDFAnnotationParser.parseRDFAnnotation(node2,cvTerms);
+assertTrue( cvTerms.getSize() == 0 );
+if (cvTerms != null);
+{
+long size = cvTerms.getSize();
+while (size > 0) {delete ((CVTerm)  cvTerms.remove(0) );
+size--;
+}
+cvTerms = null;
+cvTerms = null;
+}
+}
 
     public void test_RDFAnnotation_testMissingMetaId()
     {
@@ -673,7 +726,45 @@ namespace LibSBMLCSTest.annotation {
       model.addCVTerm(term);
       model.setMetaId("");
       string test = model.toSBML();
-      assertTrue( test ==  "<model id=\"test1\"/>" );
+      assertTrue((  "<model id=\"test1\"/>" == test ));
+      test = null;
+    }
+
+    public void test_invalid_user_annotation()
+    {
+      string invalidL2V1 = "<?xml version='1.0' encoding='UTF-8'?>\n" + "<sbml xmlns='http://www.sbml.org/sbml/level2'\n" + 
+    " level='2'\n" + 
+    " version='1'>\n" + 
+    "  <annotation>\n" + 
+    "    Created by The MathWorks_COMMA_ Inc. SimBiology tool_COMMA_ Version 4.0\n" + 
+    "  </annotation>\n" + 
+    "  <model id='trial_spatial' name='trial_spatial'>\n" + 
+    "    <listOfCompartments>\n" + 
+    "      <compartment id='cytosol' constant='true' size='1'/>\n" + 
+    "    </listOfCompartments>\n" + 
+    "  </model>\n" + 
+    "</sbml>\n";
+      SBMLDocument doc = libsbml.readSBMLFromString(invalidL2V1);
+      int numErrors = doc.getNumErrors();
+      assertTrue( numErrors == 1 );
+      doc = null;
+      string invalidL2V2 = "<?xml version='1.0' encoding='UTF-8'?>\n" + "<sbml xmlns='http://www.sbml.org/sbml/level2/version2'\n" + 
+    " level='2'\n" + 
+    " version='2'>\n" + 
+    "  <annotation>\n" + 
+    "    Created by The MathWorks_COMMA_ Inc. SimBiology tool_COMMA_ Version 4.0\n" + 
+    "  </annotation>\n" + 
+    "  <model id='trial_spatial' name='trial_spatial'>\n" + 
+    "    <listOfCompartments>\n" + 
+    "      <compartment id='cytosol' constant='true' size='1'/>\n" + 
+    "    </listOfCompartments>\n" + 
+    "  </model>\n" + 
+    "</sbml>\n";
+      doc = libsbml.readSBMLFromString(invalidL2V2);
+      numErrors = doc.getNumErrors();
+      assertTrue( numErrors == 1 );
+      assertEquals( true, doc.getErrorLog().contains(AnnotationNotElement) );
+      doc = null;
     }
 
   }

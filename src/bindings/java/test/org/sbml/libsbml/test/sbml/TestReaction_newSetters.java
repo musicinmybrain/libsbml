@@ -18,11 +18,6 @@
  * This file is part of libSBML.  Please visit http://sbml.org for more
  * information about SBML, and the latest version of libSBML.
  *
- * Copyright (C) 2020 jointly by the following organizations:
- *     1. California Institute of Technology, Pasadena, CA, USA
- *     2. University of Heidelberg, Heidelberg, Germany
- *     3. University College London, London, UK
- *
  * Copyright 2005-2010 California Institute of Technology.
  * Copyright 2002-2005 California Institute of Technology and
  *                     Japan Science and Technology Corporation.
@@ -302,6 +297,7 @@ public class TestReaction_newSetters {
     assertTrue( i == libsbml.LIBSBML_OPERATION_SUCCESS );
     assertTrue( R1.getFast() == false );
     assertEquals( false, R1.isSetFast() );
+    R1 = null;
   }
 
   public void test_Reaction_setId1()
@@ -325,7 +321,9 @@ public class TestReaction_newSetters {
   public void test_Reaction_setKineticLaw1()
   {
     KineticLaw kl = new  KineticLaw(2,1);
-      kl.setMath(libsbml.parseFormula("1"));
+    ASTNode math = libsbml.parseFormula("1");
+    kl.setMath(math);
+    math = null;
     int i = R.setKineticLaw(kl);
     assertTrue( i == libsbml.LIBSBML_LEVEL_MISMATCH );
     assertEquals( false, R.isSetKineticLaw() );
@@ -335,7 +333,9 @@ public class TestReaction_newSetters {
   public void test_Reaction_setKineticLaw2()
   {
     KineticLaw kl = new  KineticLaw(1,1);
-      kl.setMath(libsbml.parseFormula("1"));
+    ASTNode math = libsbml.parseFormula("1");
+    kl.setMath(math);
+    math = null;
     int i = R.setKineticLaw(kl);
     assertTrue( i == libsbml.LIBSBML_VERSION_MISMATCH );
     assertEquals( false, R.isSetKineticLaw() );
@@ -345,7 +345,9 @@ public class TestReaction_newSetters {
   public void test_Reaction_setKineticLaw3()
   {
     KineticLaw kl = new  KineticLaw(1,2);
-      kl.setMath(libsbml.parseFormula("1"));
+    ASTNode math = libsbml.parseFormula("1");
+    kl.setMath(math);
+    math = null;
     int i = R.setKineticLaw(kl);
     assertTrue( i == libsbml.LIBSBML_OPERATION_SUCCESS );
     assertEquals( true, R.isSetKineticLaw() );
@@ -456,4 +458,3 @@ public class TestReaction_newSetters {
     }
   }
 }
-

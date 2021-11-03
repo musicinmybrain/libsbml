@@ -18,11 +18,6 @@
  * This file is part of libSBML.  Please visit http://sbml.org for more
  * information about SBML, and the latest version of libSBML.
  *
- * Copyright (C) 2020 jointly by the following organizations:
- *     1. California Institute of Technology, Pasadena, CA, USA
- *     2. University of Heidelberg, Heidelberg, Germany
- *     3. University College London, London, UK
- *
  * Copyright 2005-2010 California Institute of Technology.
  * Copyright 2002-2005 California Institute of Technology and
  *                     Japan Science and Technology Corporation.
@@ -263,7 +258,9 @@ public class TestModel_newSetters {
     Constraint c = new  Constraint(2,2);
     int i = m.addConstraint(c);
     assertTrue( i == libsbml.LIBSBML_INVALID_OBJECT );
-    c.setMath(libsbml.parseFormula("a+b"));
+    ASTNode math = libsbml.parseFormula("a+b");
+    c.setMath(math);
+    math = null;
     i = m.addConstraint(c);
     assertTrue( i == libsbml.LIBSBML_OPERATION_SUCCESS );
     assertTrue( m.getNumConstraints() == 1 );
@@ -275,7 +272,9 @@ public class TestModel_newSetters {
   {
     Model m = new  Model(2,2);
     Constraint c = new  Constraint(2,3);
-    c.setMath(libsbml.parseFormula("a+b"));
+    ASTNode math = libsbml.parseFormula("a+b");
+    c.setMath(math);
+    math = null;
     int i = m.addConstraint(c);
     assertTrue( i == libsbml.LIBSBML_VERSION_MISMATCH );
     assertTrue( m.getNumConstraints() == 0 );
@@ -298,7 +297,9 @@ public class TestModel_newSetters {
     Model m = new  Model(2,2);
     Event e = new  Event(2,2);
     Trigger t = new  Trigger(2,2);
-    t.setMath(libsbml.parseFormula("true"));
+    ASTNode math = libsbml.parseFormula("true");
+    t.setMath(math);
+    math = null;
     int i = m.addEvent(e);
     assertTrue( i == libsbml.LIBSBML_INVALID_OBJECT );
     e.setTrigger(t);
@@ -310,6 +311,7 @@ public class TestModel_newSetters {
     assertTrue( m.getNumEvents() == 1 );
     e = null;
     m = null;
+    t = null;
   }
 
   public void test_Model_addEvent2()
@@ -317,7 +319,9 @@ public class TestModel_newSetters {
     Model m = new  Model(2,2);
     Event e = new  Event(2,1);
     Trigger t = new  Trigger(2,1);
-    t.setMath(libsbml.parseFormula("true"));
+    ASTNode math = libsbml.parseFormula("true");
+    t.setMath(math);
+    math = null;
     e.setTrigger(t);
     e.createEventAssignment();
     int i = m.addEvent(e);
@@ -325,6 +329,7 @@ public class TestModel_newSetters {
     assertTrue( m.getNumEvents() == 0 );
     e = null;
     m = null;
+    t = null;
   }
 
   public void test_Model_addEvent3()
@@ -342,7 +347,9 @@ public class TestModel_newSetters {
     Model m = new  Model(2,2);
     Event e = new  Event(2,2);
     Trigger t = new  Trigger(2,2);
-    t.setMath(libsbml.parseFormula("true"));
+    ASTNode math = libsbml.parseFormula("true");
+    t.setMath(math);
+    math = null;
     e.setId( "e");
     e.setTrigger(t);
     e.createEventAssignment();
@@ -359,6 +366,7 @@ public class TestModel_newSetters {
     e = null;
     e1 = null;
     m = null;
+    t = null;
   }
 
   public void test_Model_addFunctionDefinition1()
@@ -370,7 +378,9 @@ public class TestModel_newSetters {
     fd.setId( "fd");
     i = m.addFunctionDefinition(fd);
     assertTrue( i == libsbml.LIBSBML_INVALID_OBJECT );
-    fd.setMath(libsbml.parseFormula("fd"));
+    ASTNode math = libsbml.parseFormula("fd");
+    fd.setMath(math);
+    math = null;
     i = m.addFunctionDefinition(fd);
     assertTrue( i == libsbml.LIBSBML_OPERATION_SUCCESS );
     assertTrue( m.getNumFunctionDefinitions() == 1 );
@@ -383,7 +393,9 @@ public class TestModel_newSetters {
     Model m = new  Model(2,2);
     FunctionDefinition fd = new  FunctionDefinition(2,1);
     fd.setId( "fd");
-    fd.setMath(libsbml.parseFormula("fd"));
+    ASTNode math = libsbml.parseFormula("fd");
+    fd.setMath(math);
+    math = null;
     int i = m.addFunctionDefinition(fd);
     assertTrue( i == libsbml.LIBSBML_VERSION_MISMATCH );
     assertTrue( m.getNumFunctionDefinitions() == 0 );
@@ -406,10 +418,14 @@ public class TestModel_newSetters {
     Model m = new  Model(2,2);
     FunctionDefinition fd = new  FunctionDefinition(2,2);
     fd.setId( "fd");
-    fd.setMath(libsbml.parseFormula("fd"));
+    ASTNode math = libsbml.parseFormula("fd");
+    fd.setMath(math);
+    math = null;
     FunctionDefinition fd1 = new  FunctionDefinition(2,2);
     fd1.setId( "fd");
-    fd1.setMath(libsbml.parseFormula("fd"));
+    math = libsbml.parseFormula("fd");
+    fd1.setMath(math);
+    math = null;
     int i = m.addFunctionDefinition(fd);
     assertTrue( i == libsbml.LIBSBML_OPERATION_SUCCESS );
     assertTrue( m.getNumFunctionDefinitions() == 1 );
@@ -430,7 +446,9 @@ public class TestModel_newSetters {
     ia.setSymbol( "i");
     i = m.addInitialAssignment(ia);
     assertTrue( i == libsbml.LIBSBML_INVALID_OBJECT );
-    ia.setMath(libsbml.parseFormula("gg"));
+    ASTNode math = libsbml.parseFormula("gg");
+    ia.setMath(math);
+    math = null;
     i = m.addInitialAssignment(ia);
     assertTrue( i == libsbml.LIBSBML_OPERATION_SUCCESS );
     assertTrue( m.getNumInitialAssignments() == 1 );
@@ -443,7 +461,9 @@ public class TestModel_newSetters {
     Model m = new  Model(2,2);
     InitialAssignment ia = new  InitialAssignment(2,3);
     ia.setSymbol( "i");
-    ia.setMath(libsbml.parseFormula("gg"));
+    ASTNode math = libsbml.parseFormula("gg");
+    ia.setMath(math);
+    math = null;
     int i = m.addInitialAssignment(ia);
     assertTrue( i == libsbml.LIBSBML_VERSION_MISMATCH );
     assertTrue( m.getNumInitialAssignments() == 0 );
@@ -466,10 +486,14 @@ public class TestModel_newSetters {
     Model m = new  Model(2,2);
     InitialAssignment ia = new  InitialAssignment(2,2);
     ia.setSymbol( "ia");
-    ia.setMath(libsbml.parseFormula("a+b"));
+    ASTNode math = libsbml.parseFormula("a+b");
+    ia.setMath(math);
+    math = null;
     InitialAssignment ia1 = new  InitialAssignment(2,2);
     ia1.setSymbol( "ia");
-    ia1.setMath(libsbml.parseFormula("a+b"));
+    math = libsbml.parseFormula("a+b");
+    ia1.setMath(math);
+    math = null;
     int i = m.addInitialAssignment(ia);
     assertTrue( i == libsbml.LIBSBML_OPERATION_SUCCESS );
     assertTrue( m.getNumInitialAssignments() == 1 );
@@ -622,7 +646,9 @@ public class TestModel_newSetters {
     r.setVariable( "f");
     i = m.addRule(r);
     assertTrue( i == libsbml.LIBSBML_INVALID_OBJECT );
-    r.setMath(libsbml.parseFormula("a-n"));
+    ASTNode math = libsbml.parseFormula("a-n");
+    r.setMath(math);
+    math = null;
     i = m.addRule(r);
     assertTrue( i == libsbml.LIBSBML_OPERATION_SUCCESS );
     assertTrue( m.getNumRules() == 1 );
@@ -635,7 +661,9 @@ public class TestModel_newSetters {
     Model m = new  Model(2,2);
     Rule r = new  AssignmentRule(2,1);
     r.setVariable( "f");
-    r.setMath(libsbml.parseFormula("a-n"));
+    ASTNode math = libsbml.parseFormula("a-n");
+    r.setMath(math);
+    math = null;
     int i = m.addRule(r);
     assertTrue( i == libsbml.LIBSBML_VERSION_MISMATCH );
     assertTrue( m.getNumRules() == 0 );
@@ -648,7 +676,9 @@ public class TestModel_newSetters {
     Model m = new  Model(2,2);
     Rule r = new  AssignmentRule(1,2);
     r.setVariable( "f");
-    r.setMath(libsbml.parseFormula("a-n"));
+    ASTNode math = libsbml.parseFormula("a-n");
+    r.setMath(math);
+    math = null;
     int i = m.addRule(r);
     assertTrue( i == libsbml.LIBSBML_LEVEL_MISMATCH );
     assertTrue( m.getNumRules() == 0 );
@@ -671,10 +701,14 @@ public class TestModel_newSetters {
     Model m = new  Model(2,2);
     Rule ar = new  AssignmentRule(2,2);
     ar.setVariable( "ar");
-    ar.setMath(libsbml.parseFormula("a-j"));
+    ASTNode math = libsbml.parseFormula("a-j");
+    ar.setMath(math);
+    math = null;
     Rule ar1 = new  AssignmentRule(2,2);
     ar1.setVariable( "ar");
-    ar1.setMath(libsbml.parseFormula("a-j"));
+    math = libsbml.parseFormula("a-j");
+    ar1.setMath(math);
+    math = null;
     int i = m.addRule(ar);
     assertTrue( i == libsbml.LIBSBML_OPERATION_SUCCESS );
     assertTrue( m.getNumRules() == 1 );
@@ -1120,7 +1154,7 @@ public class TestModel_newSetters {
 
   public void test_Model_setModelHistory1()
   {
-    M.setMetaId("_001");
+    (M).setMetaId( "_001");
     ModelHistory mh = new  ModelHistory();
     int i = M.setModelHistory(mh);
     assertTrue( i == libsbml.LIBSBML_INVALID_OBJECT );
@@ -1133,7 +1167,7 @@ public class TestModel_newSetters {
 
   public void test_Model_setModelHistory2()
   {
-    M.setMetaId("_001");
+    (M).setMetaId( "_001");
     int i = M.setModelHistory(null);
     assertTrue( i == libsbml.LIBSBML_OPERATION_SUCCESS );
     assertEquals( false, M.isSetModelHistory() );
@@ -1175,6 +1209,7 @@ public class TestModel_newSetters {
     int i = m.setName( "11dd");
     assertTrue( i == libsbml.LIBSBML_INVALID_ATTRIBUTE_VALUE );
     assertEquals( false, m.isSetName() );
+    m = null;
   }
 
   /**
@@ -1230,4 +1265,3 @@ public class TestModel_newSetters {
     }
   }
 }
-

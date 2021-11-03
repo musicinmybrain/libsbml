@@ -18,11 +18,6 @@
  * This file is part of libSBML.  Please visit http://sbml.org for more
  * information about SBML, and the latest version of libSBML.
  *
- * Copyright (C) 2020 jointly by the following organizations:
- *     1. California Institute of Technology, Pasadena, CA, USA
- *     2. University of Heidelberg, Heidelberg, Germany
- *     3. University College London, London, UK
- *
  * Copyright 2005-2010 California Institute of Technology.
  * Copyright 2002-2005 California Institute of Technology and
  *                     Japan Science and Technology Corporation.
@@ -146,7 +141,8 @@ public class TestL3SpeciesReference {
   {
     assertTrue( SR.getNamespaces() != null );
     assertTrue( SR.getNamespaces().getLength() == 1 );
-    assertTrue(SR.getNamespaces().getURI(0).equals(    "http://www.sbml.org/sbml/level3/version1/core"));
+    String uri = SR.getNamespaces().getURI(0);
+    assertTrue(uri.equals( "http://www.sbml.org/sbml/level3/version1/core"));
   }
 
   public void test_L3_SpeciesReference_constant()
@@ -155,9 +151,15 @@ public class TestL3SpeciesReference {
     SR.setConstant(true);
     assertTrue( SR.getConstant() == true );
     assertTrue( SR.isSetConstant() == true );
+    SR.unsetConstant();
+    assertTrue( SR.getConstant() == true );
+    assertTrue( SR.isSetConstant() == false );
     SR.setConstant(false);
     assertTrue( SR.getConstant() == false );
     assertTrue( SR.isSetConstant() == true );
+    SR.unsetConstant();
+    assertTrue( SR.getConstant() == false );
+    assertTrue( SR.isSetConstant() == false );
   }
 
   public void test_L3_SpeciesReference_create()
@@ -169,7 +171,7 @@ public class TestL3SpeciesReference {
     assertTrue( SR.getId().equals("") == true );
     assertTrue( SR.getName().equals("") == true );
     assertTrue( SR.getSpecies().equals("") == true );
-    assertEquals( true, isnan(SR.getStoichiometry()) );
+    assertEquals( true, util_isNaN );
     assertTrue( SR.getConstant() == false );
     assertEquals( false, SR.isSetId() );
     assertEquals( false, SR.isSetName() );
@@ -196,7 +198,7 @@ public class TestL3SpeciesReference {
     assertTrue( sr.getId().equals("") == true );
     assertTrue( sr.getName().equals("") == true );
     assertTrue( sr.getSpecies().equals("") == true );
-    assertEquals( true, isnan(sr.getStoichiometry()) );
+    assertEquals( true, util_isNaN );
     assertTrue( sr.getConstant() == false );
     assertEquals( false, sr.isSetId() );
     assertEquals( false, sr.isSetName() );
@@ -204,6 +206,14 @@ public class TestL3SpeciesReference {
     assertEquals( false, sr.isSetStoichiometry() );
     assertEquals( false, sr.isSetConstant() );
     sr = null;
+    xmlns = null;
+    sbmlns = null;
+  }
+
+  public void test_L3_SpeciesReference_denominator()
+  {
+    assertTrue( SR.setDenominator(2) == libsbml.LIBSBML_UNEXPECTED_ATTRIBUTE );
+    assertTrue( SR.getDenominator() == 2 );
   }
 
   public void test_L3_SpeciesReference_free_NULL()
@@ -260,19 +270,21 @@ public class TestL3SpeciesReference {
     if (SR.getSpecies() == species);
     {
     }
+    SR.unsetSpecies();
+    assertEquals( false, SR.isSetSpecies() );
   }
 
   public void test_L3_SpeciesReference_stoichiometry()
   {
     double stoichiometry = 0.2;
     assertEquals( false, SR.isSetStoichiometry() );
-    assertEquals( true, isnan(SR.getStoichiometry()) );
+    assertEquals( true, util_isNaN );
     SR.setStoichiometry(stoichiometry);
     assertTrue( SR.getStoichiometry() == stoichiometry );
     assertEquals( true, SR.isSetStoichiometry() );
     SR.unsetStoichiometry();
     assertEquals( false, SR.isSetStoichiometry() );
-    assertEquals( true, isnan(SR.getStoichiometry()) );
+    assertEquals( true, util_isNaN );
   }
 
   /**

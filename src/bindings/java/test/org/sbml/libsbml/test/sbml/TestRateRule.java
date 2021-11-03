@@ -18,11 +18,6 @@
  * This file is part of libSBML.  Please visit http://sbml.org for more
  * information about SBML, and the latest version of libSBML.
  *
- * Copyright (C) 2020 jointly by the following organizations:
- *     1. California Institute of Technology, Pasadena, CA, USA
- *     2. University of Heidelberg, Heidelberg, Germany
- *     3. University College London, London, UK
- *
  * Copyright 2005-2010 California Institute of Technology.
  * Copyright 2002-2005 California Institute of Technology and
  *                     Japan Science and Technology Corporation.
@@ -122,7 +117,7 @@ public class TestRateRule {
     }
     throw new AssertionError();
   }
-  private Rule RR;
+  private RateRule RR;
 
   protected void setUp() throws Exception
   {
@@ -155,7 +150,7 @@ public class TestRateRule {
     xmlns.add( "http://www.sbml.org", "testsbml");
     SBMLNamespaces sbmlns = new  SBMLNamespaces(2,1);
     sbmlns.addNamespaces(xmlns);
-    Rule object = new  RateRule(sbmlns);
+    RateRule object = new  RateRule(sbmlns);
     assertTrue( object.getTypeCode() == libsbml.SBML_RATE_RULE );
     assertTrue( object.getMetaId().equals("") == true );
     assertTrue( object.getNotes() == null );
@@ -163,8 +158,10 @@ public class TestRateRule {
     assertTrue( object.getLevel() == 2 );
     assertTrue( object.getVersion() == 1 );
     assertTrue( object.getNamespaces() != null );
-    assertTrue( object.getNamespaces().getLength() == 2 );
-    object = null;
+    assertTrue( (object).getNamespaces().getLength() == 2 );
+    (object) = null;
+    xmlns = null;
+    sbmlns = null;
   }
 
   public void test_RateRule_free_NULL()
@@ -183,6 +180,19 @@ public class TestRateRule {
     RR.setVariable(RR.getVariable());
     assertTrue(RR.getVariable().equals(variable));
     RR.setVariable("");
+    assertEquals( false, RR.isSetVariable() );
+    if (RR.getVariable() != null);
+    {
+    }
+  }
+
+  public void test_RateRule_unsetVariable()
+  {
+    String variable =  "x";
+    RR.setVariable(variable);
+    assertTrue(RR.getVariable().equals(variable));
+    assertEquals( true, RR.isSetVariable() );
+    RR.unsetVariable();
     assertEquals( false, RR.isSetVariable() );
     if (RR.getVariable() != null);
     {

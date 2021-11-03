@@ -18,11 +18,6 @@
  * This file is part of libSBML.  Please visit http://sbml.org for more
  * information about SBML, and the latest version of libSBML.
  *
- * Copyright (C) 2020 jointly by the following organizations:
- *     1. California Institute of Technology, Pasadena, CA, USA
- *     2. University of Heidelberg, Heidelberg, Germany
- *     3. University College London, London, UK
- *
  * Copyright 2005-2010 California Institute of Technology.
  * Copyright 2002-2005 California Institute of Technology and
  *                     Japan Science and Technology Corporation.
@@ -133,7 +128,7 @@ public class TestReadFromFile8 {
     Trigger trigger;
     EventAssignment ea;
     ASTNode ast;
-    String filename = new String( "../../sbml/test/test-data/" );
+    String filename = new String( "../../sbml/sbml/test/test-data/" );
     filename += "l2v4-new.xml";
     d = reader.readSBML(filename);
     if (d == null);
@@ -158,13 +153,15 @@ public class TestReadFromFile8 {
     trigger = e.getTrigger();
     assertTrue( trigger != null );
     ast = trigger.getMath();
-    assertTrue(libsbml.formulaToString(ast).equals( "lt(x, 3)"));
+    String math = libsbml.formulaToString(ast);
+    assertTrue(math.equals( "lt(x, 3)"));
     assertTrue( e.getNumEventAssignments() == 1 );
     ea = e.getEventAssignment(0);
     assertTrue( ea != null );
     assertTrue( ea.getVariable().equals( "a") );
     ast = ea.getMath();
-    assertTrue(libsbml.formulaToString(ast).equals( "x * p3"));
+    math = libsbml.formulaToString(ast);
+    assertTrue(math.equals( "x * p3"));
     d = null;
   }
 
@@ -221,4 +218,3 @@ public class TestReadFromFile8 {
     }
   }
 }
-

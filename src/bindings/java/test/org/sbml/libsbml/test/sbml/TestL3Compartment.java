@@ -18,11 +18,6 @@
  * This file is part of libSBML.  Please visit http://sbml.org for more
  * information about SBML, and the latest version of libSBML.
  *
- * Copyright (C) 2020 jointly by the following organizations:
- *     1. California Institute of Technology, Pasadena, CA, USA
- *     2. University of Heidelberg, Heidelberg, Germany
- *     3. University College London, London, UK
- *
  * Copyright 2005-2010 California Institute of Technology.
  * Copyright 2002-2005 California Institute of Technology and
  *                     Japan Science and Technology Corporation.
@@ -146,7 +141,8 @@ public class TestL3Compartment {
   {
     assertTrue( C.getNamespaces() != null );
     assertTrue( C.getNamespaces().getLength() == 1 );
-    assertTrue(C.getNamespaces().getURI(0).equals(    "http://www.sbml.org/sbml/level3/version1/core"));
+    String uri = C.getNamespaces().getURI(0);
+    assertTrue(uri.equals( "http://www.sbml.org/sbml/level3/version1/core"));
   }
 
   public void test_L3_Compartment_constant()
@@ -155,9 +151,17 @@ public class TestL3Compartment {
     C.setConstant(true);
     assertTrue( C.getConstant() == true );
     assertTrue( C.isSetConstant() == true );
+    int ret = C.unsetConstant();
+    assertTrue( ret == libsbml.LIBSBML_OPERATION_SUCCESS );
+    assertTrue( C.getConstant() == true );
+    assertTrue( C.isSetConstant() == false );
     C.setConstant(false);
     assertTrue( C.getConstant() == false );
     assertTrue( C.isSetConstant() == true );
+    ret = C.unsetConstant();
+    assertTrue( ret == libsbml.LIBSBML_OPERATION_SUCCESS );
+    assertTrue( C.getConstant() == false );
+    assertTrue( C.isSetConstant() == false );
   }
 
   public void test_L3_Compartment_create()
@@ -170,8 +174,8 @@ public class TestL3Compartment {
     assertTrue( C.getName().equals("") == true );
     assertTrue( C.getUnits().equals("") == true );
     assertTrue( C.getOutside().equals("") == true );
-    assertEquals( true, isnan(C.getSpatialDimensionsAsDouble()) );
-    assertEquals( true, isnan(C.getVolume()) );
+    assertEquals( true, util_isNaN );
+    assertEquals( true, util_isNaN );
     assertTrue( C.getConstant() == true );
     assertEquals( false, C.isSetId() );
     assertEquals( false, C.isSetSpatialDimensions() );
@@ -202,8 +206,8 @@ public class TestL3Compartment {
     assertTrue( c.getName().equals("") == true );
     assertTrue( c.getUnits().equals("") == true );
     assertTrue( c.getOutside().equals("") == true );
-    assertEquals( true, isnan(c.getSpatialDimensionsAsDouble()) );
-    assertEquals( true, isnan(c.getVolume()) );
+    assertEquals( true, util_isNaN );
+    assertEquals( true, util_isNaN );
     assertTrue( c.getConstant() == true );
     assertEquals( false, c.isSetId() );
     assertEquals( false, c.isSetSpatialDimensions() );
@@ -214,6 +218,8 @@ public class TestL3Compartment {
     assertEquals( false, c.isSetOutside() );
     assertEquals( false, c.isSetConstant() );
     c = null;
+    xmlns = null;
+    sbmlns = null;
   }
 
   public void test_L3_Compartment_free_NULL()
@@ -292,25 +298,25 @@ public class TestL3Compartment {
   {
     double size = 0.2;
     assertEquals( false, C.isSetSize() );
-    assertEquals( true, isnan(C.getSize()) );
+    assertEquals( true, util_isNaN );
     C.setSize(size);
     assertTrue( C.getSize() == size );
     assertEquals( true, C.isSetSize() );
     C.unsetSize();
     assertEquals( false, C.isSetSize() );
-    assertEquals( true, isnan(C.getSize()) );
+    assertEquals( true, util_isNaN );
   }
 
   public void test_L3_Compartment_spatialDimensions()
   {
     assertEquals( false, C.isSetSpatialDimensions() );
-    assertEquals( true, isnan(C.getSpatialDimensionsAsDouble()) );
+    assertEquals( true, util_isNaN );
     C.setSpatialDimensions(1.5);
     assertEquals( true, C.isSetSpatialDimensions() );
     assertTrue( C.getSpatialDimensionsAsDouble() == 1.5 );
     C.unsetSpatialDimensions();
     assertEquals( false, C.isSetSpatialDimensions() );
-    assertEquals( true, isnan(C.getSpatialDimensionsAsDouble()) );
+    assertEquals( true, util_isNaN );
   }
 
   public void test_L3_Compartment_units()
@@ -383,4 +389,3 @@ public class TestL3Compartment {
     }
   }
 }
-

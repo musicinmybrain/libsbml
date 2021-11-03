@@ -18,11 +18,6 @@
  * This file is part of libSBML.  Please visit http://sbml.org for more
  * information about SBML, and the latest version of libSBML.
  *
- * Copyright (C) 2020 jointly by the following organizations:
- *     1. California Institute of Technology, Pasadena, CA, USA
- *     2. University of Heidelberg, Heidelberg, Germany
- *     3. University College London, London, UK
- *
  * Copyright 2005-2010 California Institute of Technology.
  * Copyright 2002-2005 California Institute of Technology and
  *                     Japan Science and Technology Corporation.
@@ -138,6 +133,7 @@ public class TestInternalConsistencyChecks {
     errors = d.checkInternalConsistency();
     assertTrue( errors == 0 );
     d = null;
+    ast = null;
   }
 
   public void test_internal_consistency_check_20307()
@@ -156,6 +152,7 @@ public class TestInternalConsistencyChecks {
     errors = d.checkInternalConsistency();
     assertTrue( errors == 0 );
     d = null;
+    ast = null;
   }
 
   public void test_internal_consistency_check_20419()
@@ -322,6 +319,7 @@ public class TestInternalConsistencyChecks {
     errors = d.checkInternalConsistency();
     assertTrue( errors == 0 );
     d = null;
+    ast = null;
   }
 
   public void test_internal_consistency_check_20805()
@@ -340,6 +338,7 @@ public class TestInternalConsistencyChecks {
     errors = d.checkInternalConsistency();
     assertTrue( errors == 0 );
     d = null;
+    ast = null;
   }
 
   public void test_internal_consistency_check_20907_alg()
@@ -357,6 +356,7 @@ public class TestInternalConsistencyChecks {
     errors = d.checkInternalConsistency();
     assertTrue( errors == 0 );
     d = null;
+    ast = null;
   }
 
   public void test_internal_consistency_check_20907_assign()
@@ -375,6 +375,7 @@ public class TestInternalConsistencyChecks {
     errors = d.checkInternalConsistency();
     assertTrue( errors == 0 );
     d = null;
+    ast = null;
   }
 
   public void test_internal_consistency_check_20907_rate()
@@ -393,6 +394,7 @@ public class TestInternalConsistencyChecks {
     errors = d.checkInternalConsistency();
     assertTrue( errors == 0 );
     d = null;
+    ast = null;
   }
 
   public void test_internal_consistency_check_20908()
@@ -411,6 +413,7 @@ public class TestInternalConsistencyChecks {
     errors = d.checkInternalConsistency();
     assertTrue( errors == 0 );
     d = null;
+    ast = null;
   }
 
   public void test_internal_consistency_check_20909()
@@ -429,6 +432,7 @@ public class TestInternalConsistencyChecks {
     errors = d.checkInternalConsistency();
     assertTrue( errors == 0 );
     d = null;
+    ast = null;
   }
 
   public void test_internal_consistency_check_21007()
@@ -446,6 +450,7 @@ public class TestInternalConsistencyChecks {
     errors = d.checkInternalConsistency();
     assertTrue( errors == 0 );
     d = null;
+    ast = null;
   }
 
   public void test_internal_consistency_check_21101()
@@ -575,6 +580,7 @@ public class TestInternalConsistencyChecks {
     errors = d.checkInternalConsistency();
     assertTrue( errors == 0 );
     d = null;
+    ast = null;
   }
 
   public void test_internal_consistency_check_21172()
@@ -601,6 +607,7 @@ public class TestInternalConsistencyChecks {
     errors = d.checkInternalConsistency();
     assertTrue( errors == 0 );
     d = null;
+    ast = null;
   }
 
   public void test_internal_consistency_check_21201()
@@ -626,6 +633,7 @@ public class TestInternalConsistencyChecks {
     errors = d.checkInternalConsistency();
     assertTrue( errors == 0 );
     d = null;
+    ast = null;
   }
 
   public void test_internal_consistency_check_21203()
@@ -643,7 +651,6 @@ public class TestInternalConsistencyChecks {
     d.getErrorLog().clearLog();
     errors = d.checkInternalConsistency();
     assertTrue( errors == 0 );
-    //assertTrue( d.getError(0).getErrorId() == 21203 );
     EventAssignment ea = r.createEventAssignment();
     ea.setVariable("ea");
     ea.setMath(ast);
@@ -651,6 +658,33 @@ public class TestInternalConsistencyChecks {
     errors = d.checkInternalConsistency();
     assertTrue( errors == 0 );
     d = null;
+    ast = null;
+  }
+
+  public void test_internal_consistency_check_21203_l2v4()
+  {
+    SBMLDocument d = new SBMLDocument(2,4);
+    long errors;
+    Model m = d.createModel();
+    Event r = m.createEvent();
+    r.setUseValuesFromTriggerTime(true);
+    ASTNode ast = libsbml.parseFormula("2*x");
+    Trigger t = r.createTrigger();
+    t.setMath(ast);
+    t.setPersistent(true);
+    t.setInitialValue(false);
+    d.getErrorLog().clearLog();
+    errors = d.checkInternalConsistency();
+    assertTrue( errors == 1 );
+    assertTrue( d.getError(0).getErrorId() == 21203 );
+    EventAssignment ea = r.createEventAssignment();
+    ea.setVariable("ea");
+    ea.setMath(ast);
+    d.getErrorLog().clearLog();
+    errors = d.checkInternalConsistency();
+    assertTrue( errors == 0 );
+    d = null;
+    ast = null;
   }
 
   public void test_internal_consistency_check_21209()
@@ -676,6 +710,7 @@ public class TestInternalConsistencyChecks {
     errors = d.checkInternalConsistency();
     assertTrue( errors == 0 );
     d = null;
+    ast = null;
   }
 
   public void test_internal_consistency_check_21210()
@@ -703,6 +738,7 @@ public class TestInternalConsistencyChecks {
     errors = d.checkInternalConsistency();
     assertTrue( errors == 0 );
     d = null;
+    ast = null;
   }
 
   public void test_internal_consistency_check_21213()
@@ -728,6 +764,7 @@ public class TestInternalConsistencyChecks {
     errors = d.checkInternalConsistency();
     assertTrue( errors == 0 );
     d = null;
+    ast = null;
   }
 
   public void test_internal_consistency_check_21214()
@@ -753,6 +790,7 @@ public class TestInternalConsistencyChecks {
     errors = d.checkInternalConsistency();
     assertTrue( errors == 0 );
     d = null;
+    ast = null;
   }
 
   public void test_internal_consistency_check_21225()
@@ -778,6 +816,7 @@ public class TestInternalConsistencyChecks {
     errors = d.checkInternalConsistency();
     assertTrue( errors == 0 );
     d = null;
+    ast = null;
   }
 
   public void test_internal_consistency_check_21226()
@@ -808,6 +847,7 @@ public class TestInternalConsistencyChecks {
     errors = d.checkInternalConsistency();
     assertTrue( errors == 0 );
     d = null;
+    ast = null;
   }
 
   public void test_internal_consistency_check_21231()
@@ -835,6 +875,7 @@ public class TestInternalConsistencyChecks {
     errors = d.checkInternalConsistency();
     assertTrue( errors == 0 );
     d = null;
+    ast = null;
   }
 
   public void test_internal_consistency_check_99901()
@@ -852,6 +893,7 @@ public class TestInternalConsistencyChecks {
     assertTrue( errors == 1 );
     assertTrue( d.getError(0).getErrorId() == 10103 );
     d = null;
+    c = null;
   }
 
   public void test_internal_consistency_check_99902()
@@ -868,6 +910,7 @@ public class TestInternalConsistencyChecks {
     assertTrue( errors == 1 );
     assertTrue( d.getError(0).getErrorId() == 10103 );
     d = null;
+    c = null;
   }
 
   public void test_internal_consistency_check_99903()
@@ -886,6 +929,7 @@ public class TestInternalConsistencyChecks {
     errors = d.checkInternalConsistency();
     assertTrue( errors == 3 );
     d = null;
+    c = null;
   }
 
   public void test_internal_consistency_check_99903_localparam()
@@ -909,6 +953,7 @@ public class TestInternalConsistencyChecks {
     errors = d.checkInternalConsistency();
     assertTrue( errors == 0 );
     d = null;
+    p = null;
   }
 
   public void test_internal_consistency_check_99903_param()
@@ -929,6 +974,7 @@ public class TestInternalConsistencyChecks {
     errors = d.checkInternalConsistency();
     assertTrue( errors == 2 );
     d = null;
+    p = null;
   }
 
   public void test_internal_consistency_check_99904()
@@ -945,6 +991,7 @@ public class TestInternalConsistencyChecks {
     assertTrue( errors == 1 );
     assertTrue( d.getError(0).getErrorId() == 10103 );
     d = null;
+    c = null;
   }
 
   public void test_internal_consistency_check_99904_kl()
@@ -966,6 +1013,7 @@ public class TestInternalConsistencyChecks {
     errors = d.checkInternalConsistency();
     assertTrue( errors == 0 );
     d = null;
+    kl = null;
   }
 
   public void test_internal_consistency_check_99904_model()
@@ -982,6 +1030,7 @@ public class TestInternalConsistencyChecks {
     assertTrue( errors == 1 );
     assertTrue( d.getError(0).getErrorId() == 20201 );
     d = null;
+    m = null;
   }
 
   public void test_internal_consistency_check_99904_param()
@@ -999,6 +1048,7 @@ public class TestInternalConsistencyChecks {
     errors = d.checkInternalConsistency();
     assertTrue( errors == 0 );
     d = null;
+    p = null;
   }
 
   public void test_internal_consistency_check_99904_react()
@@ -1016,6 +1066,7 @@ public class TestInternalConsistencyChecks {
     errors = d.checkInternalConsistency();
     assertTrue( errors == 0 );
     d = null;
+    r = null;
   }
 
   public void test_internal_consistency_check_99904_rule_alg()
@@ -1033,6 +1084,7 @@ public class TestInternalConsistencyChecks {
     errors = d.checkInternalConsistency();
     assertTrue( errors == 0 );
     d = null;
+    r = null;
   }
 
   public void test_internal_consistency_check_99904_rule_assign()
@@ -1052,6 +1104,7 @@ public class TestInternalConsistencyChecks {
     errors = d.checkInternalConsistency();
     assertTrue( errors == 0 );
     d = null;
+    r = null;
   }
 
   public void test_internal_consistency_check_99904_rule_rate()
@@ -1071,6 +1124,7 @@ public class TestInternalConsistencyChecks {
     errors = d.checkInternalConsistency();
     assertTrue( errors == 0 );
     d = null;
+    r = null;
   }
 
   public void test_internal_consistency_check_99904_species()
@@ -1089,6 +1143,7 @@ public class TestInternalConsistencyChecks {
     errors = d.checkInternalConsistency();
     assertTrue( errors == 0 );
     d = null;
+    s = null;
   }
 
   public void test_internal_consistency_check_99904_speciesRef()
@@ -1112,6 +1167,7 @@ public class TestInternalConsistencyChecks {
     assertTrue( errors == 1 );
     assertTrue( d.getError(0).getErrorId() == 21101 );
     d = null;
+    sr = null;
   }
 
   public void test_internal_consistency_check_99904_unit()
@@ -1131,6 +1187,7 @@ public class TestInternalConsistencyChecks {
     errors = d.checkInternalConsistency();
     assertTrue( errors == 0 );
     d = null;
+    u = null;
   }
 
   public void test_internal_consistency_check_99904_unitdef()
@@ -1149,6 +1206,7 @@ public class TestInternalConsistencyChecks {
     errors = d.checkInternalConsistency();
     assertTrue( errors == 0 );
     d = null;
+    u = null;
   }
 
   public void test_internal_consistency_check_99905()
@@ -1165,6 +1223,7 @@ public class TestInternalConsistencyChecks {
     assertTrue( errors == 1 );
     assertTrue( d.getError(0).getErrorId() == 10103 );
     d = null;
+    c = null;
   }
 
   public void test_internal_consistency_check_99905_ct()
@@ -1180,6 +1239,7 @@ public class TestInternalConsistencyChecks {
     errors = d.checkInternalConsistency();
     assertTrue( errors == 0 );
     d = null;
+    ct = null;
   }
 
   public void test_internal_consistency_check_99905_delay()
@@ -1196,6 +1256,8 @@ public class TestInternalConsistencyChecks {
     errors = d.checkInternalConsistency();
     assertTrue( errors == 0 );
     d = null;
+    delay = null;
+    e = null;
   }
 
   public void test_internal_consistency_check_99905_species()
@@ -1214,6 +1276,7 @@ public class TestInternalConsistencyChecks {
     errors = d.checkInternalConsistency();
     assertTrue( errors == 0 );
     d = null;
+    s = null;
   }
 
   public void test_internal_consistency_check_99905_st()
@@ -1229,6 +1292,7 @@ public class TestInternalConsistencyChecks {
     errors = d.checkInternalConsistency();
     assertTrue( errors == 0 );
     d = null;
+    ct = null;
   }
 
   public void test_internal_consistency_check_99905_stoichmath()
@@ -1252,6 +1316,7 @@ public class TestInternalConsistencyChecks {
     errors = d.checkInternalConsistency();
     assertTrue( errors == 0 );
     d = null;
+    sm = null;
   }
 
   public void test_internal_consistency_check_99905_trigger()
@@ -1268,6 +1333,8 @@ public class TestInternalConsistencyChecks {
     errors = d.checkInternalConsistency();
     assertTrue( errors == 0 );
     d = null;
+    trigger = null;
+    e = null;
   }
 
   public void test_internal_consistency_check_99905_unit()
@@ -1285,6 +1352,7 @@ public class TestInternalConsistencyChecks {
     errors = d.checkInternalConsistency();
     assertTrue( errors == 0 );
     d = null;
+    u = null;
   }
 
   public void test_internal_consistency_check_99905_unitdef()
@@ -1301,6 +1369,7 @@ public class TestInternalConsistencyChecks {
     errors = d.checkInternalConsistency();
     assertTrue( errors == 0 );
     d = null;
+    u = null;
   }
 
   public void test_internal_consistency_check_99906()
@@ -1317,6 +1386,7 @@ public class TestInternalConsistencyChecks {
     assertTrue( errors == 1 );
     assertTrue( d.getError(0).getErrorId() == 10103 );
     d = null;
+    c = null;
   }
 
   public void test_internal_consistency_check_99907()
@@ -1333,6 +1403,7 @@ public class TestInternalConsistencyChecks {
     assertTrue( errors == 1 );
     assertTrue( d.getError(0).getErrorId() == 10103 );
     d = null;
+    c = null;
   }
 
   public void test_internal_consistency_check_99908()
@@ -1347,6 +1418,7 @@ public class TestInternalConsistencyChecks {
     errors = d.checkInternalConsistency();
     assertTrue( errors == 0 );
     d = null;
+    ct = null;
   }
 
   public void test_internal_consistency_check_99909()
@@ -1360,6 +1432,7 @@ public class TestInternalConsistencyChecks {
     errors = d.checkInternalConsistency();
     assertTrue( errors == 0 );
     d = null;
+    ct = null;
   }
 
   public void test_internal_consistency_check_99910()
@@ -1376,6 +1449,7 @@ public class TestInternalConsistencyChecks {
     errors = d.checkInternalConsistency();
     assertTrue( errors == 0 );
     d = null;
+    e = null;
   }
 
   public void test_internal_consistency_check_99911_ea()
@@ -1400,6 +1474,8 @@ public class TestInternalConsistencyChecks {
     assertTrue( errors == 1 );
     assertTrue( d.getError(0).getErrorId() == 21203 );
     d = null;
+    ast = null;
+    ea = null;
   }
 
   public void test_internal_consistency_check_99911_event()
@@ -1414,6 +1490,7 @@ public class TestInternalConsistencyChecks {
     errors = d.checkInternalConsistency();
     assertTrue( errors == 0 );
     d = null;
+    e = null;
   }
 
   public void test_internal_consistency_check_99911_fd()
@@ -1429,6 +1506,7 @@ public class TestInternalConsistencyChecks {
     errors = d.checkInternalConsistency();
     assertTrue( errors == 0 );
     d = null;
+    fd = null;
   }
 
   public void test_internal_consistency_check_99911_kl()
@@ -1449,6 +1527,7 @@ public class TestInternalConsistencyChecks {
     errors = d.checkInternalConsistency();
     assertTrue( errors == 0 );
     d = null;
+    kl = null;
   }
 
   public void test_internal_consistency_check_99911_model()
@@ -1463,6 +1542,7 @@ public class TestInternalConsistencyChecks {
     assertTrue( errors == 1 );
     assertTrue( d.getError(0).getErrorId() == 20201 );
     d = null;
+    m = null;
   }
 
   public void test_internal_consistency_check_99911_param()
@@ -1478,6 +1558,7 @@ public class TestInternalConsistencyChecks {
     errors = d.checkInternalConsistency();
     assertTrue( errors == 0 );
     d = null;
+    p = null;
   }
 
   public void test_internal_consistency_check_99911_react()
@@ -1493,6 +1574,7 @@ public class TestInternalConsistencyChecks {
     errors = d.checkInternalConsistency();
     assertTrue( errors == 0 );
     d = null;
+    r = null;
   }
 
   public void test_internal_consistency_check_99911_rule_alg()
@@ -1507,6 +1589,7 @@ public class TestInternalConsistencyChecks {
     errors = d.checkInternalConsistency();
     assertTrue( errors == 0 );
     d = null;
+    r = null;
   }
 
   public void test_internal_consistency_check_99911_rule_assign()
@@ -1525,6 +1608,7 @@ public class TestInternalConsistencyChecks {
     errors = d.checkInternalConsistency();
     assertTrue( errors == 0 );
     d = null;
+    r = null;
   }
 
   public void test_internal_consistency_check_99911_rule_rate()
@@ -1543,6 +1627,7 @@ public class TestInternalConsistencyChecks {
     errors = d.checkInternalConsistency();
     assertTrue( errors == 0 );
     d = null;
+    r = null;
   }
 
   public void test_internal_consistency_check_99911_speciesRef()
@@ -1566,6 +1651,7 @@ public class TestInternalConsistencyChecks {
     assertTrue( errors == 1 );
     assertTrue( d.getError(0).getErrorId() == 21101 );
     d = null;
+    sr = null;
   }
 
   public void test_internal_consistency_check_99912()
@@ -1582,6 +1668,7 @@ public class TestInternalConsistencyChecks {
     errors = d.checkInternalConsistency();
     assertTrue( errors == 0 );
     d = null;
+    fd = null;
   }
 
   public void test_internal_consistency_check_99913()
@@ -1598,6 +1685,7 @@ public class TestInternalConsistencyChecks {
     errors = d.checkInternalConsistency();
     assertTrue( errors == 0 );
     d = null;
+    ia = null;
   }
 
   public void test_internal_consistency_check_99914()
@@ -1612,6 +1700,7 @@ public class TestInternalConsistencyChecks {
     errors = d.checkInternalConsistency();
     assertTrue( errors == 0 );
     d = null;
+    r = null;
   }
 
   public void test_internal_consistency_check_99915_alg()
@@ -1626,6 +1715,7 @@ public class TestInternalConsistencyChecks {
     errors = d.checkInternalConsistency();
     assertTrue( errors == 0 );
     d = null;
+    r = null;
   }
 
   public void test_internal_consistency_check_99915_assign()
@@ -1686,6 +1776,7 @@ public class TestInternalConsistencyChecks {
     errors = d.checkInternalConsistency();
     assertTrue( errors == 0 );
     d = null;
+    s = null;
   }
 
   public void test_internal_consistency_check_99916_rule()
@@ -1707,6 +1798,7 @@ public class TestInternalConsistencyChecks {
     errors = d.checkInternalConsistency();
     assertTrue( errors == 2 );
     d = null;
+    s = null;
   }
 
   public void test_internal_consistency_check_99917()
@@ -1725,6 +1817,7 @@ public class TestInternalConsistencyChecks {
     errors = d.checkInternalConsistency();
     assertTrue( errors == 0 );
     d = null;
+    s = null;
   }
 
   public void test_internal_consistency_check_99918()
@@ -1743,6 +1836,7 @@ public class TestInternalConsistencyChecks {
     errors = d.checkInternalConsistency();
     assertTrue( errors == 0 );
     d = null;
+    s = null;
   }
 
   public void test_internal_consistency_check_99919()
@@ -1761,6 +1855,7 @@ public class TestInternalConsistencyChecks {
     errors = d.checkInternalConsistency();
     assertTrue( errors == 0 );
     d = null;
+    s = null;
   }
 
   public void test_internal_consistency_check_99920()
@@ -1784,6 +1879,7 @@ public class TestInternalConsistencyChecks {
     assertTrue( errors == 1 );
     assertTrue( d.getError(0).getErrorId() == 21101 );
     d = null;
+    sr = null;
   }
 
   public void test_internal_consistency_check_99921()
@@ -1807,6 +1903,7 @@ public class TestInternalConsistencyChecks {
     assertTrue( errors == 1 );
     assertTrue( d.getError(0).getErrorId() == 21101 );
     d = null;
+    sr = null;
   }
 
   public void test_internal_consistency_check_99922()
@@ -1821,6 +1918,7 @@ public class TestInternalConsistencyChecks {
     errors = d.checkInternalConsistency();
     assertTrue( errors == 0 );
     d = null;
+    ct = null;
   }
 
   public void test_internal_consistency_check_99923()
@@ -1843,6 +1941,7 @@ public class TestInternalConsistencyChecks {
     errors = d.checkInternalConsistency();
     assertTrue( errors == 0 );
     d = null;
+    sm = null;
   }
 
   public void test_internal_consistency_check_99924()
@@ -1862,6 +1961,7 @@ public class TestInternalConsistencyChecks {
     errors = d.checkInternalConsistency();
     assertTrue( errors == 0 );
     d = null;
+    u = null;
   }
 
   public void test_internal_consistency_check_99925()
@@ -1881,6 +1981,7 @@ public class TestInternalConsistencyChecks {
     errors = d.checkInternalConsistency();
     assertTrue( errors == 0 );
     d = null;
+    u = null;
   }
 
   /**

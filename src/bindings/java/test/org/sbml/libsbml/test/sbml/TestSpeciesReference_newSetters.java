@@ -18,11 +18,6 @@
  * This file is part of libSBML.  Please visit http://sbml.org for more
  * information about SBML, and the latest version of libSBML.
  *
- * Copyright (C) 2020 jointly by the following organizations:
- *     1. California Institute of Technology, Pasadena, CA, USA
- *     2. University of Heidelberg, Heidelberg, Germany
- *     3. University College London, London, UK
- *
  * Copyright 2005-2010 California Institute of Technology.
  * Copyright 2002-2005 California Institute of Technology and
  *                     Japan Science and Technology Corporation.
@@ -172,6 +167,8 @@ public class TestSpeciesReference_newSetters {
   {
     SpeciesReference c = new  SpeciesReference(2,1);
     int i = c.setId( "cell");
+    assertTrue( i == libsbml.LIBSBML_UNEXPECTED_ATTRIBUTE );
+    assertEquals( false, c.isSetId() );
     c = null;
   }
 
@@ -296,6 +293,7 @@ public class TestSpeciesReference_newSetters {
     assertTrue( i == libsbml.LIBSBML_OPERATION_SUCCESS );
     assertEquals( false, sr.isSetStoichiometryMath() );
     sm = null;
+    math = null;
   }
 
   public void test_SpeciesReference_setStoichiometryMath2()
@@ -310,6 +308,7 @@ public class TestSpeciesReference_newSetters {
     assertTrue( i == libsbml.LIBSBML_OPERATION_SUCCESS );
     assertEquals( true, sr.isSetStoichiometryMath() );
     sm = null;
+    math = null;
   }
 
   public void test_SpeciesReference_setStoichiometryMath3()
@@ -328,8 +327,8 @@ public class TestSpeciesReference_newSetters {
     ASTNode math = null;
     sm.setMath(math);
     int i = sr.setStoichiometryMath(sm);
-      assertTrue( i == libsbml.LIBSBML_INVALID_OBJECT );
-      assertEquals( false, sr.isSetStoichiometryMath() );
+    assertTrue( i == libsbml.LIBSBML_INVALID_OBJECT );
+    assertTrue( sr.isSetStoichiometryMath() == 0 );
     assertTrue( sr.getStoichiometry() == 1 );
     i = sr.unsetStoichiometryMath();
     assertTrue( i == libsbml.LIBSBML_OPERATION_SUCCESS );
@@ -354,12 +353,15 @@ public class TestSpeciesReference_newSetters {
     assertEquals( false, sr1.isSetStoichiometryMath() );
     sm = null;
     sr1 = null;
+    math = null;
   }
 
   public void test_SpeciesReference_setStoichiometryMath6()
   {
     StoichiometryMath sm = new  StoichiometryMath(2,1);
-      sm.setMath(libsbml.parseFormula("1"));
+    ASTNode math = libsbml.parseFormula("1");
+    sm.setMath(math);
+    math = null;
     int i = sr.setStoichiometryMath(sm);
     assertTrue( i == libsbml.LIBSBML_VERSION_MISMATCH );
     assertEquals( false, sr.isSetStoichiometryMath() );

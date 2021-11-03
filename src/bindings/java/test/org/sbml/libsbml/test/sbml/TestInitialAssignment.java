@@ -18,11 +18,6 @@
  * This file is part of libSBML.  Please visit http://sbml.org for more
  * information about SBML, and the latest version of libSBML.
  *
- * Copyright (C) 2020 jointly by the following organizations:
- *     1. California Institute of Technology, Pasadena, CA, USA
- *     2. University of Heidelberg, Heidelberg, Germany
- *     3. University College London, London, UK
- *
  * Copyright 2005-2010 California Institute of Technology.
  * Copyright 2002-2005 California Institute of Technology and
  *                     Japan Science and Technology Corporation.
@@ -163,6 +158,8 @@ public class TestInitialAssignment {
     assertTrue( object.getNamespaces() != null );
     assertTrue( object.getNamespaces().getLength() == 2 );
     object = null;
+    xmlns = null;
+    sbmlns = null;
   }
 
   public void test_InitialAssignment_free_NULL()
@@ -209,6 +206,22 @@ public class TestInitialAssignment {
     IA.setSymbol(IA.getSymbol());
     assertTrue(IA.getSymbol().equals(Symbol));
     IA.setSymbol("");
+    assertEquals( false, IA.isSetSymbol() );
+    if (IA.getSymbol() != null);
+    {
+    }
+  }
+
+  public void test_InitialAssignment_unsetSymbol()
+  {
+    String Symbol =  "k2";
+    IA.setSymbol(Symbol);
+    assertTrue(IA.getSymbol().equals(Symbol));
+    assertEquals( true, IA.isSetSymbol() );
+    if (IA.getSymbol() == Symbol);
+    {
+    }
+    IA.unsetSymbol();
     assertEquals( false, IA.isSetSymbol() );
     if (IA.getSymbol() != null);
     {

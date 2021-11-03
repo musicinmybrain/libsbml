@@ -18,11 +18,6 @@
  * This file is part of libSBML.  Please visit http://sbml.org for more
  * information about SBML, and the latest version of libSBML.
  *
- * Copyright (C) 2020 jointly by the following organizations:
- *     1. California Institute of Technology, Pasadena, CA, USA
- *     2. University of Heidelberg, Heidelberg, Germany
- *     3. University College London, London, UK
- *
  * Copyright 2005-2010 California Institute of Technology.
  * Copyright 2002-2005 California Institute of Technology and
  *                     Japan Science and Technology Corporation.
@@ -147,7 +142,8 @@ public class TestL3Unit {
   {
     assertTrue( U.getNamespaces() != null );
     assertTrue( U.getNamespaces().getLength() == 1 );
-    assertTrue(U.getNamespaces().getURI(0).equals(    "http://www.sbml.org/sbml/level3/version1/core"));
+    String uri = U.getNamespaces().getURI(0);
+    assertTrue(uri.equals( "http://www.sbml.org/sbml/level3/version1/core"));
   }
 
   public void test_L3_Unit_create()
@@ -157,8 +153,8 @@ public class TestL3Unit {
     assertTrue( U.getNotes() == null );
     assertTrue( U.getAnnotation() == null );
     assertTrue( U.getKind() == libsbml.UNIT_KIND_INVALID );
-    assertEquals( true, isnan(U.getExponentAsDouble()) );
-    assertEquals( true, isnan(U.getMultiplier()) );
+    assertEquals( true, util_isNaN );
+    assertEquals( true, util_isNaN );
     assertTrue( U.getScale() == SBML_INT_MAX );
     assertEquals( false, U.isSetKind() );
     assertEquals( false, U.isSetExponent() );
@@ -182,23 +178,28 @@ public class TestL3Unit {
     assertTrue( u.getNamespaces() != null );
     assertTrue( u.getNamespaces().getLength() == 2 );
     assertTrue( u.getKind() == libsbml.UNIT_KIND_INVALID );
-    assertEquals( true, isnan(u.getExponentAsDouble()) );
-    assertEquals( true, isnan(u.getMultiplier()) );
+    assertEquals( true, util_isNaN );
+    assertEquals( true, util_isNaN );
     assertEquals( false, u.isSetKind() );
     assertEquals( false, u.isSetExponent() );
     assertEquals( false, u.isSetMultiplier() );
     assertEquals( false, u.isSetScale() );
     u = null;
+    xmlns = null;
+    sbmlns = null;
   }
 
   public void test_L3_Unit_exponent()
   {
     double exponent = 0.2;
     assertEquals( false, U.isSetExponent() );
-    assertEquals( true, isnan(U.getExponentAsDouble()) );
+    assertEquals( true, util_isNaN );
     U.setExponent(exponent);
     assertTrue( U.getExponentAsDouble() == exponent );
     assertEquals( true, U.isSetExponent() );
+    U.unsetExponent();
+    assertEquals( false, U.isSetExponent() );
+    assertEquals( true, util_isNaN );
   }
 
   public void test_L3_Unit_free_NULL()
@@ -227,16 +228,22 @@ public class TestL3Unit {
     U.setKind(libsbml.UnitKind_forName(kind));
     assertTrue( U.getKind() == libsbml.UNIT_KIND_MOLE );
     assertEquals( true, U.isSetKind() );
+    U.unsetKind();
+    assertTrue( U.getKind() == libsbml.UNIT_KIND_INVALID );
+    assertEquals( false, U.isSetKind() );
   }
 
   public void test_L3_Unit_multiplier()
   {
     double multiplier = 0.2;
     assertEquals( false, U.isSetMultiplier() );
-    assertEquals( true, isnan(U.getMultiplier()) );
+    assertEquals( true, util_isNaN );
     U.setMultiplier(multiplier);
     assertTrue( U.getMultiplier() == multiplier );
     assertEquals( true, U.isSetMultiplier() );
+    U.unsetMultiplier();
+    assertEquals( false, U.isSetMultiplier() );
+    assertEquals( true, util_isNaN );
   }
 
   public void test_L3_Unit_scale()
@@ -247,6 +254,9 @@ public class TestL3Unit {
     U.setScale(scale);
     assertTrue( U.getScale() == scale );
     assertEquals( true, U.isSetScale() );
+    U.unsetScale();
+    assertEquals( false, U.isSetScale() );
+    assertTrue( U.getScale() == SBML_INT_MAX );
   }
 
   /**

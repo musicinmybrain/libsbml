@@ -18,11 +18,6 @@
  * This file is part of libSBML.  Please visit http://sbml.org for more
  * information about SBML, and the latest version of libSBML.
  *
- * Copyright (C) 2020 jointly by the following organizations:
- *     1. California Institute of Technology, Pasadena, CA, USA
- *     2. University of Heidelberg, Heidelberg, Germany
- *     3. University College London, London, UK
- *
  * Copyright 2005-2010 California Institute of Technology.
  * Copyright 2002-2005 California Institute of Technology and
  *                     Japan Science and Technology Corporation.
@@ -137,8 +132,19 @@ public class TestListOf {
     i = loc.append(sp);
     assertTrue( i == libsbml.LIBSBML_INVALID_OBJECT );
     assertTrue( loc.size() == 2 );
+    Model m2 = m.clone();
+    ListOf loc2 = m2.getListOfCompartments();
+    assertTrue( loc2.size() == 2 );
+    i = loc.appendFrom(loc2);
+    assertTrue( i == libsbml.LIBSBML_OPERATION_SUCCESS );
+    assertTrue( loc.size() == 4 );
+    ListOf los = m.getListOfSpecies();
+    i = loc.appendFrom(los);
+    assertTrue( i == libsbml.LIBSBML_INVALID_OBJECT );
     m = null;
+    m2 = null;
     sp = null;
+    c = null;
   }
 
   public void test_ListOf_clear()
@@ -222,6 +228,80 @@ public class TestListOf {
     lo = null;
   }
 
+  public void test_ListOf_sort()
+  {
+    ListOf lo = new  ListOf(2,4);
+    Species sp = new  Species(2,4);
+    sp.setId("z");
+    lo.append(sp);
+    sp.setId("a");
+    lo.append(sp);
+    sp.setId("n");
+    lo.append(sp);
+    lo.sort();
+    SBase child = lo.get(0);
+    assertTrue( child.getId().equals( "a") );
+    child = lo.get(1);
+    assertTrue( child.getId().equals( "n") );
+    child = lo.get(2);
+    assertTrue( child.getId().equals( "z") );
+    sp = null;
+    lo = null;
+  }
+
+  public void test_ListOf_sort_meta()
+  {
+    ListOf lo = new  ListOf(2,4);
+    Species sp = new  Species(2,4);
+    sp.setMetaId("z");
+    lo.append(sp);
+    sp.setMetaId("a");
+    lo.append(sp);
+    sp.setMetaId("n");
+    lo.append(sp);
+    lo.sort();
+    SBase child = lo.get(0);
+    assertTrue( child.getMetaId().equals( "a") );
+    child = lo.get(1);
+    assertTrue( child.getMetaId().equals( "n") );
+    child = lo.get(2);
+    assertTrue( child.getMetaId().equals( "z") );
+    sp = null;
+    lo = null;
+  }
+
+  public void test_ListOf_sort_rules()
+  {
+    ListOf lo = new  ListOf(3,2);
+    Rule rr = new  RateRule(3,2);
+    rr.setVariable("z");
+    rr.setIdAttribute("a");
+    lo.append(rr);
+    rr.setVariable("a");
+    rr.setIdAttribute("z");
+    lo.append(rr);
+    rr.setVariable("q");
+    rr.unsetIdAttribute();
+    lo.append(rr);
+    rr.setVariable("n");
+    lo.append(rr);
+    lo.sort();
+    SBase child = lo.get(0);
+    assertTrue( child.getIdAttribute().equals( "") );
+    assertTrue( child.getId().equals( "n") );
+    child = lo.get(1);
+    assertTrue( child.getIdAttribute().equals( "") );
+    assertTrue( child.getId().equals( "q") );
+    child = lo.get(2);
+    assertTrue( child.getIdAttribute().equals( "a") );
+    assertTrue( child.getId().equals( "z") );
+    child = lo.get(3);
+    assertTrue( child.getIdAttribute().equals( "z") );
+    assertTrue( child.getId().equals( "a") );
+    rr = null;
+    lo = null;
+  }
+
   /**
    * Loads the SWIG-generated libSBML Java module when this class is
    * loaded, or reports a sensible diagnostic message about why it failed.
@@ -275,4 +355,3 @@ public class TestListOf {
     }
   }
 }
-

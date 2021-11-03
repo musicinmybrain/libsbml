@@ -50,19 +50,20 @@ class TestL3Event(unittest.TestCase):
     pass  
 
   def test_L3_Event_NS(self):
-    self.assert_( self.E.getNamespaces() != None )
-    self.assert_( self.E.getNamespaces().getLength() == 1 )
-    self.assert_((     "http://www.sbml.org/sbml/level3/version1/core" == self.E.getNamespaces().getURI(0) ))
+    self.assertTrue( self.E.getNamespaces() != None )
+    self.assertTrue( self.E.getNamespaces().getLength() == 1 )
+    uri = self.E.getNamespaces().getURI(0)
+    self.assertTrue((  "http://www.sbml.org/sbml/level3/version1/core" == uri ))
     pass  
 
   def test_L3_Event_create(self):
-    self.assert_( self.E.getTypeCode() == libsbml.SBML_EVENT )
-    self.assert_( self.E.getMetaId() == "" )
-    self.assert_( self.E.getNotes() == None )
-    self.assert_( self.E.getAnnotation() == None )
-    self.assert_( self.E.getId() == "" )
-    self.assert_( self.E.getName() == "" )
-    self.assert_( self.E.getUseValuesFromTriggerTime() == True )
+    self.assertTrue( self.E.getTypeCode() == libsbml.SBML_EVENT )
+    self.assertTrue( self.E.getMetaId() == "" )
+    self.assertTrue( self.E.getNotes() == None )
+    self.assertTrue( self.E.getAnnotation() == None )
+    self.assertTrue( self.E.getId() == "" )
+    self.assertTrue( self.E.getName() == "" )
+    self.assertTrue( self.E.getUseValuesFromTriggerTime() == True )
     self.assertEqual( False, self.E.isSetId() )
     self.assertEqual( False, self.E.isSetName() )
     self.assertEqual( False, self.E.isSetUseValuesFromTriggerTime() )
@@ -74,21 +75,23 @@ class TestL3Event(unittest.TestCase):
     sbmlns = libsbml.SBMLNamespaces(3,1)
     sbmlns.addNamespaces(xmlns)
     e = libsbml.Event(sbmlns)
-    self.assert_( e.getTypeCode() == libsbml.SBML_EVENT )
-    self.assert_( e.getMetaId() == "" )
-    self.assert_( e.getNotes() == None )
-    self.assert_( e.getAnnotation() == None )
-    self.assert_( e.getLevel() == 3 )
-    self.assert_( e.getVersion() == 1 )
-    self.assert_( e.getNamespaces() != None )
-    self.assert_( e.getNamespaces().getLength() == 2 )
-    self.assert_( e.getId() == "" )
-    self.assert_( e.getName() == "" )
-    self.assert_( e.getUseValuesFromTriggerTime() == True )
+    self.assertTrue( e.getTypeCode() == libsbml.SBML_EVENT )
+    self.assertTrue( e.getMetaId() == "" )
+    self.assertTrue( e.getNotes() == None )
+    self.assertTrue( e.getAnnotation() == None )
+    self.assertTrue( e.getLevel() == 3 )
+    self.assertTrue( e.getVersion() == 1 )
+    self.assertTrue( e.getNamespaces() != None )
+    self.assertTrue( e.getNamespaces().getLength() == 2 )
+    self.assertTrue( e.getId() == "" )
+    self.assertTrue( e.getName() == "" )
+    self.assertTrue( e.getUseValuesFromTriggerTime() == True )
     self.assertEqual( False, e.isSetId() )
     self.assertEqual( False, e.isSetName() )
     self.assertEqual( False, e.isSetUseValuesFromTriggerTime() )
     _dummyList = [ e ]; _dummyList[:] = []; del _dummyList
+    _dummyList = [ xmlns ]; _dummyList[:] = []; del _dummyList
+    _dummyList = [ sbmlns ]; _dummyList[:] = []; del _dummyList
     pass  
 
   def test_L3_Event_free_NULL(self):
@@ -107,19 +110,22 @@ class TestL3Event(unittest.TestCase):
     e = libsbml.Event(3,1)
     self.assertEqual( False, e.hasRequiredElements() )
     t = libsbml.Trigger(3,1)
-    t.setMath(libsbml.parseFormula("true"))
-    t.setInitialValue(True)
-    t.setPersistent(True)
+    math = libsbml.parseFormula("true")
+    t.setMath(math)
+    _dummyList = [ math ]; _dummyList[:] = []; del _dummyList
+    t.setInitialValue(1)
+    t.setPersistent(1)
     e.setTrigger(t)
     self.assertEqual( True, e.hasRequiredElements() )
     _dummyList = [ e ]; _dummyList[:] = []; del _dummyList
+    _dummyList = [ t ]; _dummyList[:] = []; del _dummyList
     pass  
 
   def test_L3_Event_id(self):
     id =  "mitochondria";
     self.assertEqual( False, self.E.isSetId() )
     self.E.setId(id)
-    self.assert_(( id == self.E.getId() ))
+    self.assertTrue(( id == self.E.getId() ))
     self.assertEqual( True, self.E.isSetId() )
     if (self.E.getId() == id):
       pass    
@@ -133,7 +139,7 @@ class TestL3Event(unittest.TestCase):
     name =  "My_Favorite_Factory";
     self.assertEqual( False, self.E.isSetName() )
     self.E.setName(name)
-    self.assert_(( name == self.E.getName() ))
+    self.assertTrue(( name == self.E.getName() ))
     self.assertEqual( True, self.E.isSetName() )
     if (self.E.getName() == name):
       pass    
@@ -149,30 +155,40 @@ class TestL3Event(unittest.TestCase):
     priority.setMath(math1)
     self.assertEqual( False, self.E.isSetPriority() )
     i = self.E.setPriority(priority)
-    self.assert_( i == libsbml.LIBSBML_OPERATION_SUCCESS )
+    self.assertTrue( i == libsbml.LIBSBML_OPERATION_SUCCESS )
     self.assertEqual( True, self.E.isSetPriority() )
     i = self.E.unsetPriority()
-    self.assert_( i == libsbml.LIBSBML_OPERATION_SUCCESS )
+    self.assertTrue( i == libsbml.LIBSBML_OPERATION_SUCCESS )
     self.assertEqual( False, self.E.isSetPriority() )
     _dummyList = [ priority ]; _dummyList[:] = []; del _dummyList
+    _dummyList = [ math1 ]; _dummyList[:] = []; del _dummyList
     pass  
 
   def test_L3_Event_setPriority2(self):
     priority = self.E.createPriority()
     self.assertEqual( True, self.E.isSetPriority() )
+    (void) priority
     p = self.E.getPriority()
-    self.assert_( p != None )
+    self.assertTrue( p != None )
     self.assertEqual( False, p.isSetMath() )
     pass  
 
   def test_L3_Event_useValuesFromTriggerTime(self):
-    self.assert_( self.E.isSetUseValuesFromTriggerTime() == False )
+    self.assertTrue( self.E.isSetUseValuesFromTriggerTime() == False )
     self.E.setUseValuesFromTriggerTime(True)
-    self.assert_( self.E.getUseValuesFromTriggerTime() == True )
-    self.assert_( self.E.isSetUseValuesFromTriggerTime() == True )
+    self.assertTrue( self.E.getUseValuesFromTriggerTime() == True )
+    self.assertTrue( self.E.isSetUseValuesFromTriggerTime() == True )
+    ret = self.E.unsetUseValuesFromTriggerTime()
+    self.assertTrue( ret == libsbml.LIBSBML_OPERATION_SUCCESS )
+    self.assertTrue( self.E.getUseValuesFromTriggerTime() == True )
+    self.assertTrue( self.E.isSetUseValuesFromTriggerTime() == False )
     self.E.setUseValuesFromTriggerTime(False)
-    self.assert_( self.E.getUseValuesFromTriggerTime() == False )
-    self.assert_( self.E.isSetUseValuesFromTriggerTime() == True )
+    self.assertTrue( self.E.getUseValuesFromTriggerTime() == False )
+    self.assertTrue( self.E.isSetUseValuesFromTriggerTime() == True )
+    ret = self.E.unsetUseValuesFromTriggerTime()
+    self.assertTrue( ret == libsbml.LIBSBML_OPERATION_SUCCESS )
+    self.assertTrue( self.E.getUseValuesFromTriggerTime() == False )
+    self.assertTrue( self.E.isSetUseValuesFromTriggerTime() == False )
     pass  
 
 def suite():

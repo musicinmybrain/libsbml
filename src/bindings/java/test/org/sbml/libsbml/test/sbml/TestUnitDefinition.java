@@ -18,11 +18,6 @@
  * This file is part of libSBML.  Please visit http://sbml.org for more
  * information about SBML, and the latest version of libSBML.
  *
- * Copyright (C) 2020 jointly by the following organizations:
- *     1. California Institute of Technology, Pasadena, CA, USA
- *     2. University of Heidelberg, Heidelberg, Germany
- *     3. University College London, London, UK
- *
  * Copyright 2005-2010 California Institute of Technology.
  * Copyright 2002-2005 California Institute of Technology and
  *                     Japan Science and Technology Corporation.
@@ -175,6 +170,8 @@ public class TestUnitDefinition {
     assertTrue( object.getNamespaces() != null );
     assertTrue( object.getNamespaces().getLength() == 2 );
     object = null;
+    xmlns = null;
+    sbmlns = null;
   }
 
   public void test_UnitDefinition_createWithName()
@@ -245,6 +242,7 @@ public class TestUnitDefinition {
     u.setExponent(2);
     UD.addUnit(dim);
     assertEquals( true, UD.isVariantOfArea() );
+    dim = null;
   }
 
   public void test_UnitDefinition_isVariantOfLength()
@@ -267,6 +265,7 @@ public class TestUnitDefinition {
     u.setExponent(1);
     UD.addUnit(dim);
     assertEquals( true, UD.isVariantOfLength() );
+    dim = null;
   }
 
   public void test_UnitDefinition_isVariantOfSubstancePerTime_1()
@@ -412,6 +411,7 @@ public class TestUnitDefinition {
     u.setExponent(1);
     UD.addUnit(dim);
     assertEquals( true, UD.isVariantOfSubstance() );
+    dim = null;
   }
 
   public void test_UnitDefinition_isVariantOfSubstance_2()
@@ -434,6 +434,7 @@ public class TestUnitDefinition {
     u.setExponent(1);
     UD.addUnit(dim);
     assertEquals( true, UD.isVariantOfSubstance() );
+    dim = null;
   }
 
   public void test_UnitDefinition_isVariantOfTime()
@@ -456,6 +457,7 @@ public class TestUnitDefinition {
     u.setExponent(1);
     UD.addUnit(dim);
     assertEquals( true, UD.isVariantOfTime() );
+    dim = null;
   }
 
   public void test_UnitDefinition_isVariantOfVolume_1()
@@ -478,6 +480,7 @@ public class TestUnitDefinition {
     u.setExponent(1);
     UD.addUnit(dim);
     assertEquals( true, UD.isVariantOfVolume() );
+    dim = null;
   }
 
   public void test_UnitDefinition_isVariantOfVolume_2()
@@ -500,6 +503,7 @@ public class TestUnitDefinition {
     u.setExponent(3);
     UD.addUnit(dim);
     assertEquals( true, UD.isVariantOfVolume() );
+    dim = null;
   }
 
   public void test_UnitDefinition_printUnits()
@@ -524,6 +528,8 @@ public class TestUnitDefinition {
     assertTrue(ud_str2.equals(                "kilogram (exponent = 1, multiplier = 3, scale = 2)"));
     String ud_str3 = UnitDefinition.printUnits(ud1,true);
     assertTrue(ud_str3.equals( "(300 kilogram)^1"));
+    ud = null;
+    ud1 = null;
   }
 
   public void test_UnitDefinition_removeUnit()

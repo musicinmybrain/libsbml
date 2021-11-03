@@ -18,11 +18,6 @@
  * This file is part of libSBML.  Please visit http://sbml.org for more
  * information about SBML, and the latest version of libSBML.
  *
- * Copyright (C) 2020 jointly by the following organizations:
- *     1. California Institute of Technology, Pasadena, CA, USA
- *     2. University of Heidelberg, Heidelberg, Germany
- *     3. University College London, London, UK
- *
  * Copyright 2005-2010 California Institute of Technology.
  * Copyright 2002-2005 California Institute of Technology and
  *                     Japan Science and Technology Corporation.
@@ -122,9 +117,9 @@ public class TestL3ModelHistory {
     }
     throw new AssertionError();
   }
-  private SBMLDocument d;
   private Compartment c;
   private Model m;
+  private SBMLDocument d;
 
 
   public boolean equals(String s1, String s2)
@@ -138,6 +133,7 @@ public class TestL3ModelHistory {
     d = libsbml.readSBML(filename);
     m = d.getModel();
     c = m.getCompartment(0);
+    filename = null;
   }
 
   protected void tearDown() throws Exception
@@ -153,6 +149,7 @@ public class TestL3ModelHistory {
     assertTrue( n1.getName().equals( "annotation") );
     assertEquals( true, equals(expected,n1.toXMLString()) );
     node = null;
+    n1 = null;
   }
 
   public void test_L3ModelHistory_deleteWithOther()
@@ -168,6 +165,7 @@ public class TestL3ModelHistory {
     "  </jd2:JDesignerLayout>\n" + 
     "</annotation>";
     assertEquals( true, equals(expected,node.toXMLString()) );
+    node = null;
   }
 
   public void test_L3ModelHistory_deleteWithOutOther()
@@ -194,6 +192,7 @@ public class TestL3ModelHistory {
     assertTrue( n1.getName().equals( "annotation") );
     assertEquals( true, equals(expected,n1.toXMLString()) );
     node = null;
+    n1 = null;
   }
 
   public void test_L3ModelHistory_getModelHistory()
@@ -281,6 +280,7 @@ public class TestL3ModelHistory {
     XMLNode creator = desc.getChild(0);
     assertTrue(creator.getName().equals( "creator"));
     assertTrue(creator.getPrefix().equals( "dcterms"));
+    assertTrue(creator.getURI().equals( "http://purl.org/dc/terms/"));
     assertTrue( creator.getNumChildren() == 1 );
     XMLNode Bag = creator.getChild(0);
     assertTrue(Bag.getName().equals( "Bag"));
@@ -362,6 +362,7 @@ public class TestL3ModelHistory {
     XMLNode creator = desc.getChild(0);
     assertTrue(creator.getName().equals( "creator"));
     assertTrue(creator.getPrefix().equals( "dcterms"));
+    assertTrue(creator.getURI().equals( "http://purl.org/dc/terms/"));
     assertTrue( creator.getNumChildren() == 1 );
     XMLNode Bag = creator.getChild(0);
     assertTrue(Bag.getName().equals( "Bag"));
@@ -426,6 +427,24 @@ public class TestL3ModelHistory {
     node = null;
   }
 
+  public void test_L3ModelHistory_recreateWithOutOther()
+  {
+    Compartment c = m.getCompartment(2);
+    String expected = "<compartment id=\"B\" constant=\"true\">\n" + 
+    "  <annotation>\n" + 
+    "    <jd2:JDesignerLayout version=\"2.0\" MajorVersion=\"2\" MinorVersion=\"0\" BuildVersion=\"41\">\n" + 
+    "      <jd2:header>\n" + 
+    "        <jd2:VersionHeader JDesignerVersion=\"2.0\"/>\n" + 
+    "        <jd2:ModelHeader Author=\"Mr Untitled\" ModelVersion=\"0.0\" ModelTitle=\"untitled\"/>\n" + 
+    "        <jd2:TimeCourseDetails timeStart=\"0\" timeEnd=\"10\" numberOfPoints=\"1000\"/>\n" + 
+    "      </jd2:header>\n" + 
+    "    </jd2:JDesignerLayout>\n" + 
+    "  </annotation>\n" + 
+    "</compartment>";
+    String sbml = c.toSBML();
+    assertEquals( true, equals(expected,sbml) );
+    sbml = null;
+  }
 
   /**
    * Loads the SWIG-generated libSBML Java module when this class is

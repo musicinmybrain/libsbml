@@ -18,11 +18,6 @@
  * This file is part of libSBML.  Please visit http://sbml.org for more
  * information about SBML, and the latest version of libSBML.
  *
- * Copyright (C) 2020 jointly by the following organizations:
- *     1. California Institute of Technology, Pasadena, CA, USA
- *     2. University of Heidelberg, Heidelberg, Germany
- *     3. University College London, London, UK
- *
  * Copyright 2005-2010 California Institute of Technology.
  * Copyright 2002-2005 California Institute of Technology and
  *                     Japan Science and Technology Corporation.
@@ -134,7 +129,7 @@ public class TestReadFromFile1 {
     Species s;
     SpeciesReference sr;
     UnitDefinition ud;
-    String filename = "../../sbml/test/test-data/l1v1-branch.xml";
+    String filename = "../../sbml/sbml/test/test-data/l1v1-branch.xml";
     d = libsbml.readSBML(filename);
     if (d == null);
     {

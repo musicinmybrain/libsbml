@@ -39,23 +39,25 @@ class TestSBMLDocument(unittest.TestCase):
 
   def test_SBMLDocument_create(self):
     d = libsbml.SBMLDocument()
-    self.assert_( d.getTypeCode() == libsbml.SBML_DOCUMENT )
-    self.assert_( d.getNotes() == None )
-    self.assert_( d.getAnnotation() == None )
-    self.assert_( d.getLevel() == 3 )
-    self.assert_( d.getVersion() == 2 )
-    self.assert_( d.getNumErrors() == 0 )
+    self.assertTrue( d.getTypeCode() == libsbml.SBML_DOCUMENT )
+    self.assertTrue( d.getNotes() == None )
+    self.assertTrue( d.getAnnotation() == None )
+    self.assertTrue( d.getLevel() == 3 )
+    self.assertTrue( d.getVersion() == 2 )
+    self.assertTrue( d.getNumErrors() == 0 )
+    self.assertTrue( d.isSetModel() == 0 )
     _dummyList = [ d ]; _dummyList[:] = []; del _dummyList
     pass  
 
   def test_SBMLDocument_createWith(self):
     d = libsbml.SBMLDocument(1,2)
-    self.assert_( d.getTypeCode() == libsbml.SBML_DOCUMENT )
-    self.assert_( d.getNotes() == None )
-    self.assert_( d.getAnnotation() == None )
-    self.assert_( d.getLevel() == 1 )
-    self.assert_( d.getVersion() == 2 )
-    self.assert_( d.getNumErrors() == 0 )
+    self.assertTrue( d.getTypeCode() == libsbml.SBML_DOCUMENT )
+    self.assertTrue( d.getNotes() == None )
+    self.assertTrue( d.getAnnotation() == None )
+    self.assertTrue( d.getLevel() == 1 )
+    self.assertTrue( d.getVersion() == 2 )
+    self.assertTrue( d.getNumErrors() == 0 )
+    self.assertTrue( d.isSetModel() == 0 )
     _dummyList = [ d ]; _dummyList[:] = []; del _dummyList
     pass  
 
@@ -67,11 +69,12 @@ class TestSBMLDocument(unittest.TestCase):
     d = libsbml.SBMLDocument(2,2)
     m1 = libsbml.Model(2,2)
     d.setModel(m1)
-    self.assert_( d.setLevelAndVersion(2,3,False) == True )
-    self.assert_( d.setLevelAndVersion(2,1,False) == True )
-    self.assert_( d.setLevelAndVersion(1,2,False) == True )
-    self.assert_( d.setLevelAndVersion(1,1,False) == False )
+    self.assertTrue( d.setLevelAndVersion(2,3,False) == True )
+    self.assertTrue( d.setLevelAndVersion(2,1,False) == True )
+    self.assertTrue( d.setLevelAndVersion(1,2,False) == True )
+    self.assertTrue( d.setLevelAndVersion(1,1,False) == False )
     _dummyList = [ d ]; _dummyList[:] = []; del _dummyList
+    _dummyList = [ m1 ]; _dummyList[:] = []; del _dummyList
     pass  
 
   def test_SBMLDocument_setLevelAndVersion_Error(self):
@@ -86,11 +89,14 @@ class TestSBMLDocument(unittest.TestCase):
     ud.addUnit(u)
     m1.addUnitDefinition(ud)
     d.setModel(m1)
-    self.assert_( d.setLevelAndVersion(2,2,True) == False )
-    self.assert_( d.setLevelAndVersion(2,3,True) == False )
-    self.assert_( d.setLevelAndVersion(1,2,True) == False )
-    self.assert_( d.setLevelAndVersion(1,1,True) == False )
+    self.assertTrue( d.setLevelAndVersion(2,2,True) == False )
+    self.assertTrue( d.setLevelAndVersion(2,3,True) == False )
+    self.assertTrue( d.setLevelAndVersion(1,2,True) == False )
+    self.assertTrue( d.setLevelAndVersion(1,1,True) == False )
     _dummyList = [ d ]; _dummyList[:] = []; del _dummyList
+    _dummyList = [ m1 ]; _dummyList[:] = []; del _dummyList
+    _dummyList = [ u ]; _dummyList[:] = []; del _dummyList
+    _dummyList = [ ud ]; _dummyList[:] = []; del _dummyList
     pass  
 
   def test_SBMLDocument_setLevelAndVersion_UnitsError(self):
@@ -105,10 +111,10 @@ class TestSBMLDocument(unittest.TestCase):
     r = m1.createAssignmentRule()
     r.setVariable( "c")
     r.setFormula( "p*p")
-    self.assert_( d.setLevelAndVersion(2,2,False) == True )
-    self.assert_( d.setLevelAndVersion(2,3,False) == True )
-    self.assert_( d.setLevelAndVersion(1,2,False) == True )
-    self.assert_( d.setLevelAndVersion(1,1,False) == False )
+    self.assertTrue( d.setLevelAndVersion(2,2,False) == True )
+    self.assertTrue( d.setLevelAndVersion(2,3,False) == True )
+    self.assertTrue( d.setLevelAndVersion(1,2,False) == True )
+    self.assertTrue( d.setLevelAndVersion(1,1,False) == False )
     _dummyList = [ d ]; _dummyList[:] = []; del _dummyList
     pass  
 
@@ -117,43 +123,49 @@ class TestSBMLDocument(unittest.TestCase):
     m1 = libsbml.Model(2,2)
     (m1).setSBOTerm(2)
     d.setModel(m1)
-    self.assert_( d.setLevelAndVersion(2,3,False) == True )
-    self.assert_( d.setLevelAndVersion(2,1,False) == True )
-    self.assert_( d.setLevelAndVersion(1,2,False) == True )
-    self.assert_( d.setLevelAndVersion(1,1,False) == False )
+    self.assertTrue( d.setLevelAndVersion(2,3,False) == True )
+    self.assertTrue( d.setLevelAndVersion(2,1,False) == True )
+    self.assertTrue( d.setLevelAndVersion(1,2,False) == True )
+    self.assertTrue( d.setLevelAndVersion(1,1,False) == False )
     _dummyList = [ d ]; _dummyList[:] = []; del _dummyList
+    _dummyList = [ m1 ]; _dummyList[:] = []; del _dummyList
     pass  
 
   def test_SBMLDocument_setModel(self):
     d = libsbml.SBMLDocument(2,4)
     m1 = libsbml.Model(2,4)
     m2 = libsbml.Model(2,4)
-    self.assert_( d.getModel() == None )
+    self.assertTrue( d.getModel() == None )
+    self.assertTrue( d.isSetModel() == 0 )
     i = d.setModel(m1)
-    self.assert_( i == libsbml.LIBSBML_OPERATION_SUCCESS )
+    self.assertTrue( i == libsbml.LIBSBML_OPERATION_SUCCESS )
     mout = d.getModel()
-    self.assert_( mout != None )
-    self.assert_( mout != m1 )
+    self.assertTrue( mout != None )
+    self.assertTrue( mout != m1 )
+    self.assertTrue( d.isSetModel() == 1 )
     i = d.setModel(d.getModel())
-    self.assert_( i == libsbml.LIBSBML_OPERATION_SUCCESS )
+    self.assertTrue( i == libsbml.LIBSBML_OPERATION_SUCCESS )
     mout = d.getModel()
-    self.assert_( mout != None )
-    self.assert_( mout != m1 )
+    self.assertTrue( mout != None )
+    self.assertTrue( mout != m1 )
     i = d.setModel(m2)
-    self.assert_( i == libsbml.LIBSBML_OPERATION_SUCCESS )
+    self.assertTrue( i == libsbml.LIBSBML_OPERATION_SUCCESS )
     mout = d.getModel()
-    self.assert_( mout != None )
-    self.assert_( mout != m2 )
+    self.assertTrue( mout != None )
+    self.assertTrue( mout != m2 )
     _dummyList = [ d ]; _dummyList[:] = []; del _dummyList
+    _dummyList = [ m1 ]; _dummyList[:] = []; del _dummyList
+    _dummyList = [ m2 ]; _dummyList[:] = []; del _dummyList
     pass  
 
   def test_SBMLDocument_setModel1(self):
     d = libsbml.SBMLDocument(2,2)
     m1 = libsbml.Model(2,1)
     i = d.setModel(m1)
-    self.assert_( i == libsbml.LIBSBML_VERSION_MISMATCH )
-    self.assert_( d.getModel() == None )
+    self.assertTrue( i == libsbml.LIBSBML_VERSION_MISMATCH )
+    self.assertTrue( d.getModel() == None )
     _dummyList = [ d ]; _dummyList[:] = []; del _dummyList
+    _dummyList = [ m1 ]; _dummyList[:] = []; del _dummyList
     pass  
 
   def test_SBMLDocument_setModel2(self):
@@ -161,18 +173,20 @@ class TestSBMLDocument(unittest.TestCase):
     m1 = libsbml.Model(1,2)
     m1.createCompartment()
     i = d.setModel(m1)
-    self.assert_( i == libsbml.LIBSBML_LEVEL_MISMATCH )
-    self.assert_( d.getModel() == None )
+    self.assertTrue( i == libsbml.LIBSBML_LEVEL_MISMATCH )
+    self.assertTrue( d.getModel() == None )
     _dummyList = [ d ]; _dummyList[:] = []; del _dummyList
+    _dummyList = [ m1 ]; _dummyList[:] = []; del _dummyList
     pass  
 
   def test_SBMLDocument_setModel3(self):
     d = libsbml.SBMLDocument(2,2)
     m1 = libsbml.Model(2,2)
     i = d.setModel(m1)
-    self.assert_( i == libsbml.LIBSBML_OPERATION_SUCCESS )
-    self.assert_( d.getModel() != None )
+    self.assertTrue( i == libsbml.LIBSBML_OPERATION_SUCCESS )
+    self.assertTrue( d.getModel() != None )
     _dummyList = [ d ]; _dummyList[:] = []; del _dummyList
+    _dummyList = [ m1 ]; _dummyList[:] = []; del _dummyList
     pass  
 
 def suite():

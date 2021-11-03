@@ -50,29 +50,29 @@ class TestAssignmentRule(unittest.TestCase):
     pass  
 
   def test_AssignmentRule_L2_create(self):
-    self.assert_( self.AR.getTypeCode() == libsbml.SBML_ASSIGNMENT_RULE )
-    self.assert_( self.AR.getMetaId() == "" )
-    self.assert_( self.AR.getNotes() == None )
-    self.assert_( self.AR.getAnnotation() == None )
-    self.assert_( self.AR.getFormula() == "" )
-    self.assert_( self.AR.getMath() == None )
-    self.assert_( self.AR.getVariable() == "" )
-    self.assert_( self.AR.getType() == libsbml.RULE_TYPE_SCALAR )
+    self.assertTrue( self.AR.getTypeCode() == libsbml.SBML_ASSIGNMENT_RULE )
+    self.assertTrue( self.AR.getMetaId() == "" )
+    self.assertTrue( self.AR.getNotes() == None )
+    self.assertTrue( self.AR.getAnnotation() == None )
+    self.assertTrue( self.AR.getFormula() == "" )
+    self.assertTrue( self.AR.getMath() == None )
+    self.assertTrue( self.AR.getVariable() == "" )
+    self.assertTrue( self.AR.getType() == libsbml.RULE_TYPE_SCALAR )
     pass  
 
   def test_AssignmentRule_createWithFormula(self):
     ar = libsbml.AssignmentRule(2,4)
     ar.setVariable( "s")
     ar.setFormula( "1 + 1")
-    self.assert_( ar.getTypeCode() == libsbml.SBML_ASSIGNMENT_RULE )
-    self.assert_( ar.getMetaId() == "" )
-    self.assert_((  "s" == ar.getVariable() ))
+    self.assertTrue( ar.getTypeCode() == libsbml.SBML_ASSIGNMENT_RULE )
+    self.assertTrue( ar.getMetaId() == "" )
+    self.assertTrue((  "s" == ar.getVariable() ))
     math = ar.getMath()
-    self.assert_( math != None )
+    self.assertTrue( math != None )
     formula = libsbml.formulaToString(math)
-    self.assert_( formula != None )
-    self.assert_((  "1 + 1" == formula ))
-    self.assert_(( formula == ar.getFormula() ))
+    self.assertTrue( formula != None )
+    self.assertTrue((  "1 + 1" == formula ))
+    self.assertTrue(( formula == ar.getFormula() ))
     _dummyList = [ ar ]; _dummyList[:] = []; del _dummyList
     pass  
 
@@ -81,12 +81,13 @@ class TestAssignmentRule(unittest.TestCase):
     ar = libsbml.AssignmentRule(2,4)
     ar.setVariable( "s")
     ar.setMath(math)
-    self.assert_( ar.getTypeCode() == libsbml.SBML_ASSIGNMENT_RULE )
-    self.assert_( ar.getMetaId() == "" )
-    self.assert_((  "s" == ar.getVariable() ))
-    self.assert_((  "1 + 1" == ar.getFormula() ))
-    self.assert_( ar.getMath() != math )
+    self.assertTrue( ar.getTypeCode() == libsbml.SBML_ASSIGNMENT_RULE )
+    self.assertTrue( ar.getMetaId() == "" )
+    self.assertTrue((  "s" == ar.getVariable() ))
+    self.assertTrue((  "1 + 1" == ar.getFormula() ))
+    self.assertTrue( ar.getMath() != math )
     _dummyList = [ ar ]; _dummyList[:] = []; del _dummyList
+    _dummyList = [ math ]; _dummyList[:] = []; del _dummyList
     pass  
 
   def test_AssignmentRule_createWithNS(self):
@@ -95,15 +96,17 @@ class TestAssignmentRule(unittest.TestCase):
     sbmlns = libsbml.SBMLNamespaces(2,1)
     sbmlns.addNamespaces(xmlns)
     object = libsbml.AssignmentRule(sbmlns)
-    self.assert_( object.getTypeCode() == libsbml.SBML_ASSIGNMENT_RULE )
-    self.assert_( object.getMetaId() == "" )
-    self.assert_( object.getNotes() == None )
-    self.assert_( object.getAnnotation() == None )
-    self.assert_( object.getLevel() == 2 )
-    self.assert_( object.getVersion() == 1 )
-    self.assert_( object.getNamespaces() != None )
-    self.assert_( object.getNamespaces().getLength() == 2 )
-    _dummyList = [ object ]; _dummyList[:] = []; del _dummyList
+    self.assertTrue( object.getTypeCode() == libsbml.SBML_ASSIGNMENT_RULE )
+    self.assertTrue( object.getMetaId() == "" )
+    self.assertTrue( object.getNotes() == None )
+    self.assertTrue( object.getAnnotation() == None )
+    self.assertTrue( object.getLevel() == 2 )
+    self.assertTrue( object.getVersion() == 1 )
+    self.assertTrue( object.getNamespaces() != None )
+    self.assertTrue( (object).getNamespaces().getLength() == 2 )
+    _dummyList = [ (object) ]; _dummyList[:] = []; del _dummyList
+    _dummyList = [ xmlns ]; _dummyList[:] = []; del _dummyList
+    _dummyList = [ sbmlns ]; _dummyList[:] = []; del _dummyList
     pass  
 
   def test_AssignmentRule_free_NULL(self):
@@ -113,13 +116,24 @@ class TestAssignmentRule(unittest.TestCase):
   def test_AssignmentRule_setVariable(self):
     variable =  "x";
     self.AR.setVariable(variable)
-    self.assert_(( variable == self.AR.getVariable() ))
+    self.assertTrue(( variable == self.AR.getVariable() ))
     self.assertEqual( True, self.AR.isSetVariable() )
     if (self.AR.getVariable() == variable):
       pass    
     self.AR.setVariable(self.AR.getVariable())
-    self.assert_(( variable == self.AR.getVariable() ))
+    self.assertTrue(( variable == self.AR.getVariable() ))
     self.AR.setVariable("")
+    self.assertEqual( False, self.AR.isSetVariable() )
+    if (self.AR.getVariable() != None):
+      pass    
+    pass  
+
+  def test_AssignmentRule_unsetVariable(self):
+    variable =  "x";
+    self.AR.setVariable(variable)
+    self.assertTrue(( variable == self.AR.getVariable() ))
+    self.assertEqual( True, self.AR.isSetVariable() )
+    self.AR.unsetVariable()
     self.assertEqual( False, self.AR.isSetVariable() )
     if (self.AR.getVariable() != None):
       pass    
@@ -136,4 +150,3 @@ if __name__ == "__main__":
     sys.exit(0)
   else:
     sys.exit(1)
-

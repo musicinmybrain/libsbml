@@ -18,11 +18,6 @@
  * This file is part of libSBML.  Please visit http://sbml.org for more
  * information about SBML, and the latest version of libSBML.
  *
- * Copyright (C) 2020 jointly by the following organizations:
- *     1. California Institute of Technology, Pasadena, CA, USA
- *     2. University of Heidelberg, Heidelberg, Germany
- *     3. University College London, London, UK
- *
  * Copyright 2005-2010 California Institute of Technology.
  * Copyright 2002-2005 California Institute of Technology and
  *                     Japan Science and Technology Corporation.
@@ -141,7 +136,8 @@ public class TestL3Event {
   {
     assertTrue( E.getNamespaces() != null );
     assertTrue( E.getNamespaces().getLength() == 1 );
-    assertTrue(E.getNamespaces().getURI(0).equals(    "http://www.sbml.org/sbml/level3/version1/core"));
+    String uri = E.getNamespaces().getURI(0);
+    assertTrue(uri.equals( "http://www.sbml.org/sbml/level3/version1/core"));
   }
 
   public void test_L3_Event_create()
@@ -180,6 +176,8 @@ public class TestL3Event {
     assertEquals( false, e.isSetName() );
     assertEquals( false, e.isSetUseValuesFromTriggerTime() );
     e = null;
+    xmlns = null;
+    sbmlns = null;
   }
 
   public void test_L3_Event_free_NULL()
@@ -200,12 +198,15 @@ public class TestL3Event {
     Event e = new  Event(3,1);
     assertEquals( false, e.hasRequiredElements() );
     Trigger t = new  Trigger(3,1);
-    t.setMath(libsbml.parseFormula("true"));
-    t.setInitialValue(false);
-    t.setPersistent(false);
+    ASTNode math = libsbml.parseFormula("true");
+    t.setMath(math);
+    math = null;
+    t.setInitialValue(1);
+    t.setPersistent(1);
     e.setTrigger(t);
     assertEquals( true, e.hasRequiredElements() );
     e = null;
+    t = null;
   }
 
   public void test_L3_Event_id()
@@ -255,12 +256,14 @@ public class TestL3Event {
     assertTrue( i == libsbml.LIBSBML_OPERATION_SUCCESS );
     assertEquals( false, E.isSetPriority() );
     priority = null;
+    math1 = null;
   }
 
   public void test_L3_Event_setPriority2()
   {
     Priority priority = E.createPriority();
     assertEquals( true, E.isSetPriority() );
+    (void) priority;
     Priority p = E.getPriority();
     assertTrue( p != null );
     assertEquals( false, p.isSetMath() );
@@ -272,9 +275,17 @@ public class TestL3Event {
     E.setUseValuesFromTriggerTime(true);
     assertTrue( E.getUseValuesFromTriggerTime() == true );
     assertTrue( E.isSetUseValuesFromTriggerTime() == true );
+    int ret = E.unsetUseValuesFromTriggerTime();
+    assertTrue( ret == libsbml.LIBSBML_OPERATION_SUCCESS );
+    assertTrue( E.getUseValuesFromTriggerTime() == true );
+    assertTrue( E.isSetUseValuesFromTriggerTime() == false );
     E.setUseValuesFromTriggerTime(false);
     assertTrue( E.getUseValuesFromTriggerTime() == false );
     assertTrue( E.isSetUseValuesFromTriggerTime() == true );
+    ret = E.unsetUseValuesFromTriggerTime();
+    assertTrue( ret == libsbml.LIBSBML_OPERATION_SUCCESS );
+    assertTrue( E.getUseValuesFromTriggerTime() == false );
+    assertTrue( E.isSetUseValuesFromTriggerTime() == false );
   }
 
   /**
@@ -330,4 +341,3 @@ public class TestL3Event {
     }
   }
 }
-

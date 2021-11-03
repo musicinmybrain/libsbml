@@ -2,8 +2,7 @@
 # @brief   L3FormulaParser unit tests
 #
 # @author  Akiya Jouraku (Ruby conversion)
-# @author  Ben Bornstein
- 
+# @author  Ben Bornstein 
 # 
 # ====== WARNING ===== WARNING ===== WARNING ===== WARNING ===== WARNING ======
 #
@@ -34,7 +33,7 @@ require 'libSBML'
 class TestL3FormulaParserC < Test::Unit::TestCase
 
   def test_SBML_C_parseL3Formula_1
-    r = LibSBML::parseL3Formula("1")
+    r = "1".parseL3Formula()
     assert( r.getType() == LibSBML::AST_INTEGER )
     assert( r.getInteger() == 1 )
     assert( r.getNumChildren() == 0 )
@@ -42,7 +41,7 @@ class TestL3FormulaParserC < Test::Unit::TestCase
   end
 
   def test_SBML_C_parseL3Formula_10
-    r = LibSBML::parseL3Formula("1 + -2e100 / 3")
+    r = "1 + -2e100 / 3".parseL3Formula()
     assert( r.getType() == LibSBML::AST_PLUS )
     assert( r.getCharacter() == '+' )
     assert( r.getNumChildren() == 2 )
@@ -71,7 +70,7 @@ class TestL3FormulaParserC < Test::Unit::TestCase
   end
 
   def test_SBML_C_parseL3Formula_11
-    r = LibSBML::parseL3Formula("1 - -foo / 3")
+    r = "1 - -foo / 3".parseL3Formula()
     assert( r.getType() == LibSBML::AST_MINUS )
     assert( r.getCharacter() == '-' )
     assert( r.getNumChildren() == 2 )
@@ -99,7 +98,7 @@ class TestL3FormulaParserC < Test::Unit::TestCase
   end
 
   def test_SBML_C_parseL3Formula_12
-    r = LibSBML::parseL3Formula("2 * foo^bar + 3.0")
+    r = "2 * foo^bar + 3.0".parseL3Formula()
     assert( r.getType() == LibSBML::AST_PLUS )
     assert( r.getCharacter() == '+' )
     assert( r.getNumChildren() == 2 )
@@ -131,7 +130,7 @@ class TestL3FormulaParserC < Test::Unit::TestCase
   end
 
   def test_SBML_C_parseL3Formula_13
-    r = LibSBML::parseL3Formula("foo()")
+    r = "foo()".parseL3Formula()
     assert( r.getType() == LibSBML::AST_FUNCTION )
     assert ((  "foo" == r.getName() ))
     assert( r.getNumChildren() == 0 )
@@ -139,7 +138,7 @@ class TestL3FormulaParserC < Test::Unit::TestCase
   end
 
   def test_SBML_C_parseL3Formula_14
-    r = LibSBML::parseL3Formula("foo(1)")
+    r = "foo(1)".parseL3Formula()
     assert( r.getType() == LibSBML::AST_FUNCTION )
     assert ((  "foo" == r.getName() ))
     assert( r.getNumChildren() == 1 )
@@ -151,7 +150,7 @@ class TestL3FormulaParserC < Test::Unit::TestCase
   end
 
   def test_SBML_C_parseL3Formula_15
-    r = LibSBML::parseL3Formula("foo(1, bar)")
+    r = "foo(1, bar)".parseL3Formula()
     assert( r.getType() == LibSBML::AST_FUNCTION )
     assert ((  "foo" == r.getName() ))
     assert( r.getNumChildren() == 2 )
@@ -167,7 +166,7 @@ class TestL3FormulaParserC < Test::Unit::TestCase
   end
 
   def test_SBML_C_parseL3Formula_16
-    r = LibSBML::parseL3Formula("foo(1, bar, 2^-3)")
+    r = "foo(1, bar, 2^-3)".parseL3Formula()
     assert( r.getType() == LibSBML::AST_FUNCTION )
     assert ((  "foo" == r.getName() ))
     assert( r.getNumChildren() == 3 )
@@ -199,19 +198,21 @@ class TestL3FormulaParserC < Test::Unit::TestCase
   end
 
   def test_SBML_C_parseL3Formula_17
-    r = LibSBML::parseL3Formula("1//1")
+    r = "1//1".parseL3Formula()
     assert( r == nil )
-    assert ((  "Error when parsing input '1//1' at position 3:  syntax error, unexpected '/'" == LibSBML::getLastParseL3Error() ))
+    error = .getLastParseL3Error()
+    assert ((  "Error when parsing input '1//1' at position 3:  syntax error, unexpected '/'" == error ))
   end
 
   def test_SBML_C_parseL3Formula_18
-    r = LibSBML::parseL3Formula("1+2*3 4")
+    r = "1+2*3 4".parseL3Formula()
     assert( r == nil )
-    assert ((  "Error when parsing input '1+2*3 4' at position 7:  syntax error, unexpected integer" == LibSBML::getLastParseL3Error() ))
+    error = .getLastParseL3Error()
+    assert ((  "Error when parsing input '1+2*3 4' at position 7:  syntax error, unexpected integer" == error ))
   end
 
   def test_SBML_C_parseL3Formula_2
-    r = LibSBML::parseL3Formula("2.1")
+    r = "2.1".parseL3Formula()
     assert( r.getType() == LibSBML::AST_REAL )
     assert( r.getReal() == 2.1 )
     assert( r.getNumChildren() == 0 )
@@ -219,7 +220,7 @@ class TestL3FormulaParserC < Test::Unit::TestCase
   end
 
   def test_SBML_C_parseL3Formula_3
-    r = LibSBML::parseL3Formula("2.1e5")
+    r = "2.1e5".parseL3Formula()
     assert( r.getType() == LibSBML::AST_REAL_E )
     assert( r.getMantissa() == 2.1 )
     assert( r.getExponent() == 5 )
@@ -228,7 +229,7 @@ class TestL3FormulaParserC < Test::Unit::TestCase
   end
 
   def test_SBML_C_parseL3Formula_4
-    r = LibSBML::parseL3Formula("foo")
+    r = "foo".parseL3Formula()
     assert( r.getType() == LibSBML::AST_NAME )
     assert ((  "foo" == r.getName() ))
     assert( r.getNumChildren() == 0 )
@@ -236,7 +237,7 @@ class TestL3FormulaParserC < Test::Unit::TestCase
   end
 
   def test_SBML_C_parseL3Formula_5
-    r = LibSBML::parseL3Formula("1 + foo")
+    r = "1 + foo".parseL3Formula()
     assert( r.getType() == LibSBML::AST_PLUS )
     assert( r.getCharacter() == '+' )
     assert( r.getNumChildren() == 2 )
@@ -252,7 +253,7 @@ class TestL3FormulaParserC < Test::Unit::TestCase
   end
 
   def test_SBML_C_parseL3Formula_6
-    r = LibSBML::parseL3Formula("1 + 2")
+    r = "1 + 2".parseL3Formula()
     assert( r.getType() == LibSBML::AST_PLUS )
     assert( r.getCharacter() == '+' )
     assert( r.getNumChildren() == 2 )
@@ -268,7 +269,7 @@ class TestL3FormulaParserC < Test::Unit::TestCase
   end
 
   def test_SBML_C_parseL3Formula_7
-    r = LibSBML::parseL3Formula("1 + 2 * 3")
+    r = "1 + 2 * 3".parseL3Formula()
     assert( r.getType() == LibSBML::AST_PLUS )
     assert( r.getCharacter() == '+' )
     assert( r.getNumChildren() == 2 )
@@ -292,7 +293,7 @@ class TestL3FormulaParserC < Test::Unit::TestCase
   end
 
   def test_SBML_C_parseL3Formula_8
-    r = LibSBML::parseL3Formula("(1 - 2) * 3")
+    r = "(1 - 2) * 3".parseL3Formula()
     assert( r.getType() == LibSBML::AST_TIMES )
     assert( r.getCharacter() == '*' )
     assert( r.getNumChildren() == 2 )
@@ -316,7 +317,7 @@ class TestL3FormulaParserC < Test::Unit::TestCase
   end
 
   def test_SBML_C_parseL3Formula_9
-    r = LibSBML::parseL3Formula("1 + -2 / 3")
+    r = "1 + -2 / 3".parseL3Formula()
     assert( r.getType() == LibSBML::AST_PLUS )
     assert( r.getCharacter() == '+' )
     assert( r.getNumChildren() == 2 )
@@ -344,45 +345,52 @@ class TestL3FormulaParserC < Test::Unit::TestCase
   end
 
   def test_SBML_C_parseL3Formula_arguments
-    r = LibSBML::parseL3Formula("sin(x,y)")
+    r = "sin(x,y)".parseL3Formula()
     assert( r == nil )
-    assert ((  "Error when parsing input 'sin(x,y)' at position 8:  The function 'sin' takes exactly one argument, but 2 were found." == LibSBML::getLastParseL3Error() ))
-    r = LibSBML::parseL3Formula("delay(x)")
+    error = .getLastParseL3Error()
+    assert ((  "Error when parsing input 'sin(x,y)' at position 8:  The function 'sin' takes exactly one argument, but 2 were found." == error ))
+    r = "delay(x)".parseL3Formula()
     assert( r == nil )
-    assert ((  "Error when parsing input 'delay(x)' at position 8:  The function 'delay' takes exactly two arguments, but 1 were found." == LibSBML::getLastParseL3Error() ))
-    r = LibSBML::parseL3Formula("piecewise()")
+    error = .getLastParseL3Error()
+    assert ((  "Error when parsing input 'delay(x)' at position 8:  The function 'delay' takes exactly two arguments, but 1 were found." == error ))
+    r = "piecewise()".parseL3Formula()
     assert( r == nil )
-    assert ((  "Error when parsing input 'piecewise()' at position 11:  The function 'piecewise' takes at least one argument, but none were found." == LibSBML::getLastParseL3Error() ))
-    r = LibSBML::parseL3Formula("gt(x)")
+    error = .getLastParseL3Error()
+    assert ((  "Error when parsing input 'piecewise()' at position 11:  The function 'piecewise' takes at least one argument, but none were found." == error ))
+    r = "gt(x)".parseL3Formula()
     assert( r == nil )
-    assert ((  "Error when parsing input 'gt(x)' at position 5:  The function 'gt' takes at least two arguments, but 1 were found." == LibSBML::getLastParseL3Error() ))
-    r = LibSBML::parseL3Formula("minus()")
+    error = .getLastParseL3Error()
+    assert ((  "Error when parsing input 'gt(x)' at position 5:  The function 'gt' takes at least two arguments, but 1 were found." == error ))
+    r = "minus()".parseL3Formula()
     assert( r == nil )
-    assert ((  "Error when parsing input 'minus()' at position 7:  The function 'minus' takes exactly one or two arguments, but 0 were found." == LibSBML::getLastParseL3Error() ))
-    r = LibSBML::parseL3Formula("root(x, y, z)")
+    error = .getLastParseL3Error()
+    assert ((  "Error when parsing input 'minus()' at position 7:  The function 'minus' takes exactly one or two arguments, but 0 were found." == error ))
+    r = "root(x, y, z)".parseL3Formula()
     assert( r == nil )
-    assert ((  "Error when parsing input 'root(x, y, z)' at position 13:  The function 'root' takes exactly one or two arguments, but 3 were found." == LibSBML::getLastParseL3Error() ))
-    r = LibSBML::parseL3Formula("power()")
+    error = .getLastParseL3Error()
+    assert ((  "Error when parsing input 'root(x, y, z)' at position 13:  The function 'root' takes exactly one or two arguments, but 3 were found." == error ))
+    r = "power()".parseL3Formula()
     assert( r == nil )
-    assert ((  "Error when parsing input 'power()' at position 7:  The function 'power' takes exactly two arguments, but 0 were found." == LibSBML::getLastParseL3Error() ))
+    error = .getLastParseL3Error()
+    assert ((  "Error when parsing input 'power()' at position 7:  The function 'power' takes exactly two arguments, but 0 were found." == error ))
   end
 
   def test_SBML_C_parseL3Formula_avogadrosettings
-    r = LibSBML::parseL3Formula("avogadro")
+    r = "avogadro".parseL3Formula()
     assert( r.getType() == LibSBML::AST_NAME_AVOGADRO )
     assert( r.getNumChildren() == 0 )
     r = nil
-    settings = LibSBML::getDefaultL3ParserSettings()
-    settings.setParseAvogadroCsymbol(0)    
-    assert_equal false, settings.getParseAvogadroCsymbol()
-    r = LibSBML::parseL3FormulaWithSettings("avogadro", settings)
+    settings = .getDefaultL3ParserSettings()
+    settings.setParseAvogadroCsymbol(0)
+    assert( settings.getParseAvogadroCsymbol() == 0 )
+    r = "avogadro".parseL3FormulaWithSettings(settings)
     assert( r.getType() == LibSBML::AST_NAME )
     assert ((  "avogadro" == r.getName() ))
     assert( r.getNumChildren() == 0 )
     r = nil
     settings.setParseAvogadroCsymbol(1)
-    assert_equal true, settings.getParseAvogadroCsymbol()
-    r = LibSBML::parseL3FormulaWithSettings("avogadro", settings)
+    assert( settings.getParseAvogadroCsymbol() == 1 )
+    r = "avogadro".parseL3FormulaWithSettings(settings)
     assert( r.getType() == LibSBML::AST_NAME_AVOGADRO )
     assert( r.getNumChildren() == 0 )
     r = nil
@@ -390,7 +398,7 @@ class TestL3FormulaParserC < Test::Unit::TestCase
   end
 
   def test_SBML_C_parseL3Formula_collapseminussettings1
-    r = LibSBML::parseL3Formula("--4.4")
+    r = "--4.4".parseL3Formula()
     assert( r.getType() == LibSBML::AST_MINUS )
     assert( r.getNumChildren() == 1 )
     c = r.getLeftChild()
@@ -401,17 +409,17 @@ class TestL3FormulaParserC < Test::Unit::TestCase
     assert( c.getReal() == 4.4 )
     assert( c.getNumChildren() == 0 )
     r = nil
-    settings = LibSBML::getDefaultL3ParserSettings()
+    settings = .getDefaultL3ParserSettings()
     settings.setParseCollapseMinus(1)
-    assert_equal true, settings.getParseCollapseMinus()
-    r = LibSBML::parseL3FormulaWithSettings("--4.4", settings)
+    assert( settings.getParseCollapseMinus() == 1 )
+    r = "--4.4".parseL3FormulaWithSettings(settings)
     assert( r.getType() == LibSBML::AST_REAL )
     assert( r.getReal() == 4.4 )
     assert( r.getNumChildren() == 0 )
     r = nil
     settings.setParseCollapseMinus(0)
-    assert_equal false, settings.getParseCollapseMinus()
-    r = LibSBML::parseL3FormulaWithSettings("--4.4", settings)
+    assert( settings.getParseCollapseMinus() == 0 )
+    r = "--4.4".parseL3FormulaWithSettings(settings)
     assert( r.getType() == LibSBML::AST_MINUS )
     assert( r.getNumChildren() == 1 )
     c = r.getLeftChild()
@@ -426,7 +434,7 @@ class TestL3FormulaParserC < Test::Unit::TestCase
   end
 
   def test_SBML_C_parseL3Formula_collapseminussettings2
-    r = LibSBML::parseL3Formula("--x")
+    r = "--x".parseL3Formula()
     assert( r.getType() == LibSBML::AST_MINUS )
     assert( r.getNumChildren() == 1 )
     c = r.getLeftChild()
@@ -437,17 +445,17 @@ class TestL3FormulaParserC < Test::Unit::TestCase
     assert ((  "x" == c.getName() ))
     assert( c.getNumChildren() == 0 )
     r = nil
-    settings = LibSBML::getDefaultL3ParserSettings()
+    settings = .getDefaultL3ParserSettings()
     settings.setParseCollapseMinus(1)
-    assert_equal true, settings.getParseCollapseMinus()
-    r = LibSBML::parseL3FormulaWithSettings("--x", settings)
+    assert( settings.getParseCollapseMinus() == 1 )
+    r = "--x".parseL3FormulaWithSettings(settings)
     assert( r.getType() == LibSBML::AST_NAME )
     assert ((  "x" == r.getName() ))
     assert( r.getNumChildren() == 0 )
     r = nil
     settings.setParseCollapseMinus(0)
-    assert_equal false, settings.getParseCollapseMinus()
-    r = LibSBML::parseL3FormulaWithSettings("--x", settings)
+    assert( settings.getParseCollapseMinus() == 0 )
+    r = "--x".parseL3FormulaWithSettings(settings)
     assert( r.getType() == LibSBML::AST_MINUS )
     assert( r.getNumChildren() == 1 )
     c = r.getLeftChild()
@@ -462,7 +470,7 @@ class TestL3FormulaParserC < Test::Unit::TestCase
   end
 
   def test_SBML_C_parseL3Formula_collapseminussettings3
-    r = LibSBML::parseL3Formula("x---4.4")
+    r = "x---4.4".parseL3Formula()
     assert( r.getType() == LibSBML::AST_MINUS )
     assert( r.getNumChildren() == 2 )
     c = r.getLeftChild()
@@ -480,10 +488,10 @@ class TestL3FormulaParserC < Test::Unit::TestCase
     assert( c.getReal() == 4.4 )
     assert( c.getNumChildren() == 0 )
     r = nil
-    settings = LibSBML::getDefaultL3ParserSettings()
+    settings = .getDefaultL3ParserSettings()
     settings.setParseCollapseMinus(1)
-    assert_equal true, settings.getParseCollapseMinus()
-    r = LibSBML::parseL3FormulaWithSettings("x---4.4", settings)
+    assert( settings.getParseCollapseMinus() == 1 )
+    r = "x---4.4".parseL3FormulaWithSettings(settings)
     assert( r.getType() == LibSBML::AST_MINUS )
     assert( r.getNumChildren() == 2 )
     c = r.getLeftChild()
@@ -496,8 +504,8 @@ class TestL3FormulaParserC < Test::Unit::TestCase
     assert( c.getNumChildren() == 0 )
     r = nil
     settings.setParseCollapseMinus(0)
-    assert_equal false, settings.getParseCollapseMinus()
-    r = LibSBML::parseL3FormulaWithSettings("x---4.4", settings)
+    assert( settings.getParseCollapseMinus() == 0 )
+    r = "x---4.4".parseL3FormulaWithSettings(settings)
     assert( r.getType() == LibSBML::AST_MINUS )
     assert( r.getNumChildren() == 2 )
     c = r.getLeftChild()
@@ -519,7 +527,7 @@ class TestL3FormulaParserC < Test::Unit::TestCase
   end
 
   def test_SBML_C_parseL3Formula_collapseminussettings4
-    r = LibSBML::parseL3Formula("x---y")
+    r = "x---y".parseL3Formula()
     assert( r.getType() == LibSBML::AST_MINUS )
     assert( r.getNumChildren() == 2 )
     c = r.getLeftChild()
@@ -537,10 +545,10 @@ class TestL3FormulaParserC < Test::Unit::TestCase
     assert ((  "y" == c.getName() ))
     assert( c.getNumChildren() == 0 )
     r = nil
-    settings = LibSBML::getDefaultL3ParserSettings()
+    settings = .getDefaultL3ParserSettings()
     settings.setParseCollapseMinus(1)
-    assert_equal true, settings.getParseCollapseMinus()
-    r = LibSBML::parseL3FormulaWithSettings("x---y", settings)
+    assert( settings.getParseCollapseMinus() == 1 )
+    r = "x---y".parseL3FormulaWithSettings(settings)
     assert( r.getType() == LibSBML::AST_MINUS )
     assert( r.getNumChildren() == 2 )
     c = r.getLeftChild()
@@ -553,8 +561,8 @@ class TestL3FormulaParserC < Test::Unit::TestCase
     assert( c.getNumChildren() == 0 )
     r = nil
     settings.setParseCollapseMinus(0)
-    assert_equal false, settings.getParseCollapseMinus()
-    r = LibSBML::parseL3FormulaWithSettings("x---y", settings)
+    assert( settings.getParseCollapseMinus() == 0 )
+    r = "x---y".parseL3FormulaWithSettings(settings)
     assert( r.getType() == LibSBML::AST_MINUS )
     assert( r.getNumChildren() == 2 )
     c = r.getLeftChild()
@@ -576,137 +584,137 @@ class TestL3FormulaParserC < Test::Unit::TestCase
   end
 
   def test_SBML_C_parseL3Formula_collapseminussettings5
-    settings = LibSBML::getDefaultL3ParserSettings()
+    settings = .getDefaultL3ParserSettings()
     settings.setParseCollapseMinus(1)
-    assert_equal true, settings.getParseCollapseMinus()
-    r = LibSBML::parseL3FormulaWithSettings("---4", settings)
+    assert( settings.getParseCollapseMinus() == 1 )
+    r = "---4".parseL3FormulaWithSettings(settings)
     assert( r.getType() == LibSBML::AST_INTEGER )
     assert( r.getInteger() == -4 )
     assert( r.getNumChildren() == 0 )
     r = nil
-    r = LibSBML::parseL3FormulaWithSettings("---(3/8)", settings)
+    r = "---(3/8)".parseL3FormulaWithSettings(settings)
     assert( r.getType() == LibSBML::AST_RATIONAL )
     assert( r.getNumerator() == -3 )
     assert( r.getDenominator() == 8 )
     assert( r.getNumChildren() == 0 )
     r = nil
-    r = LibSBML::parseL3FormulaWithSettings("---(-3/8)", settings)
+    r = "---(-3/8)".parseL3FormulaWithSettings(settings)
     assert( r.getType() == LibSBML::AST_RATIONAL )
     assert( r.getNumerator() == 3 )
     assert( r.getDenominator() == 8 )
     assert( r.getNumChildren() == 0 )
     r = nil
-    r = LibSBML::parseL3FormulaWithSettings("---4.4", settings)
+    r = "---4.4".parseL3FormulaWithSettings(settings)
     assert( r.getType() == LibSBML::AST_REAL )
     assert( r.getReal() == -4.4 )
     assert( r.getNumChildren() == 0 )
     r = nil
-    r = LibSBML::parseL3FormulaWithSettings("---4e-3", settings)
+    r = "---4e-3".parseL3FormulaWithSettings(settings)
     assert( r.getType() == LibSBML::AST_REAL_E )
     assert( r.getMantissa() == -4 )
     assert( r.getExponent() == -3 )
     assert( r.getNumChildren() == 0 )
     r = nil
-    r = LibSBML::parseL3FormulaWithSettings("---.4", settings)
+    r = "---.4".parseL3FormulaWithSettings(settings)
     assert( r.getType() == LibSBML::AST_REAL )
-    assert( r.getReal() == -0.4 )
+    assert( r.getReal() == -.4 )
     assert( r.getNumChildren() == 0 )
     r = nil
     settings = nil
   end
 
   def test_SBML_C_parseL3Formula_constants1
-    r = LibSBML::parseL3Formula("true")
+    r = "true".parseL3Formula()
     assert( r.getType() == LibSBML::AST_CONSTANT_TRUE )
     assert( r.getNumChildren() == 0 )
     r = nil
   end
 
   def test_SBML_C_parseL3Formula_constants10
-    r = LibSBML::parseL3Formula("notanumber")
+    r = "notanumber".parseL3Formula()
     assert( r.getType() == LibSBML::AST_REAL )
-    assert_equal true, (r.getReal().nan?)
+    assert( util_isNaN == 1 )
     assert( r.getNumChildren() == 0 )
     r = nil
   end
 
   def test_SBML_C_parseL3Formula_constants11
-    r = LibSBML::parseL3Formula("nan")
+    r = "nan".parseL3Formula()
     assert( r.getType() == LibSBML::AST_REAL )
-    assert_equal true,(r.getReal().nan?)
+    assert( util_isNaN == 1 )
     assert( r.getNumChildren() == 0 )
     r = nil
   end
 
   def test_SBML_C_parseL3Formula_constants12
-    r = LibSBML::parseL3Formula("NaN")
+    r = "NaN".parseL3Formula()
     assert( r.getType() == LibSBML::AST_REAL )
-    assert_equal true,(r.getReal().nan?)
+    assert( util_isNaN == 1 )
     assert( r.getNumChildren() == 0 )
     r = nil
   end
 
   def test_SBML_C_parseL3Formula_constants2
-    r = LibSBML::parseL3Formula("false")
+    r = "false".parseL3Formula()
     assert( r.getType() == LibSBML::AST_CONSTANT_FALSE )
     assert( r.getNumChildren() == 0 )
     r = nil
   end
 
   def test_SBML_C_parseL3Formula_constants3
-    r = LibSBML::parseL3Formula("pi")
+    r = "pi".parseL3Formula()
     assert( r.getType() == LibSBML::AST_CONSTANT_PI )
     assert( r.getNumChildren() == 0 )
     r = nil
   end
 
   def test_SBML_C_parseL3Formula_constants4
-    r = LibSBML::parseL3Formula("exponentiale")
+    r = "exponentiale".parseL3Formula()
     assert( r.getType() == LibSBML::AST_CONSTANT_E )
     assert( r.getNumChildren() == 0 )
     r = nil
   end
 
   def test_SBML_C_parseL3Formula_constants5
-    r = LibSBML::parseL3Formula("avogadro")
+    r = "avogadro".parseL3Formula()
     assert( r.getType() == LibSBML::AST_NAME_AVOGADRO )
     assert( r.getNumChildren() == 0 )
     r = nil
   end
 
   def test_SBML_C_parseL3Formula_constants6
-    r = LibSBML::parseL3Formula("time")
+    r = "time".parseL3Formula()
     assert( r.getType() == LibSBML::AST_NAME_TIME )
     assert( r.getNumChildren() == 0 )
     r = nil
   end
 
   def test_SBML_C_parseL3Formula_constants7
-    r = LibSBML::parseL3Formula("inf")
+    r = "inf".parseL3Formula()
     assert( r.getType() == LibSBML::AST_REAL )
-    assert((r.getReal().finite?) == false )
+    assert( util_isInf(r.getReal()) == true )
     assert( r.getNumChildren() == 0 )
     r = nil
   end
 
   def test_SBML_C_parseL3Formula_constants8
-    r = LibSBML::parseL3Formula("infinity")
+    r = "infinity".parseL3Formula()
     assert( r.getType() == LibSBML::AST_REAL )
-    assert((r.getReal().finite?) == false )
+    assert( util_isInf(r.getReal()) == true )
     assert( r.getNumChildren() == 0 )
     r = nil
   end
 
   def test_SBML_C_parseL3Formula_constants9
-    r = LibSBML::parseL3Formula("INF")
+    r = "INF".parseL3Formula()
     assert( r.getType() == LibSBML::AST_REAL )
-    assert((r.getReal().finite?) == false )
+    assert( util_isInf(r.getReal()) == true )
     assert( r.getNumChildren() == 0 )
     r = nil
   end
 
   def test_SBML_C_parseL3Formula_e1
-    r = LibSBML::parseL3Formula("2.001e+5")
+    r = "2.001e+5".parseL3Formula()
     assert( r.getType() == LibSBML::AST_REAL_E )
     assert( r.getMantissa() == 2.001 )
     assert( r.getExponent() == 5 )
@@ -715,7 +723,7 @@ class TestL3FormulaParserC < Test::Unit::TestCase
   end
 
   def test_SBML_C_parseL3Formula_e2
-    r = LibSBML::parseL3Formula(".001e+5")
+    r = ".001e+5".parseL3Formula()
     assert( r.getType() == LibSBML::AST_REAL_E )
     assert( r.getMantissa() == 0.001 )
     assert( r.getExponent() == 5 )
@@ -724,7 +732,7 @@ class TestL3FormulaParserC < Test::Unit::TestCase
   end
 
   def test_SBML_C_parseL3Formula_e3
-    r = LibSBML::parseL3Formula(".001e-5")
+    r = ".001e-5".parseL3Formula()
     assert( r.getType() == LibSBML::AST_REAL_E )
     assert( r.getMantissa() == 0.001 )
     assert( r.getExponent() == -5 )
@@ -733,7 +741,7 @@ class TestL3FormulaParserC < Test::Unit::TestCase
   end
 
   def test_SBML_C_parseL3Formula_e4
-    r = LibSBML::parseL3Formula("2.e-005")
+    r = "2.e-005".parseL3Formula()
     assert( r.getType() == LibSBML::AST_REAL_E )
     assert( r.getMantissa() == 2 )
     assert( r.getExponent() == -5 )
@@ -742,14 +750,15 @@ class TestL3FormulaParserC < Test::Unit::TestCase
   end
 
   def test_SBML_C_parseL3Formula_e5
-    r = LibSBML::parseL3Formula(".e+5")
+    r = ".e+5".parseL3Formula()
     assert( r == nil )
-    assert ((  "Error when parsing input '.e+5' at position 1:  syntax error, unexpected $undefined" == LibSBML::getLastParseL3Error() ))
+    error = .getLastParseL3Error()
+    assert ((  "Error when parsing input '.e+5' at position 1:  syntax error, unexpected $undefined" == error ))
     r = nil
   end
 
   def test_SBML_C_parseL3Formula_logic1
-    r = LibSBML::parseL3Formula("1 && 2 == 3")
+    r = "1 && 2 == 3".parseL3Formula()
     assert( r.getType() == LibSBML::AST_LOGICAL_AND )
     assert ((  "and" == r.getName() ))
     assert( r.getNumChildren() == 2 )
@@ -773,7 +782,7 @@ class TestL3FormulaParserC < Test::Unit::TestCase
   end
 
   def test_SBML_C_parseL3Formula_logic2
-    r = LibSBML::parseL3Formula("(1 && 2) == 3")
+    r = "(1 && 2) == 3".parseL3Formula()
     assert( r.getType() == LibSBML::AST_RELATIONAL_EQ )
     assert ((  "eq" == r.getName() ))
     assert( r.getNumChildren() == 2 )
@@ -800,44 +809,48 @@ class TestL3FormulaParserC < Test::Unit::TestCase
     model = LibSBML::Model.new(3,1)
     p = model.createParameter()
     p.setId( "infinity")
-    r = LibSBML::parseL3FormulaWithModel("infinity", model)
+    r = "infinity".parseL3FormulaWithModel(model)
     assert( r.getType() == LibSBML::AST_NAME )
     assert ((  "infinity" == r.getName() ))
     assert( r.getNumChildren() == 0 )
     r = nil
+    model = nil
   end
 
   def test_SBML_C_parseL3Formula_modelPresent2
     model = LibSBML::Model.new(3,1)
     p = model.createSpecies()
     p.setId( "true")
-    r = LibSBML::parseL3FormulaWithModel("true", model)
+    r = "true".parseL3FormulaWithModel(model)
     assert( r.getType() == LibSBML::AST_NAME )
     assert ((  "true" == r.getName() ))
     assert( r.getNumChildren() == 0 )
     r = nil
+    model = nil
   end
 
   def test_SBML_C_parseL3Formula_modelPresent3
     model = LibSBML::Model.new(3,1)
     p = model.createCompartment()
     p.setId( "NaN")
-    r = LibSBML::parseL3FormulaWithModel("NaN", model)
+    r = "NaN".parseL3FormulaWithModel(model)
     assert( r.getType() == LibSBML::AST_NAME )
     assert ((  "NaN" == r.getName() ))
     assert( r.getNumChildren() == 0 )
     r = nil
+    model = nil
   end
 
   def test_SBML_C_parseL3Formula_modelPresent4
     model = LibSBML::Model.new(3,1)
     p = model.createReaction()
     p.setId( "pi")
-    r = LibSBML::parseL3FormulaWithModel("pi", model)
+    r = "pi".parseL3FormulaWithModel(model)
     assert( r.getType() == LibSBML::AST_NAME )
     assert ((  "pi" == r.getName() ))
     assert( r.getNumChildren() == 0 )
     r = nil
+    model = nil
   end
 
   def test_SBML_C_parseL3Formula_modelPresent5
@@ -845,11 +858,12 @@ class TestL3FormulaParserC < Test::Unit::TestCase
     p = model.createReaction()
     sr = p.createProduct()
     sr.setId( "avogadro")
-    r = LibSBML::parseL3FormulaWithModel("avogadro", model)
+    r = "avogadro".parseL3FormulaWithModel(model)
     assert( r.getType() == LibSBML::AST_NAME )
     assert ((  "avogadro" == r.getName() ))
     assert( r.getNumChildren() == 0 )
     r = nil
+    model = nil
   end
 
   def test_SBML_C_parseL3Formula_modelPresent6
@@ -857,56 +871,60 @@ class TestL3FormulaParserC < Test::Unit::TestCase
     p = model.createReaction()
     sr = p.createProduct()
     sr.setId( "AVOGADRO")
-    r = LibSBML::parseL3FormulaWithModel("avogadro", model)
+    r = "avogadro".parseL3FormulaWithModel(model)
     assert( r.getType() == LibSBML::AST_NAME_AVOGADRO )
     assert ((  "avogadro" == r.getName() ))
     assert( r.getNumChildren() == 0 )
     r = nil
+    model = nil
   end
 
   def test_SBML_C_parseL3Formula_modelPresent7
     model = LibSBML::Model.new(3,1)
     p = model.createFunctionDefinition()
     p.setId( "sin")
-    r = LibSBML::parseL3FormulaWithModel("sin(x, y)", model)
+    r = "sin(x, y)".parseL3FormulaWithModel(model)
     assert( r.getType() == LibSBML::AST_FUNCTION )
     assert ((  "sin" == r.getName() ))
     assert( r.getNumChildren() == 2 )
     r = nil
+    model = nil
   end
 
   def test_SBML_C_parseL3Formula_modulo
-    r = LibSBML::parseL3Formula("x % y")
-    assert ((  "piecewise(x - y * ceil(x / y), xor(lt(x, 0), lt(y, 0)), x - y * floor(x / y))" == LibSBML::formulaToString(r) ))
+    r = "x % y".parseL3Formula()
+    s = LibSBML::formulaToString(r)
+    assert ((  "piecewise(x - y * ceil(x / y), xor(lt(x, 0), lt(y, 0)), x - y * floor(x / y))" == s ))
     r = nil
   end
 
   def test_SBML_C_parseL3Formula_negInf
-    r = LibSBML::parseL3Formula("-inf")
+    r = "-inf".parseL3Formula()
     assert( r.getType() == LibSBML::AST_MINUS )
     assert( r.getCharacter() == '-' )
     assert( r.getNumChildren() == 1 )
     c = r.getLeftChild()
     assert( c.getType() == LibSBML::AST_REAL )
-    assert((c.getReal().finite?) == false )
+    assert( util_isInf(c.getReal()) == true )
     assert( c.getNumChildren() == 0 )
     r = nil
   end
 
   def test_SBML_C_parseL3Formula_negZero
-    r = LibSBML::parseL3Formula("-0.0")
+    r = "-0.0".parseL3Formula()
     assert( r.getType() == LibSBML::AST_MINUS )
     assert( r.getCharacter() == '-' )
     assert( r.getNumChildren() == 1 )
     c = r.getLeftChild()
     assert( c.getType() == LibSBML::AST_REAL )
+    assert( util_isNegZero == 0 )
     assert( c.getReal() == 0 )
     assert( c.getNumChildren() == 0 )
     r = nil
   end
 
   def test_SBML_C_parseL3Formula_oddMathML1
-    r = LibSBML::parseL3Formula("sqrt(3)")
+    r = "sqrt(3)".parseL3Formula()
     assert( r.getType() == LibSBML::AST_FUNCTION_ROOT )
     assert( r.getNumChildren() == 2 )
     c = r.getLeftChild()
@@ -921,7 +939,7 @@ class TestL3FormulaParserC < Test::Unit::TestCase
   end
 
   def test_SBML_C_parseL3Formula_oddMathML2
-    r = LibSBML::parseL3Formula("sqr(3)")
+    r = "sqr(3)".parseL3Formula()
     assert( r.getType() == LibSBML::AST_FUNCTION_POWER )
     assert( r.getNumChildren() == 2 )
     c = r.getLeftChild()
@@ -936,7 +954,7 @@ class TestL3FormulaParserC < Test::Unit::TestCase
   end
 
   def test_SBML_C_parseL3Formula_oddMathML3
-    r = LibSBML::parseL3Formula("log10(3)")
+    r = "log10(3)".parseL3Formula()
     assert( r.getType() == LibSBML::AST_FUNCTION_LOG )
     assert( r.getNumChildren() == 2 )
     c = r.getLeftChild()
@@ -951,7 +969,7 @@ class TestL3FormulaParserC < Test::Unit::TestCase
   end
 
   def test_SBML_C_parseL3Formula_oddMathML4
-    r = LibSBML::parseL3Formula("log(4.4, 3)")
+    r = "log(4.4, 3)".parseL3Formula()
     assert( r.getType() == LibSBML::AST_FUNCTION_LOG )
     assert( r.getNumChildren() == 2 )
     c = r.getLeftChild()
@@ -966,7 +984,7 @@ class TestL3FormulaParserC < Test::Unit::TestCase
   end
 
   def test_SBML_C_parseL3Formula_oddMathML5
-    r = LibSBML::parseL3Formula("root(1.1, 3)")
+    r = "root(1.1, 3)".parseL3Formula()
     assert( r.getType() == LibSBML::AST_FUNCTION_ROOT )
     assert( r.getNumChildren() == 2 )
     c = r.getLeftChild()
@@ -981,7 +999,7 @@ class TestL3FormulaParserC < Test::Unit::TestCase
   end
 
   def test_SBML_C_parseL3Formula_parselogsettings
-    r = LibSBML::parseL3Formula("log(4.4)")
+    r = "log(4.4)".parseL3Formula()
     assert( r.getType() == LibSBML::AST_FUNCTION_LOG )
     assert( r.getNumChildren() == 2 )
     c = r.getLeftChild()
@@ -994,9 +1012,9 @@ class TestL3FormulaParserC < Test::Unit::TestCase
     assert( c.getNumChildren() == 0 )
     r = nil
     settings = LibSBML::L3ParserSettings.new()
-    settings.setParseLog(LibSBML::L3P_PARSE_LOG_AS_LN)
-    assert( settings.getParseLog() == LibSBML::L3P_PARSE_LOG_AS_LN )
-    r = LibSBML::parseL3FormulaWithSettings("log(4.4)", settings)
+    settings.setParseLog(L3P_PARSE_LOG_AS_LN)
+    assert( settings.getParseLog() == L3P_PARSE_LOG_AS_LN )
+    r = "log(4.4)".parseL3FormulaWithSettings(settings)
     assert( r.getType() == LibSBML::AST_FUNCTION_LN )
     assert( r.getNumChildren() == 1 )
     c = r.getLeftChild()
@@ -1004,9 +1022,9 @@ class TestL3FormulaParserC < Test::Unit::TestCase
     assert( c.getReal() == 4.4 )
     assert( c.getNumChildren() == 0 )
     r = nil
-    settings.setParseLog(LibSBML::L3P_PARSE_LOG_AS_LOG10)
-    assert( settings.getParseLog() == LibSBML::L3P_PARSE_LOG_AS_LOG10 )
-    r = LibSBML::parseL3FormulaWithSettings("log(4.4)", settings)
+    settings.setParseLog(L3P_PARSE_LOG_AS_LOG10)
+    assert( settings.getParseLog() == L3P_PARSE_LOG_AS_LOG10 )
+    r = "log(4.4)".parseL3FormulaWithSettings(settings)
     assert( r.getType() == LibSBML::AST_FUNCTION_LOG )
     assert( r.getNumChildren() == 2 )
     c = r.getLeftChild()
@@ -1018,16 +1036,17 @@ class TestL3FormulaParserC < Test::Unit::TestCase
     assert( c.getReal() == 4.4 )
     assert( c.getNumChildren() == 0 )
     r = nil
-    settings.setParseLog(LibSBML::L3P_PARSE_LOG_AS_ERROR)
-    assert( settings.getParseLog() == LibSBML::L3P_PARSE_LOG_AS_ERROR )
-    r = LibSBML::parseL3FormulaWithSettings("log(4.4)", settings)
+    settings.setParseLog(L3P_PARSE_LOG_AS_ERROR)
+    assert( settings.getParseLog() == L3P_PARSE_LOG_AS_ERROR )
+    r = "log(4.4)".parseL3FormulaWithSettings(settings)
+    error = .getLastParseL3Error()
     assert( r == nil )
-    assert ((  "Error when parsing input 'log(4.4)' at position 8:  Writing a function as 'log(x)' was legal in the L1 parser, but translated as the natural log, not the base-10 log.  This construct is disallowed entirely as being ambiguous, and you are encouraged instead to use 'ln(x)', 'log10(x)', or 'log(base, x)'." == LibSBML::getLastParseL3Error() ))
+    assert ((  "Error when parsing input 'log(4.4)' at position 8:  Writing a function as 'log(x)' was legal in the L1 parser, but translated as the natural log, not the base-10 log.  This construct is disallowed entirely as being ambiguous, and you are encouraged instead to use 'ln(x)', 'log10(x)', or 'log(base, x)'." == error ))
     settings = nil
   end
 
   def test_SBML_C_parseL3Formula_precedence
-    root = LibSBML::parseL3Formula("a && b == !(c - d * e^-f) ")
+    root = "a && b == !(c - d * e^-f) ".parseL3Formula()
     assert( root.getType() == LibSBML::AST_LOGICAL_AND )
     assert ((  "and" == root.getName() ))
     assert( root.getNumChildren() == 2 )
@@ -1083,7 +1102,7 @@ class TestL3FormulaParserC < Test::Unit::TestCase
   end
 
   def test_SBML_C_parseL3Formula_rational1
-    r = LibSBML::parseL3Formula("(3/4)")
+    r = "(3/4)".parseL3Formula()
     assert( r.getType() == LibSBML::AST_RATIONAL )
     assert( r.getNumerator() == 3 )
     assert( r.getDenominator() == 4 )
@@ -1092,17 +1111,18 @@ class TestL3FormulaParserC < Test::Unit::TestCase
   end
 
   def test_SBML_C_parseL3Formula_rational2
-    r = LibSBML::parseL3Formula("(3/4) mL")
+    r = "(3/4) mL".parseL3Formula()
+    units = r.getUnits()
     assert( r.getType() == LibSBML::AST_RATIONAL )
     assert( r.getNumerator() == 3 )
     assert( r.getDenominator() == 4 )
-    assert ((  "mL" == r.getUnits() ))
+    assert ((  "mL" == units ))
     assert( r.getNumChildren() == 0 )
     r = nil
   end
 
   def test_SBML_C_parseL3Formula_rational3
-    r = LibSBML::parseL3Formula("3/4")
+    r = "3/4".parseL3Formula()
     assert( r.getType() == LibSBML::AST_DIVIDE )
     assert( r.getCharacter() == '/' )
     assert( r.getNumChildren() == 2 )
@@ -1118,7 +1138,7 @@ class TestL3FormulaParserC < Test::Unit::TestCase
   end
 
   def test_SBML_C_parseL3Formula_rational4
-    r = LibSBML::parseL3Formula("(3/x)")
+    r = "(3/x)".parseL3Formula()
     assert( r.getType() == LibSBML::AST_DIVIDE )
     assert( r.getCharacter() == '/' )
     assert( r.getNumChildren() == 2 )
@@ -1134,7 +1154,7 @@ class TestL3FormulaParserC < Test::Unit::TestCase
   end
 
   def test_SBML_C_parseL3Formula_rational5
-    r = LibSBML::parseL3Formula("(3/4.4)")
+    r = "(3/4.4)".parseL3Formula()
     assert( r.getType() == LibSBML::AST_DIVIDE )
     assert( r.getCharacter() == '/' )
     assert( r.getNumChildren() == 2 )
@@ -1150,7 +1170,7 @@ class TestL3FormulaParserC < Test::Unit::TestCase
   end
 
   def test_SBML_C_parseL3Formula_rational6
-    r = LibSBML::parseL3Formula("3/4 ml")
+    r = "3/4 ml".parseL3Formula()
     assert( r.getType() == LibSBML::AST_DIVIDE )
     assert( r.getCharacter() == '/' )
     assert( r.getNumChildren() == 2 )
@@ -1159,79 +1179,43 @@ class TestL3FormulaParserC < Test::Unit::TestCase
     assert( c.getInteger() == 3 )
     assert( c.getNumChildren() == 0 )
     c = r.getRightChild()
+    units = c.getUnits()
     assert( c.getType() == LibSBML::AST_INTEGER )
     assert( c.getInteger() == 4 )
-    assert ((  "ml" == c.getUnits() ))
+    assert ((  "ml" == units ))
     assert( c.getNumChildren() == 0 )
     r = nil
   end
 
   def test_SBML_C_parseL3Formula_rational7
-    r = LibSBML::parseL3Formula("(3/4.4) ml")
+    r = "(3/4.4) ml".parseL3Formula()
     assert( r == nil )
-    assert ((  "Error when parsing input '(3/4.4) ml' at position 10:  syntax error, unexpected element name" == LibSBML::getLastParseL3Error() ))
-  end
-
-  def test_SBML_C_parseL3Formula_targetl2settings
-    r = LibSBML::parseL3Formula("4 mL")
-    assert( r.getType() == LibSBML::AST_INTEGER )
-    assert( r.getInteger() == 4 )
-    assert ((  "mL" == r.getUnits() ))
-    assert( r.getNumChildren() == 0 )
-    r = nil
-    r = LibSBML::parseL3Formula("avogadro")
-    assert( r.getType() == LibSBML::AST_NAME_AVOGADRO )
-    assert( r.getNumChildren() == 0 )
-    r = nil
-    settings = LibSBML::getDefaultL3ParserSettings()
-    settings.setParseUnits(0)
-    settings.setParseAvogadroCsymbol(0)
-    assert_equal false, settings.getParseUnits()
-    assert_equal false, settings.getParseAvogadroCsymbol()
-    r = LibSBML::parseL3FormulaWithSettings("4 mL", settings)
-    assert( r == nil )
-    assert ((  "Error when parsing input '4 mL' at position 4:  The ability to associate units with numbers has been disabled." == LibSBML::getLastParseL3Error() ))
-    r = LibSBML::parseL3FormulaWithSettings("avogadro", settings)
-    assert( r.getType() == LibSBML::AST_NAME )
-    assert ((  "avogadro" == r.getName() ))
-    assert( r.getNumChildren() == 0 )
-    r = nil
-    settings.setParseUnits(1)
-    settings.setParseAvogadroCsymbol(1)
-    assert_equal true, settings.getParseUnits()
-    assert_equal true, settings.getParseAvogadroCsymbol()
-    r = LibSBML::parseL3FormulaWithSettings("4 mL", settings)
-    assert( r.getType() == LibSBML::AST_INTEGER )
-    assert( r.getInteger() == 4 )
-    assert ((  "mL" == r.getUnits() ))
-    assert( r.getNumChildren() == 0 )
-    r = nil
-    r = LibSBML::parseL3FormulaWithSettings("avogadro", settings)
-    assert( r.getType() == LibSBML::AST_NAME_AVOGADRO )
-    assert( r.getNumChildren() == 0 )
-    r = nil
-    settings = nil
+    error = .getLastParseL3Error()
+    assert ((  "Error when parsing input '(3/4.4) ml' at position 10:  syntax error, unexpected element name" == error ))
   end
 
   def test_SBML_C_parseL3Formula_unitssettings
-    r = LibSBML::parseL3Formula("4 mL")
+    r = "4 mL".parseL3Formula()
     assert( r.getType() == LibSBML::AST_INTEGER )
     assert( r.getInteger() == 4 )
-    assert ((  "mL" == r.getUnits() ))
+    units = r.getUnits()
+    assert ((  "mL" == units ))
     assert( r.getNumChildren() == 0 )
     r = nil
-    settings = LibSBML::getDefaultL3ParserSettings()
+    settings = .getDefaultL3ParserSettings()
     settings.setParseUnits(0)
-    assert_equal false, settings.getParseUnits()
-    r = LibSBML::parseL3FormulaWithSettings("4 mL", settings)
+    assert( settings.getParseUnits() == 0 )
+    r = "4 mL".parseL3FormulaWithSettings(settings)
+    error = .getLastParseL3Error()
     assert( r == nil )
-    assert ((  "Error when parsing input '4 mL' at position 4:  The ability to associate units with numbers has been disabled." == LibSBML::getLastParseL3Error() ))
+    assert ((  "Error when parsing input '4 mL' at position 4:  The ability to associate units with numbers has been disabled." == error ))
     settings.setParseUnits(1)
-    assert_equal true, settings.getParseUnits()
-    r = LibSBML::parseL3FormulaWithSettings("4 mL", settings)
+    assert( settings.getParseUnits() == 1 )
+    r = "4 mL".parseL3FormulaWithSettings(settings)
     assert( r.getType() == LibSBML::AST_INTEGER )
     assert( r.getInteger() == 4 )
-    assert ((  "mL" == r.getUnits() ))
+    units = r.getUnits()
+    assert ((  "mL" == units ))
     assert( r.getNumChildren() == 0 )
     r = nil
     settings = nil

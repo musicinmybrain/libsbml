@@ -18,11 +18,6 @@
  * This file is part of libSBML.  Please visit http://sbml.org for more
  * information about SBML, and the latest version of libSBML.
  *
- * Copyright (C) 2020 jointly by the following organizations:
- *     1. California Institute of Technology, Pasadena, CA, USA
- *     2. University of Heidelberg, Heidelberg, Germany
- *     3. University College London, London, UK
- *
  * Copyright 2005-2010 California Institute of Technology.
  * Copyright 2002-2005 California Institute of Technology and
  *                     Japan Science and Technology Corporation.
@@ -128,6 +123,7 @@ public class TestSBMLNamespaces {
     SBMLNamespaces sbml = new SBMLNamespaces(1,1);
     assertTrue( sbml.getLevel() == 1 );
     assertTrue( sbml.getVersion() == 1 );
+    assertTrue( sbml.isValidCombination() == true );
     XMLNamespaces ns = sbml.getNamespaces();
     assertTrue( ns.getLength() == 1 );
     assertTrue( ns.getURI(0).equals( "http://www.sbml.org/sbml/level1") );
@@ -140,6 +136,7 @@ public class TestSBMLNamespaces {
     SBMLNamespaces sbml = new SBMLNamespaces(1,2);
     assertTrue( sbml.getLevel() == 1 );
     assertTrue( sbml.getVersion() == 2 );
+    assertTrue( sbml.isValidCombination() == true );
     XMLNamespaces ns = sbml.getNamespaces();
     assertTrue( ns.getLength() == 1 );
     assertTrue( ns.getURI(0).equals( "http://www.sbml.org/sbml/level1") );
@@ -152,6 +149,7 @@ public class TestSBMLNamespaces {
     SBMLNamespaces sbml = new SBMLNamespaces(2,1);
     assertTrue( sbml.getLevel() == 2 );
     assertTrue( sbml.getVersion() == 1 );
+    assertTrue( sbml.isValidCombination() == true );
     XMLNamespaces ns = sbml.getNamespaces();
     assertTrue( ns.getLength() == 1 );
     assertTrue( ns.getURI(0).equals( "http://www.sbml.org/sbml/level2") );
@@ -164,6 +162,7 @@ public class TestSBMLNamespaces {
     SBMLNamespaces sbml = new SBMLNamespaces(2,2);
     assertTrue( sbml.getLevel() == 2 );
     assertTrue( sbml.getVersion() == 2 );
+    assertTrue( sbml.isValidCombination() == true );
     XMLNamespaces ns = sbml.getNamespaces();
     assertTrue( ns.getLength() == 1 );
     assertTrue( ns.getURI(0).equals( "http://www.sbml.org/sbml/level2/version2") );
@@ -176,6 +175,7 @@ public class TestSBMLNamespaces {
     SBMLNamespaces sbml = new SBMLNamespaces(2,3);
     assertTrue( sbml.getLevel() == 2 );
     assertTrue( sbml.getVersion() == 3 );
+    assertTrue( sbml.isValidCombination() == true );
     XMLNamespaces ns = sbml.getNamespaces();
     assertTrue( ns.getLength() == 1 );
     assertTrue( ns.getURI(0).equals( "http://www.sbml.org/sbml/level2/version3") );
@@ -188,6 +188,7 @@ public class TestSBMLNamespaces {
     SBMLNamespaces sbml = new SBMLNamespaces(2,4);
     assertTrue( sbml.getLevel() == 2 );
     assertTrue( sbml.getVersion() == 4 );
+    assertTrue( sbml.isValidCombination() == true );
     XMLNamespaces ns = sbml.getNamespaces();
     assertTrue( ns.getLength() == 1 );
     assertTrue( ns.getURI(0).equals( "http://www.sbml.org/sbml/level2/version4") );
@@ -200,6 +201,7 @@ public class TestSBMLNamespaces {
     SBMLNamespaces sbml = new SBMLNamespaces(3,1);
     assertTrue( sbml.getLevel() == 3 );
     assertTrue( sbml.getVersion() == 1 );
+    assertTrue( sbml.isValidCombination() == true );
     XMLNamespaces ns = sbml.getNamespaces();
     assertTrue( ns.getLength() == 1 );
     assertTrue( ns.getURI(0).equals( "http://www.sbml.org/sbml/level3/version1/core") );
@@ -243,6 +245,17 @@ public class TestSBMLNamespaces {
     assertTrue( SBMLNamespaces.getSBMLNamespaceURI(2,3).equals(                             "http://www.sbml.org/sbml/level2/version3") );
     assertTrue( SBMLNamespaces.getSBMLNamespaceURI(2,4).equals(                             "http://www.sbml.org/sbml/level2/version4") );
     assertTrue( SBMLNamespaces.getSBMLNamespaceURI(3,1).equals(                             "http://www.sbml.org/sbml/level3/version1/core") );
+  }
+
+  public void test_SBMLNamespaces_invalid()
+  {
+    SBMLNamespaces sbml = new SBMLNamespaces(3,3);
+    assertTrue( sbml.getLevel() == SBML_INT_MAX );
+    assertTrue( sbml.getVersion() == SBML_INT_MAX );
+    XMLNamespaces ns = sbml.getNamespaces();
+    assertTrue( ns == null );
+    assertTrue( sbml.isValidCombination() == false );
+    sbml = null;
   }
 
   /**

@@ -18,11 +18,6 @@
  * This file is part of libSBML.  Please visit http://sbml.org for more
  * information about SBML, and the latest version of libSBML.
  *
- * Copyright (C) 2020 jointly by the following organizations:
- *     1. California Institute of Technology, Pasadena, CA, USA
- *     2. University of Heidelberg, Heidelberg, Germany
- *     3. University College London, London, UK
- *
  * Copyright 2005-2010 California Institute of Technology.
  * Copyright 2002-2005 California Institute of Technology and
  *                     Japan Science and Technology Corporation.
@@ -125,7 +120,6 @@ public class TestReadFromFile2 {
 
   public void test_create_l1v1_units()
   {
-    SBMLDocument d;
     Model m;
     Compartment c;
     KineticLaw kl;
@@ -135,9 +129,7 @@ public class TestReadFromFile2 {
     SpeciesReference sr;
     Unit u;
     UnitDefinition ud;
-    d = new  SBMLDocument();
     m = new  Model(2,4);
-    d.setModel(m);
     ud = m.createUnitDefinition();
     ud.setName( "substance");
     u = m.createUnit();
@@ -203,7 +195,7 @@ public class TestReadFromFile2 {
     sr.setSpecies( "x1");
     kl = m.createKineticLaw();
     kl.setFormula( "(vm * s1)/(km + s1)");
-    d = null;
+    m = null;
   }
 
   public void test_read_l1v1_units()
@@ -218,7 +210,7 @@ public class TestReadFromFile2 {
     SpeciesReference sr;
     Unit u;
     UnitDefinition ud;
-    String filename = "../../sbml/test/test-data/l1v1-units.xml";
+    String filename = "../../sbml/sbml/test/test-data/l1v1-units.xml";
     d = libsbml.readSBML(filename);
     if (d == null);
     {
@@ -409,4 +401,3 @@ public class TestReadFromFile2 {
     }
   }
 }
-

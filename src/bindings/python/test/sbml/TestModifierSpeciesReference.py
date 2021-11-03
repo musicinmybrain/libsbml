@@ -50,13 +50,13 @@ class TestModifierSpeciesReference(unittest.TestCase):
     pass  
 
   def test_ModifierSpeciesReference_create(self):
-    self.assert_( self.MSR.getTypeCode() == libsbml.SBML_MODIFIER_SPECIES_REFERENCE )
-    self.assert_( self.MSR.getMetaId() == "" )
-    self.assert_( self.MSR.getNotes() == None )
-    self.assert_( self.MSR.getAnnotation() == None )
-    self.assert_( self.MSR.getSpecies() == "" )
+    self.assertTrue( self.MSR.getTypeCode() == libsbml.SBML_MODIFIER_SPECIES_REFERENCE )
+    self.assertTrue( self.MSR.getMetaId() == "" )
+    self.assertTrue( self.MSR.getNotes() == None )
+    self.assertTrue( self.MSR.getAnnotation() == None )
+    self.assertTrue( self.MSR.getSpecies() == "" )
     self.assertEqual( False, self.MSR.isSetSpecies() )
-    self.assertEqual( True, self.MSR.isModifier() )
+    self.assertEqual( True, (self.MSR).isModifier() )
     pass  
 
   def test_ModifierSpeciesReference_createWithNS(self):
@@ -65,16 +65,18 @@ class TestModifierSpeciesReference(unittest.TestCase):
     sbmlns = libsbml.SBMLNamespaces(2,1)
     sbmlns.addNamespaces(xmlns)
     object = libsbml.ModifierSpeciesReference(sbmlns)
-    self.assert_( object.getTypeCode() == libsbml.SBML_MODIFIER_SPECIES_REFERENCE )
-    self.assert_( object.getMetaId() == "" )
-    self.assert_( object.getNotes() == None )
-    self.assert_( object.getAnnotation() == None )
-    self.assert_( object.getLevel() == 2 )
-    self.assert_( object.getVersion() == 1 )
-    self.assert_( object.getNamespaces() != None )
+    self.assertTrue( object.getTypeCode() == libsbml.SBML_MODIFIER_SPECIES_REFERENCE )
+    self.assertTrue( object.getMetaId() == "" )
+    self.assertTrue( object.getNotes() == None )
+    self.assertTrue( object.getAnnotation() == None )
+    self.assertTrue( object.getLevel() == 2 )
+    self.assertTrue( object.getVersion() == 1 )
+    self.assertTrue( object.getNamespaces() != None )
     n = object.getNamespaces()
-    self.assert_( n.getLength() == 2 )
+    self.assertTrue( n.getLength() == 2 )
     _dummyList = [ object ]; _dummyList[:] = []; del _dummyList
+    _dummyList = [ xmlns ]; _dummyList[:] = []; del _dummyList
+    _dummyList = [ sbmlns ]; _dummyList[:] = []; del _dummyList
     pass  
 
   def test_ModifierSpeciesReference_free_NULL(self):
@@ -85,15 +87,29 @@ class TestModifierSpeciesReference(unittest.TestCase):
     species =  "s1";
     self.MSR.setSpecies(species)
     s = self.MSR.getSpecies()
-    self.assert_(( species == s ))
+    self.assertTrue(( species == s ))
     self.assertEqual( True, self.MSR.isSetSpecies() )
     if (self.MSR.getSpecies() == species):
       pass    
     s = self.MSR.getSpecies()
     self.MSR.setSpecies(s)
     s = self.MSR.getSpecies()
-    self.assert_(( species == s ))
+    self.assertTrue(( species == s ))
     self.MSR.setSpecies("")
+    self.assertEqual( False, self.MSR.isSetSpecies() )
+    if (self.MSR.getSpecies() != None):
+      pass    
+    pass  
+
+  def test_ModifierSpeciesReference_unsetSpecies(self):
+    species =  "s1";
+    self.MSR.setSpecies(species)
+    s = self.MSR.getSpecies()
+    self.assertTrue(( species == s ))
+    self.assertEqual( True, self.MSR.isSetSpecies() )
+    if (self.MSR.getSpecies() == species):
+      pass    
+    self.MSR.unsetSpecies()
     self.assertEqual( False, self.MSR.isSetSpecies() )
     if (self.MSR.getSpecies() != None):
       pass    
@@ -110,4 +126,3 @@ if __name__ == "__main__":
     sys.exit(0)
   else:
     sys.exit(1)
-

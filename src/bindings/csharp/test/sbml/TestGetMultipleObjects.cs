@@ -2,8 +2,7 @@
 ///  @brief   GetMultipleObjects unit tests
 ///  @author  Frank Bergmann (Csharp conversion)
 ///  @author  Akiya Jouraku (Csharp conversion)
-///  @author  Sarah Keating
- 
+///  @author  Sarah Keating 
 ///  
 ///  ====== WARNING ===== WARNING ===== WARNING ===== WARNING ===== WARNING ======
 /// 
@@ -132,14 +131,15 @@ namespace LibSBMLCSTest.sbml {
     {
       SBMLReader reader = new SBMLReader();
       SBMLDocument d;
-      string filename =  "../../sbml/test/test-data/";
+      string filename =  "../../sbml/sbml/test/test-data/";
       filename += "multiple-ids.xml";
       d = reader.readSBML(filename);
-      if (d == null);
+      if (d.getModel() == null);
       {
       }
-      SBaseList list = d.getListOfAllElements();
+      List list = d.getAllElements();
       assertTrue( list.getSize() == 37 );
+      list = null;
       d = null;
     }
 
@@ -147,37 +147,67 @@ namespace LibSBMLCSTest.sbml {
     {
       SBMLReader reader = new SBMLReader();
       SBMLDocument d;
-      string filename =  "../../sbml/test/test-data/";
+      string filename =  "../../sbml/sbml/test/test-data/";
       filename += "multiple-ids.xml";
       d = reader.readSBML(filename);
       if (d == null);
       {
       }
-      SBase obj = d.getElementBySId("no_id");
-      assertTrue( obj == null );
-      obj = d.getElementBySId("");
-      assertTrue( obj == null );
-      obj = d.getElementBySId("find_id");
-      assertTrue( obj != null );
-      assertTrue( obj.getTypeCode() == libsbml.SBML_MODEL );
-      obj = d.getElementBySId("func1");
-      assertTrue( obj != null );
-      assertTrue( obj.getTypeCode() == libsbml.SBML_FUNCTION_DEFINITION );
-      obj = d.getElementBySId("comp");
-      assertTrue( obj != null );
-      assertTrue( obj.getTypeCode() == libsbml.SBML_COMPARTMENT );
-      obj = d.getElementBySId("b");
-      assertTrue( obj != null );
-      assertTrue( obj.getTypeCode() == libsbml.SBML_SPECIES );
-      obj = d.getElementBySId("x");
-      assertTrue( obj != null );
-      assertTrue( obj.getTypeCode() == libsbml.SBML_PARAMETER );
-      obj = d.getElementBySId("J0");
-      assertTrue( obj != null );
-      assertTrue( obj.getTypeCode() == libsbml.SBML_REACTION );
-      obj = d.getElementBySId("E0");
-      assertTrue( obj != null );
-      assertTrue( obj.getTypeCode() == libsbml.SBML_EVENT );
+      {
+        SBase obj = d.getElementBySId("no_id");
+        assertTrue( obj == null );
+        obj = d.getElementBySId("");
+        assertTrue( obj == null );
+        obj = d.getElementBySId("find_id");
+        assertTrue( obj != null );
+        assertTrue( obj.getTypeCode() == libsbml.SBML_MODEL );
+        obj = d.getElementBySId("func1");
+        assertTrue( obj != null );
+        assertTrue( obj.getTypeCode() == libsbml.SBML_FUNCTION_DEFINITION );
+        obj = d.getElementBySId("comp");
+        assertTrue( obj != null );
+        assertTrue( obj.getTypeCode() == libsbml.SBML_COMPARTMENT );
+        obj = d.getElementBySId("b");
+        assertTrue( obj != null );
+        assertTrue( obj.getTypeCode() == libsbml.SBML_SPECIES );
+        obj = d.getElementBySId("x");
+        assertTrue( obj != null );
+        assertTrue( obj.getTypeCode() == libsbml.SBML_PARAMETER );
+        obj = d.getElementBySId("J0");
+        assertTrue( obj != null );
+        assertTrue( obj.getTypeCode() == libsbml.SBML_REACTION );
+        obj = d.getElementBySId("E0");
+        assertTrue( obj != null );
+        assertTrue( obj.getTypeCode() == libsbml.SBML_EVENT );
+      }
+      SBase constDoc = d;
+      {
+        SBase obj = constDoc.getElementBySId("no_id");
+        assertTrue( obj == null );
+        obj = constDoc.getElementBySId("");
+        assertTrue( obj == null );
+        obj = constDoc.getElementBySId("find_id");
+        assertTrue( obj != null );
+        assertTrue( obj.getTypeCode() == libsbml.SBML_MODEL );
+        obj = constDoc.getElementBySId("func1");
+        assertTrue( obj != null );
+        assertTrue( obj.getTypeCode() == libsbml.SBML_FUNCTION_DEFINITION );
+        obj = constDoc.getElementBySId("comp");
+        assertTrue( obj != null );
+        assertTrue( obj.getTypeCode() == libsbml.SBML_COMPARTMENT );
+        obj = constDoc.getElementBySId("b");
+        assertTrue( obj != null );
+        assertTrue( obj.getTypeCode() == libsbml.SBML_SPECIES );
+        obj = constDoc.getElementBySId("x");
+        assertTrue( obj != null );
+        assertTrue( obj.getTypeCode() == libsbml.SBML_PARAMETER );
+        obj = constDoc.getElementBySId("J0");
+        assertTrue( obj != null );
+        assertTrue( obj.getTypeCode() == libsbml.SBML_REACTION );
+        obj = constDoc.getElementBySId("E0");
+        assertTrue( obj != null );
+        assertTrue( obj.getTypeCode() == libsbml.SBML_EVENT );
+      }
       d = null;
     }
 
@@ -185,7 +215,7 @@ namespace LibSBMLCSTest.sbml {
     {
       SBMLReader reader = new SBMLReader();
       SBMLDocument d;
-      string filename =  "../../sbml/test/test-data/";
+      string filename =  "../../sbml/sbml/test/test-data/";
       filename += "multiple-ids.xml";
       d = reader.readSBML(filename);
       if (d == null);
@@ -321,7 +351,7 @@ namespace LibSBMLCSTest.sbml {
     {
       SBMLReader reader = new SBMLReader();
       SBMLDocument d;
-      string filename =  "../../sbml/test/test-data/";
+      string filename =  "../../sbml/sbml/test/test-data/";
       filename += "assignments-invalid.xml";
       d = reader.readSBML(filename);
       if (d.getModel() == null);
@@ -354,7 +384,7 @@ namespace LibSBMLCSTest.sbml {
     {
       SBMLReader reader = new SBMLReader();
       SBMLDocument d;
-      string filename =  "../../sbml/test/test-data/";
+      string filename =  "../../sbml/sbml/test/test-data/";
       filename += "multiple-ids.xml";
       d = reader.readSBML(filename);
       if (d == null);
@@ -374,7 +404,7 @@ namespace LibSBMLCSTest.sbml {
     {
       SBMLReader reader = new SBMLReader();
       SBMLDocument d;
-      string filename =  "../../sbml/test/test-data/";
+      string filename =  "../../sbml/sbml/test/test-data/";
       filename += "multiple-ids.xml";
       d = reader.readSBML(filename);
       if (d == null);
@@ -385,6 +415,24 @@ namespace LibSBMLCSTest.sbml {
       obj = d.getElementByMetaId("meta30");
       assertTrue( obj != null );
       assertTrue( obj.getTypeCode() == libsbml.SBML_UNIT_DEFINITION );
+      d = null;
+    }
+
+    public void test_GetMultipleObjects_withFilter()
+    {
+      SBMLReader reader = new SBMLReader();
+      SBMLDocument d;
+      string filename =  "../../sbml/sbml/test/test-data/";
+      filename += "multiple-ids.xml";
+      d = reader.readSBML(filename);
+      if (d.getModel() == null);
+      {
+      }
+      TestFilter test;
+      List list = d.getAllElements(test);
+      assertTrue( list.getSize() == 1 );
+      assertTrue( ((SBase) list.get(0)).getId() ==  "conv" );
+      list = null;
       d = null;
     }
 

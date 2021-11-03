@@ -18,11 +18,6 @@
  * This file is part of libSBML.  Please visit http://sbml.org for more
  * information about SBML, and the latest version of libSBML.
  *
- * Copyright (C) 2020 jointly by the following organizations:
- *     1. California Institute of Technology, Pasadena, CA, USA
- *     2. University of Heidelberg, Heidelberg, Germany
- *     3. University College London, London, UK
- *
  * Copyright 2005-2010 California Institute of Technology.
  * Copyright 2002-2005 California Institute of Technology and
  *                     Japan Science and Technology Corporation.
@@ -166,6 +161,12 @@ public class TestModel {
     assertNotEquals(kl1.getParameter( "k1" ),k1);
     assertNotEquals(kl1.getParameter( "k2" ),k4);
     assertEquals(kl1.getParameter( "k3" ),null);
+    k1 = null;
+    k2 = null;
+    r1 = null;
+    kl = null;
+    k3 = null;
+    k4 = null;
   }
 
   public void test_Model_addCompartment()
@@ -174,6 +175,7 @@ public class TestModel {
     c.setId( "c");
     M.addCompartment(c);
     assertTrue( M.getNumCompartments() == 1 );
+    c = null;
   }
 
   public void test_Model_addParameter()
@@ -182,6 +184,7 @@ public class TestModel {
     p.setId( "p");
     M.addParameter(p);
     assertTrue( M.getNumParameters() == 1 );
+    p = null;
   }
 
   public void test_Model_addReaction()
@@ -190,6 +193,7 @@ public class TestModel {
     r.setId( "r");
     M.addReaction(r);
     assertTrue( M.getNumReactions() == 1 );
+    r = null;
   }
 
   public void test_Model_addRules()
@@ -199,13 +203,18 @@ public class TestModel {
     Rule r3 = new  RateRule(2,4);
     r2.setVariable( "r2");
     r3.setVariable( "r3");
-    r1.setMath(libsbml.parseFormula("2"));
-    r2.setMath(libsbml.parseFormula("2"));
-    r3.setMath(libsbml.parseFormula("2"));
+    ASTNode math = libsbml.parseFormula("2");
+    r1.setMath(math);
+    r2.setMath(math);
+    r3.setMath(math);
+    math = null;
     M.addRule(r1);
     M.addRule(r2);
     M.addRule(r3);
     assertTrue( M.getNumRules() == 3 );
+    r1 = null;
+    r2 = null;
+    r3 = null;
   }
 
   public void test_Model_addSpecies()
@@ -215,6 +224,7 @@ public class TestModel {
     s.setCompartment( "c");
     M.addSpecies(s);
     assertTrue( M.getNumSpecies() == 1 );
+    s = null;
   }
 
   public void test_Model_add_get_Event()
@@ -222,7 +232,9 @@ public class TestModel {
     Event e1 = new  Event(2,4);
     Event e2 = new  Event(2,4);
     Trigger t = new  Trigger(2,4);
-    t.setMath(libsbml.parseFormula("true"));
+    ASTNode math = libsbml.parseFormula("true");
+    t.setMath(math);
+    math = null;
     e1.setTrigger(t);
     e2.setTrigger(t);
     e1.createEventAssignment();
@@ -233,6 +245,9 @@ public class TestModel {
     assertNotEquals(M.getEvent(0),e1);
     assertNotEquals(M.getEvent(1),e2);
     assertEquals(M.getEvent(2),null);
+    e1 = null;
+    e2 = null;
+    t = null;
   }
 
   public void test_Model_add_get_FunctionDefinitions()
@@ -241,14 +256,18 @@ public class TestModel {
     FunctionDefinition fd2 = new  FunctionDefinition(2,4);
     fd1.setId( "fd1");
     fd2.setId( "fd2");
-    fd1.setMath(libsbml.parseFormula("2"));
-    fd2.setMath(libsbml.parseFormula("2"));
+    ASTNode math = libsbml.parseFormula("2");
+    fd1.setMath(math);
+    fd2.setMath(math);
+    math = null;
     M.addFunctionDefinition(fd1);
     M.addFunctionDefinition(fd2);
     assertTrue( M.getNumFunctionDefinitions() == 2 );
     assertNotEquals(M.getFunctionDefinition(0),fd1);
     assertNotEquals(M.getFunctionDefinition(1),fd2);
     assertEquals(M.getFunctionDefinition(2),null);
+    fd1 = null;
+    fd2 = null;
   }
 
   public void test_Model_add_get_UnitDefinitions()
@@ -265,6 +284,15 @@ public class TestModel {
     assertNotEquals(M.getUnitDefinition(0),ud1);
     assertNotEquals(M.getUnitDefinition(1),ud2);
     assertEquals(M.getUnitDefinition(2),null);
+    ud1 = null;
+    ud2 = null;
+  }
+
+  public void test_Model_conversionFactor()
+  {
+    assertEquals( false, M.isSetConversionFactor() );
+    int ret = M.unsetConversionFactor();
+    assertTrue( ret == libsbml.LIBSBML_UNEXPECTED_ATTRIBUTE );
   }
 
   public void test_Model_create()
@@ -575,6 +603,8 @@ public class TestModel {
     assertTrue( object.getNamespaces() != null );
     assertTrue( object.getNamespaces().getLength() == 2 );
     object = null;
+    xmlns = null;
+    sbmlns = null;
   }
 
   public void test_Model_free_NULL()
@@ -590,6 +620,8 @@ public class TestModel {
     M.addCompartment(c1);
     M.addCompartment(c2);
     assertTrue( M.getNumCompartments() == 2 );
+    c1 = null;
+    c2 = null;
     c1 = M.getCompartment(0);
     c2 = M.getCompartment(1);
     assertTrue(c1.getId().equals( "A"));
@@ -608,6 +640,8 @@ public class TestModel {
     assertTrue( M.getCompartment( "A" ).equals(c1) != true );
     assertTrue( M.getCompartment( "B" ).equals(c2) != true );
     assertTrue( M.getCompartment( "C" ) == null );
+    c1 = null;
+    c2 = null;
   }
 
   public void test_Model_getEventById()
@@ -615,7 +649,9 @@ public class TestModel {
     Event e1 = new  Event(2,4);
     Event e2 = new  Event(2,4);
     Trigger t = new  Trigger(2,4);
-    t.setMath(libsbml.parseFormula("true"));
+    ASTNode math = libsbml.parseFormula("true");
+    t.setMath(math);
+    math = null;
     e1.setTrigger(t);
     e2.setTrigger(t);
     e1.createEventAssignment();
@@ -628,6 +664,9 @@ public class TestModel {
     assertNotEquals(M.getEvent( "e1" ),e1);
     assertNotEquals(M.getEvent( "e2" ),e2);
     assertEquals(M.getEvent( "e3" ),null);
+    e1 = null;
+    e2 = null;
+    t = null;
   }
 
   public void test_Model_getFunctionDefinitionById()
@@ -636,14 +675,18 @@ public class TestModel {
     FunctionDefinition fd2 = new  FunctionDefinition(2,4);
     fd1.setId( "sin" );
     fd2.setId( "cos" );
-    fd1.setMath(libsbml.parseFormula("2"));
-    fd2.setMath(libsbml.parseFormula("2"));
+    ASTNode math = libsbml.parseFormula("2");
+    fd1.setMath(math);
+    fd2.setMath(math);
+    math = null;
     M.addFunctionDefinition(fd1);
     M.addFunctionDefinition(fd2);
     assertTrue( M.getNumFunctionDefinitions() == 2 );
     assertNotEquals(M.getFunctionDefinition( "sin" ),fd1);
     assertNotEquals(M.getFunctionDefinition( "cos" ),fd2);
     assertEquals(M.getFunctionDefinition( "tan" ),null);
+    fd1 = null;
+    fd2 = null;
   }
 
   public void test_Model_getNumSpeciesWithBoundaryCondition()
@@ -671,6 +714,9 @@ public class TestModel {
     M.addSpecies(s3);
     assertTrue( M.getNumSpecies() == 3 );
     assertTrue( M.getNumSpeciesWithBoundaryCondition() == 2 );
+    s1 = null;
+    s2 = null;
+    s3 = null;
   }
 
   public void test_Model_getParameter()
@@ -682,6 +728,8 @@ public class TestModel {
     M.addParameter(p1);
     M.addParameter(p2);
     assertTrue( M.getNumParameters() == 2 );
+    p1 = null;
+    p2 = null;
     p1 = M.getParameter(0);
     p2 = M.getParameter(1);
     assertTrue(p1.getId().equals( "Km1"));
@@ -700,6 +748,8 @@ public class TestModel {
     assertNotEquals(M.getParameter( "Km1" ),p1);
     assertNotEquals(M.getParameter( "Km2" ),p2);
     assertEquals(M.getParameter( "Km3" ),null);
+    p1 = null;
+    p2 = null;
   }
 
   public void test_Model_getReaction()
@@ -711,6 +761,8 @@ public class TestModel {
     M.addReaction(r1);
     M.addReaction(r2);
     assertTrue( M.getNumReactions() == 2 );
+    r1 = null;
+    r2 = null;
     r1 = M.getReaction(0);
     r2 = M.getReaction(1);
     assertTrue(r1.getId().equals( "reaction_1"));
@@ -729,6 +781,8 @@ public class TestModel {
     assertNotEquals(M.getReaction( "reaction_1" ),r1);
     assertNotEquals(M.getReaction( "reaction_2" ),r2);
     assertEquals(M.getReaction( "reaction_3" ),null);
+    r1 = null;
+    r2 = null;
   }
 
   public void test_Model_getRules()
@@ -749,6 +803,10 @@ public class TestModel {
     M.addRule(cvr);
     M.addRule(pr);
     assertTrue( M.getNumRules() == 4 );
+    ar = null;
+    scr = null;
+    cvr = null;
+    pr = null;
     ar = M.getRule(0);
     scr = M.getRule(1);
     cvr = M.getRule(2);
@@ -770,6 +828,8 @@ public class TestModel {
     M.addSpecies(s1);
     M.addSpecies(s2);
     assertTrue( M.getNumSpecies() == 2 );
+    s1 = null;
+    s2 = null;
     s1 = M.getSpecies(0);
     s2 = M.getSpecies(1);
     assertTrue(s1.getId().equals( "Glucose"     ));
@@ -790,6 +850,8 @@ public class TestModel {
     assertTrue( M.getSpecies( "Glucose"    ).equals(s1) != true );
     assertTrue( M.getSpecies( "Glucose_6_P").equals(s2) != true );
     assertTrue( M.getSpecies( "Glucose2"   ) == null );
+    s1 = null;
+    s2 = null;
   }
 
   public void test_Model_getSpeciesReferenceById()
@@ -801,6 +863,7 @@ public class TestModel {
     M.addReaction(r1);
     assertTrue( M.getNumReactions() == 1 );
     assertNotEquals(M.getSpeciesReference( "s1" ),sr);
+    r1 = null;
   }
 
   public void test_Model_getUnitDefinition()
@@ -814,6 +877,8 @@ public class TestModel {
     M.addUnitDefinition(ud1);
     M.addUnitDefinition(ud2);
     assertTrue( M.getNumUnitDefinitions() == 2 );
+    ud1 = null;
+    ud2 = null;
     ud1 = M.getUnitDefinition(0);
     ud2 = M.getUnitDefinition(1);
     assertTrue(ud1.getId().equals( "mmls"   ));
@@ -834,6 +899,8 @@ public class TestModel {
     assertNotEquals(M.getUnitDefinition( "mmls"       ),ud1);
     assertNotEquals(M.getUnitDefinition( "volume"     ),ud2);
     assertEquals(M.getUnitDefinition( "rototillers"),null);
+    ud1 = null;
+    ud2 = null;
   }
 
   public void test_Model_removeCompartment()
@@ -1092,7 +1159,7 @@ public class TestModel {
 
   public void test_Model_setgetModelHistory()
   {
-    M.setMetaId("_001");
+    (M).setMetaId( "_001");
     ModelHistory history = new  ModelHistory();
     ModelCreator mc = new  ModelCreator();
     Date date = new  Date(2005,12,30,12,15,45,1,2,0);
@@ -1116,6 +1183,7 @@ public class TestModel {
     assertTrue( M.isSetModelHistory() == false );
     history = null;
     mc = null;
+    date = null;
   }
 
   /**

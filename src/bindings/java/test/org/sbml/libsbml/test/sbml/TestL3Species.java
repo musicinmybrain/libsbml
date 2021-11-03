@@ -18,11 +18,6 @@
  * This file is part of libSBML.  Please visit http://sbml.org for more
  * information about SBML, and the latest version of libSBML.
  *
- * Copyright (C) 2020 jointly by the following organizations:
- *     1. California Institute of Technology, Pasadena, CA, USA
- *     2. University of Heidelberg, Heidelberg, Germany
- *     3. University College London, London, UK
- *
  * Copyright 2005-2010 California Institute of Technology.
  * Copyright 2002-2005 California Institute of Technology and
  *                     Japan Science and Technology Corporation.
@@ -144,8 +139,8 @@ public class TestL3Species {
 
   public void test_L3_Species_ModelHistory()
   {
-    (S).setMetaId("_3");
     ModelHistory history = new  ModelHistory();
+    (S).setMetaId( "_3");
     int i = (S).setModelHistory(history);
     assertTrue( i == libsbml.LIBSBML_INVALID_OBJECT );
     assertEquals( false, (S).isSetModelHistory() );
@@ -166,13 +161,16 @@ public class TestL3Species {
     assertEquals( false, (S).isSetModelHistory() );
     assertTrue( (S).getModelHistory() == null );
     history = null;
+    mc = null;
+    date = null;
   }
 
   public void test_L3_Species_NS()
   {
     assertTrue( S.getNamespaces() != null );
     assertTrue( S.getNamespaces().getLength() == 1 );
-    assertTrue(S.getNamespaces().getURI(0).equals(    "http://www.sbml.org/sbml/level3/version1/core"));
+    String uri = S.getNamespaces().getURI(0);
+    assertTrue(uri.equals( "http://www.sbml.org/sbml/level3/version1/core"));
   }
 
   public void test_L3_Species_boundaryCondition()
@@ -181,9 +179,17 @@ public class TestL3Species {
     S.setBoundaryCondition(true);
     assertTrue( S.getBoundaryCondition() == true );
     assertTrue( S.isSetBoundaryCondition() == true );
+    int ret = S.unsetBoundaryCondition();
+    assertTrue( ret == libsbml.LIBSBML_OPERATION_SUCCESS );
+    assertTrue( S.getBoundaryCondition() == true );
+    assertTrue( S.isSetBoundaryCondition() == false );
     S.setBoundaryCondition(false);
     assertTrue( S.getBoundaryCondition() == false );
     assertTrue( S.isSetBoundaryCondition() == true );
+    ret = S.unsetBoundaryCondition();
+    assertTrue( ret == libsbml.LIBSBML_OPERATION_SUCCESS );
+    assertTrue( S.getBoundaryCondition() == false );
+    assertTrue( S.isSetBoundaryCondition() == false );
   }
 
   public void test_L3_Species_compartment()
@@ -196,6 +202,9 @@ public class TestL3Species {
     if (S.getCompartment() == compartment);
     {
     }
+    S.unsetCompartment();
+    assertTrue( S.getCompartment().equals("") == true );
+    assertEquals( false, S.isSetCompartment() );
   }
 
   public void test_L3_Species_constant()
@@ -204,9 +213,17 @@ public class TestL3Species {
     S.setConstant(true);
     assertTrue( S.getConstant() == true );
     assertTrue( S.isSetConstant() == true );
+    int ret = S.unsetConstant();
+    assertTrue( ret == libsbml.LIBSBML_OPERATION_SUCCESS );
+    assertTrue( S.getConstant() == true );
+    assertTrue( S.isSetConstant() == false );
     S.setConstant(false);
     assertTrue( S.getConstant() == false );
     assertTrue( S.isSetConstant() == true );
+    ret = S.unsetConstant();
+    assertTrue( ret == libsbml.LIBSBML_OPERATION_SUCCESS );
+    assertTrue( S.getConstant() == false );
+    assertTrue( S.isSetConstant() == false );
   }
 
   public void test_L3_Species_conversionFactor()
@@ -235,8 +252,8 @@ public class TestL3Species {
     assertTrue( S.getId().equals("") == true );
     assertTrue( S.getName().equals("") == true );
     assertTrue( S.getCompartment().equals("") == true );
-    assertEquals( true, isnan(S.getInitialAmount()) );
-    assertEquals( true, isnan(S.getInitialConcentration()) );
+    assertEquals( true, util_isNaN );
+    assertEquals( true, util_isNaN );
     assertTrue( S.getSubstanceUnits().equals("") == true );
     assertTrue( S.getHasOnlySubstanceUnits() == false );
     assertTrue( S.getBoundaryCondition() == false );
@@ -272,8 +289,8 @@ public class TestL3Species {
     assertTrue( s.getId().equals("") == true );
     assertTrue( s.getName().equals("") == true );
     assertTrue( s.getCompartment().equals("") == true );
-    assertEquals( true, isnan(s.getInitialAmount()) );
-    assertEquals( true, isnan(s.getInitialConcentration()) );
+    assertEquals( true, util_isNaN );
+    assertEquals( true, util_isNaN );
     assertTrue( s.getSubstanceUnits().equals("") == true );
     assertTrue( s.getHasOnlySubstanceUnits() == false );
     assertTrue( s.getBoundaryCondition() == false );
@@ -290,6 +307,8 @@ public class TestL3Species {
     assertEquals( false, s.isSetConstant() );
     assertEquals( false, s.isSetConversionFactor() );
     s = null;
+    xmlns = null;
+    sbmlns = null;
   }
 
   public void test_L3_Species_free_NULL()
@@ -302,9 +321,17 @@ public class TestL3Species {
     S.setHasOnlySubstanceUnits(true);
     assertTrue( S.getHasOnlySubstanceUnits() == true );
     assertTrue( S.isSetHasOnlySubstanceUnits() == true );
+    int ret = S.unsetHasOnlySubstanceUnits();
+    assertTrue( ret == libsbml.LIBSBML_OPERATION_SUCCESS );
+    assertTrue( S.getHasOnlySubstanceUnits() == true );
+    assertTrue( S.isSetHasOnlySubstanceUnits() == false );
     S.setHasOnlySubstanceUnits(false);
     assertTrue( S.getHasOnlySubstanceUnits() == false );
     assertTrue( S.isSetHasOnlySubstanceUnits() == true );
+    ret = S.unsetHasOnlySubstanceUnits();
+    assertTrue( ret == libsbml.LIBSBML_OPERATION_SUCCESS );
+    assertTrue( S.getHasOnlySubstanceUnits() == false );
+    assertTrue( S.isSetHasOnlySubstanceUnits() == false );
   }
 
   public void test_L3_Species_hasRequiredAttributes()
@@ -342,8 +369,8 @@ public class TestL3Species {
     assertTrue( s.getId().equals("") == true );
     assertTrue( s.getName().equals("") == true );
     assertTrue( s.getCompartment().equals("") == true );
-    assertEquals( true, isnan(s.getInitialAmount()) );
-    assertEquals( true, isnan(s.getInitialConcentration()) );
+    assertEquals( true, util_isNaN );
+    assertEquals( true, util_isNaN );
     assertTrue( s.getSubstanceUnits().equals("") == true );
     assertTrue( s.getHasOnlySubstanceUnits() == false );
     assertTrue( s.getBoundaryCondition() == false );
@@ -363,8 +390,8 @@ public class TestL3Species {
     assertTrue( s.getId().equals("") == true );
     assertTrue( s.getName().equals("") == true );
     assertTrue( s.getCompartment().equals("") == true );
-    assertEquals( true, isnan(s.getInitialAmount()) );
-    assertEquals( true, isnan(s.getInitialConcentration()) );
+    assertEquals( true, util_isNaN );
+    assertEquals( true, util_isNaN );
     assertTrue(s.getSubstanceUnits().equals("mole" ));
     assertTrue( s.getHasOnlySubstanceUnits() == false );
     assertTrue( s.getBoundaryCondition() == false );
@@ -387,26 +414,26 @@ public class TestL3Species {
   {
     double initialAmount = 0.2;
     assertEquals( false, S.isSetInitialAmount() );
-    assertEquals( true, isnan(S.getInitialAmount()) );
+    assertEquals( true, util_isNaN );
     S.setInitialAmount(initialAmount);
     assertTrue( S.getInitialAmount() == initialAmount );
     assertEquals( true, S.isSetInitialAmount() );
     S.unsetInitialAmount();
     assertEquals( false, S.isSetInitialAmount() );
-    assertEquals( true, isnan(S.getInitialAmount()) );
+    assertEquals( true, util_isNaN );
   }
 
   public void test_L3_Species_initialConcentration()
   {
     double initialConcentration = 0.2;
     assertEquals( false, S.isSetInitialConcentration() );
-    assertEquals( true, isnan(S.getInitialConcentration()) );
+    assertEquals( true, util_isNaN );
     S.setInitialConcentration(initialConcentration);
     assertTrue( S.getInitialConcentration() == initialConcentration );
     assertEquals( true, S.isSetInitialConcentration() );
     S.unsetInitialConcentration();
     assertEquals( false, S.isSetInitialConcentration() );
-    assertEquals( true, isnan(S.getInitialConcentration()) );
+    assertEquals( true, util_isNaN );
   }
 
   public void test_L3_Species_name()
@@ -496,4 +523,3 @@ public class TestL3Species {
     }
   }
 }
-

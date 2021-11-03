@@ -18,11 +18,6 @@
  * This file is part of libSBML.  Please visit http://sbml.org for more
  * information about SBML, and the latest version of libSBML.
  *
- * Copyright (C) 2020 jointly by the following organizations:
- *     1. California Institute of Technology, Pasadena, CA, USA
- *     2. University of Heidelberg, Heidelberg, Germany
- *     3. University College London, London, UK
- *
  * Copyright 2005-2010 California Institute of Technology.
  * Copyright 2002-2005 California Institute of Technology and
  *                     Japan Science and Technology Corporation.
@@ -123,7 +118,6 @@ public class TestWriteL3SBML {
     throw new AssertionError();
   }
   private SBMLDocument D;
-  private String S;
 
   public String LV_L3v1()
   {
@@ -196,12 +190,10 @@ public class TestWriteL3SBML {
   {
     D = new SBMLDocument();
     D.setLevelAndVersion(3,1,false);
-    S = null;
   }
 
   protected void tearDown() throws Exception
   {
-    S = null;
   }
 
   public void test_SBMLWriter_L3_create()
@@ -239,7 +231,8 @@ public class TestWriteL3SBML {
     Compartment c = D.createModel().createCompartment();
     c.setId("A");
     c.setConstant(true);
-    assertEquals( true, equals(expected,c.toSBML()) );
+    String sbml = c.toSBML();
+    assertEquals( true, equals(expected,sbml) );
   }
 
   public void test_WriteL3SBML_Compartment_spatialDimensions()
@@ -250,9 +243,11 @@ public class TestWriteL3SBML {
     c.setId("A");
     c.setConstant(false);
     c.setSpatialDimensions(2.1);
-    assertEquals( true, equals(expected,c.toSBML()) );
+    String sbml = c.toSBML();
+    assertEquals( true, equals(expected,sbml) );
     c.unsetSpatialDimensions();
-    assertEquals( true, equals(expected1,c.toSBML()) );
+    sbml = c.toSBML();
+    assertEquals( true, equals(expected1,sbml) );
   }
 
   public void test_WriteL3SBML_Event()
@@ -261,7 +256,8 @@ public class TestWriteL3SBML {
     Event e = D.createModel().createEvent();
     e.setId("e");
     e.setUseValuesFromTriggerTime(true);
-    assertEquals( true, equals(expected,e.toSBML()) );
+    String sbml = e.toSBML();
+    assertEquals( true, equals(expected,sbml) );
   }
 
   public void test_WriteL3SBML_Event_full()
@@ -288,7 +284,10 @@ public class TestWriteL3SBML {
     Priority p = e.createPriority();
     ASTNode math2 = libsbml.parseFormula("2");
     p.setMath(math2);
-    assertEquals( true, equals(expected,e.toSBML()) );
+    String sbml = e.toSBML();
+    assertEquals( true, equals(expected,sbml) );
+    math1 = null;
+    math2 = null;
   }
 
   public void test_WriteL3SBML_Event_useValues()
@@ -300,7 +299,8 @@ public class TestWriteL3SBML {
     e.setId("e");
     e.setUseValuesFromTriggerTime(false);
     e.createDelay();
-    assertEquals( true, equals(expected,e.toSBML()) );
+    String sbml = e.toSBML();
+    assertEquals( true, equals(expected,sbml) );
   }
 
   public void test_WriteL3SBML_INF()
@@ -310,7 +310,8 @@ public class TestWriteL3SBML {
     p.setId("p");
     p.setValue(util_PosInf());
     p.setConstant(true);
-    assertEquals( true, equals(expected,p.toSBML()) );
+    String sbml = p.toSBML();
+    assertEquals( true, equals(expected,sbml) );
   }
 
   public void test_WriteL3SBML_KineticLaw_ListOfParameters()
@@ -324,7 +325,8 @@ public class TestWriteL3SBML {
     LocalParameter p = kl.createLocalParameter();
     p.setId("n");
     p.setValue(1.2);
-    assertEquals( true, equals(expected,kl.toSBML()) );
+    String sbml = kl.toSBML();
+    assertEquals( true, equals(expected,sbml) );
   }
 
   public void test_WriteL3SBML_Model()
@@ -332,8 +334,9 @@ public class TestWriteL3SBML {
     String expected = wrapSBML_L3v1("  <model/>\n"  
     );
     Model m = D.createModel("");
-    S = libsbml.writeSBMLToString(D);
-    assertEquals( true, equals(expected,S) );
+    (void) m;
+    String S = writeSBMLToStdString;
+    assertEquals( true, equals(expected,) );
   }
 
   public void test_WriteL3SBML_Model_conversionFactor()
@@ -342,8 +345,8 @@ public class TestWriteL3SBML {
     );
     Model m = D.createModel("");
     m.setConversionFactor("p");
-    S = libsbml.writeSBMLToString(D);
-    assertEquals( true, equals(expected,S) );
+    String S = writeSBMLToStdString;
+    assertEquals( true, equals(expected,) );
   }
 
   public void test_WriteL3SBML_Model_otherUnits()
@@ -354,8 +357,8 @@ public class TestWriteL3SBML {
     m.setVolumeUnits("litre");
     m.setAreaUnits("area");
     m.setLengthUnits("metre");
-    S = libsbml.writeSBMLToString(D);
-    assertEquals( true, equals(expected,S) );
+    String S = writeSBMLToStdString;
+    assertEquals( true, equals(expected,) );
   }
 
   public void test_WriteL3SBML_Model_substanceUnits()
@@ -364,8 +367,8 @@ public class TestWriteL3SBML {
     );
     Model m = D.createModel("");
     m.setSubstanceUnits("mole");
-    S = libsbml.writeSBMLToString(D);
-    assertEquals( true, equals(expected,S) );
+    String S = writeSBMLToStdString;
+    assertEquals( true, equals(expected,) );
   }
 
   public void test_WriteL3SBML_Model_timeUnits()
@@ -374,8 +377,8 @@ public class TestWriteL3SBML {
     );
     Model m = D.createModel("");
     m.setTimeUnits("second");
-    S = libsbml.writeSBMLToString(D);
-    assertEquals( true, equals(expected,S) );
+    String S = writeSBMLToStdString;
+    assertEquals( true, equals(expected,) );
   }
 
   public void test_WriteL3SBML_NaN()
@@ -385,7 +388,8 @@ public class TestWriteL3SBML {
     p.setId("p");
     p.setValue(util_NaN());
     p.setConstant(true);
-    assertEquals( true, equals(expected,p.toSBML()) );
+    String sbml = p.toSBML();
+    assertEquals( true, equals(expected,sbml) );
   }
 
   public void test_WriteL3SBML_NegINF()
@@ -395,7 +399,8 @@ public class TestWriteL3SBML {
     p.setId("p");
     p.setValue(util_NegInf());
     p.setConstant(true);
-    assertEquals( true, equals(expected,p.toSBML()) );
+    String sbml = p.toSBML();
+    assertEquals( true, equals(expected,sbml) );
   }
 
   public void test_WriteL3SBML_Parameter()
@@ -406,14 +411,16 @@ public class TestWriteL3SBML {
     p.setValue(2.3);
     p.setUnits("second");
     p.setConstant(true);
-    assertEquals( true, equals(expected,p.toSBML()) );
+    String sbml = p.toSBML();
+    assertEquals( true, equals(expected,sbml) );
   }
 
   public void test_WriteL3SBML_Priority()
   {
     String expected =  "<priority/>";
     Priority p = D.createModel().createEvent().createPriority();
-    assertEquals( true, equals(expected,p.toSBML()) );
+    String sbml = p.toSBML();
+    assertEquals( true, equals(expected,sbml) );
   }
 
   public void test_WriteL3SBML_Reaction()
@@ -423,7 +430,8 @@ public class TestWriteL3SBML {
     r.setId("r");
     r.setReversible(false);
     r.setFast(true);
-    assertEquals( true, equals(expected,r.toSBML()) );
+    String sbml = r.toSBML();
+    assertEquals( true, equals(expected,sbml) );
   }
 
   public void test_WriteL3SBML_Reaction_compartment()
@@ -435,9 +443,11 @@ public class TestWriteL3SBML {
     r.setReversible(false);
     r.setFast(true);
     r.setCompartment("c");
-    assertEquals( true, equals(expected,r.toSBML()) );
+    String sbml = r.toSBML();
+    assertEquals( true, equals(expected,sbml) );
     r.unsetCompartment();
-    assertEquals( true, equals(expected1,r.toSBML()) );
+    sbml = r.toSBML();
+    assertEquals( true, equals(expected1,sbml) );
   }
 
   public void test_WriteL3SBML_Reaction_full()
@@ -479,14 +489,15 @@ public class TestWriteL3SBML {
     r.createProduct().setSpecies("s1");
     r.createModifier().setSpecies("m1");
     r.createKineticLaw().setFormula("(vm * s1)/(km + s1)");
-    assertEquals( true, equals(expected,r.toSBML()) );
+    String sbml = r.toSBML();
+    assertEquals( true, equals(expected,sbml) );
   }
 
   public void test_WriteL3SBML_SBMLDocument_L3v1()
   {
     String expected = wrapXML("<sbml xmlns=\"http://www.sbml.org/sbml/level3/version1/core\" " + "level=\"3\" version=\"1\"/>\n");
-    S = libsbml.writeSBMLToString(D);
-    assertEquals( true, equals(expected,S) );
+    String S = writeSBMLToStdString;
+    assertEquals( true, equals(expected,) );
   }
 
   public void test_WriteL3SBML_Species()
@@ -502,7 +513,8 @@ public class TestWriteL3SBML {
     s.setBoundaryCondition(true);
     s.setHasOnlySubstanceUnits(false);
     s.setConstant(true);
-    assertEquals( true, equals(expected,s.toSBML()) );
+    String sbml = s.toSBML();
+    assertEquals( true, equals(expected,sbml) );
   }
 
   public void test_WriteL3SBML_SpeciesReference()
@@ -512,7 +524,8 @@ public class TestWriteL3SBML {
     sr.setSpecies("s");
     sr.setStoichiometry(3);
     sr.setConstant(true);
-    assertEquals( true, equals(expected,sr.toSBML()) );
+    String sbml = sr.toSBML();
+    assertEquals( true, equals(expected,sbml) );
   }
 
   public void test_WriteL3SBML_Species_conversionFactor()
@@ -531,16 +544,19 @@ public class TestWriteL3SBML {
     s.setHasOnlySubstanceUnits(false);
     s.setConstant(true);
     s.setConversionFactor("p");
-    assertEquals( true, equals(expected,s.toSBML()) );
+    String sbml = s.toSBML();
+    assertEquals( true, equals(expected,sbml) );
     s.unsetConversionFactor();
-    assertEquals( true, equals(expected1,s.toSBML()) );
+    sbml = s.toSBML();
+    assertEquals( true, equals(expected1,sbml) );
   }
 
   public void test_WriteL3SBML_Trigger()
   {
     String expected =  "<trigger/>";
     Trigger t = D.createModel().createEvent().createTrigger();
-    assertEquals( true, equals(expected,t.toSBML()) );
+    String tsbml = t.toSBML();
+    assertEquals( true, equals(expected,tsbml) );
   }
 
   public void test_WriteL3SBML_Trigger_initialValue()
@@ -549,7 +565,8 @@ public class TestWriteL3SBML {
     Trigger t = D.createModel().createEvent().createTrigger();
     t.setInitialValue(false);
     t.setPersistent(true);
-    assertEquals( true, equals(expected,t.toSBML()) );
+    String tsbml = t.toSBML();
+    assertEquals( true, equals(expected,tsbml) );
   }
 
   public void test_WriteL3SBML_Trigger_persistent()
@@ -558,7 +575,8 @@ public class TestWriteL3SBML {
     Trigger t = D.createModel().createEvent().createTrigger();
     t.setPersistent(false);
     t.setInitialValue(true);
-    assertEquals( true, equals(expected,t.toSBML()) );
+    String tsbml = t.toSBML();
+    assertEquals( true, equals(expected,tsbml) );
   }
 
   public void test_WriteL3SBML_Unit()
@@ -570,7 +588,8 @@ public class TestWriteL3SBML {
     u.setExponent(exp);
     u.setScale(-3);
     u.setMultiplier(3.2);
-    assertEquals( true, equals(expected,u.toSBML()) );
+    String sbml = u.toSBML();
+    assertEquals( true, equals(expected,sbml) );
   }
 
   public void test_WriteL3SBML_UnitDefinition()
@@ -587,14 +606,16 @@ public class TestWriteL3SBML {
     u1.setMultiplier(1.8);
     u1.setScale(0);
     u1.setExponent(1);
-    assertEquals( true, equals(expected,ud.toSBML()) );
+    String sbml = ud.toSBML();
+    assertEquals( true, equals(expected,sbml) );
   }
 
   public void test_WriteL3SBML_Unit_noValues()
   {
     String expected =  "<unit/>";
     Unit u = D.createModel().createUnitDefinition().createUnit();
-    assertEquals( true, equals(expected,u.toSBML()) );
+    String usbml = u.toSBML();
+    assertEquals( true, equals(expected,usbml) );
   }
 
   public void test_WriteL3SBML_elements()
@@ -610,7 +631,7 @@ public class TestWriteL3SBML {
     "      <compartment/>\n" + 
     "    </listOfCompartments>\n" + 
     "    <listOfSpecies>\n" + 
-    "      <species/>\n" +
+    "      <species/>\n" + 
     "    </listOfSpecies>\n" + 
     "    <listOfParameters>\n" + 
     "      <parameter/>\n" + 
@@ -642,8 +663,8 @@ public class TestWriteL3SBML {
     m.createConstraint();
     m.createReaction();
     m.createSpecies();
-    S = libsbml.writeSBMLToString(D);
-    assertEquals( true, equals(expected,S) );
+    String S = writeSBMLToStdString;
+    assertEquals( true, equals(expected,) );
   }
 
   public void test_WriteL3SBML_error()
@@ -664,7 +685,8 @@ public class TestWriteL3SBML {
     p.setId("p");
     p.setValue(3.31);
     p.setConstant(true);
-    assertEquals( true, equals(expected,p.toSBML()) );
+    String sbml = p.toSBML();
+    assertEquals( true, equals(expected,sbml) );
   }
 
   /**

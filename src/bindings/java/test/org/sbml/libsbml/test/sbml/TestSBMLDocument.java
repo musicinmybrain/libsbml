@@ -18,11 +18,6 @@
  * This file is part of libSBML.  Please visit http://sbml.org for more
  * information about SBML, and the latest version of libSBML.
  *
- * Copyright (C) 2020 jointly by the following organizations:
- *     1. California Institute of Technology, Pasadena, CA, USA
- *     2. University of Heidelberg, Heidelberg, Germany
- *     3. University College London, London, UK
- *
  * Copyright 2005-2010 California Institute of Technology.
  * Copyright 2002-2005 California Institute of Technology and
  *                     Japan Science and Technology Corporation.
@@ -132,6 +127,7 @@ public class TestSBMLDocument {
     assertTrue( d.getLevel() == 3 );
     assertTrue( d.getVersion() == 2 );
     assertTrue( d.getNumErrors() == 0 );
+    assertTrue( d.isSetModel() == 0 );
     d = null;
   }
 
@@ -144,6 +140,7 @@ public class TestSBMLDocument {
     assertTrue( d.getLevel() == 1 );
     assertTrue( d.getVersion() == 2 );
     assertTrue( d.getNumErrors() == 0 );
+    assertTrue( d.isSetModel() == 0 );
     d = null;
   }
 
@@ -161,6 +158,7 @@ public class TestSBMLDocument {
     assertTrue( d.setLevelAndVersion(1,2,false) == true );
     assertTrue( d.setLevelAndVersion(1,1,false) == false );
     d = null;
+    m1 = null;
   }
 
   public void test_SBMLDocument_setLevelAndVersion_Error()
@@ -181,6 +179,9 @@ public class TestSBMLDocument {
     assertTrue( d.setLevelAndVersion(1,2,true) == false );
     assertTrue( d.setLevelAndVersion(1,1,true) == false );
     d = null;
+    m1 = null;
+    u = null;
+    ud = null;
   }
 
   public void test_SBMLDocument_setLevelAndVersion_UnitsError()
@@ -214,6 +215,7 @@ public class TestSBMLDocument {
     assertTrue( d.setLevelAndVersion(1,2,false) == true );
     assertTrue( d.setLevelAndVersion(1,1,false) == false );
     d = null;
+    m1 = null;
   }
 
   public void test_SBMLDocument_setModel()
@@ -223,11 +225,13 @@ public class TestSBMLDocument {
     Model m2 = new  Model(2,4);
     Model mout;
     assertTrue( d.getModel() == null );
+    assertTrue( d.isSetModel() == 0 );
     int i = d.setModel(m1);
     assertTrue( i == libsbml.LIBSBML_OPERATION_SUCCESS );
     mout = d.getModel();
     assertTrue( mout != null );
     assertTrue( !mout.equals(m1) );
+    assertTrue( d.isSetModel() == 1 );
     i = d.setModel(d.getModel());
     assertTrue( i == libsbml.LIBSBML_OPERATION_SUCCESS );
     mout = d.getModel();
@@ -239,6 +243,8 @@ public class TestSBMLDocument {
     assertTrue( mout != null );
     assertTrue( !mout.equals(m2) );
     d = null;
+    m1 = null;
+    m2 = null;
   }
 
   public void test_SBMLDocument_setModel1()
@@ -249,6 +255,7 @@ public class TestSBMLDocument {
     assertTrue( i == libsbml.LIBSBML_VERSION_MISMATCH );
     assertTrue( d.getModel() == null );
     d = null;
+    m1 = null;
   }
 
   public void test_SBMLDocument_setModel2()
@@ -260,6 +267,7 @@ public class TestSBMLDocument {
     assertTrue( i == libsbml.LIBSBML_LEVEL_MISMATCH );
     assertTrue( d.getModel() == null );
     d = null;
+    m1 = null;
   }
 
   public void test_SBMLDocument_setModel3()
@@ -270,6 +278,7 @@ public class TestSBMLDocument {
     assertTrue( i == libsbml.LIBSBML_OPERATION_SUCCESS );
     assertTrue( d.getModel() != null );
     d = null;
+    m1 = null;
   }
 
   /**

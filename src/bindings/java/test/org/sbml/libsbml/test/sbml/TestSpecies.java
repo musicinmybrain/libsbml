@@ -18,11 +18,6 @@
  * This file is part of libSBML.  Please visit http://sbml.org for more
  * information about SBML, and the latest version of libSBML.
  *
- * Copyright (C) 2020 jointly by the following organizations:
- *     1. California Institute of Technology, Pasadena, CA, USA
- *     2. University of Heidelberg, Heidelberg, Germany
- *     3. University College London, London, UK
- *
  * Copyright 2005-2010 California Institute of Technology.
  * Copyright 2002-2005 California Institute of Technology and
  *                     Japan Science and Technology Corporation.
@@ -137,6 +132,13 @@ public class TestSpecies {
     S = null;
   }
 
+  public void test_Species_conversionFactor()
+  {
+    assertEquals( false, S.isSetConversionFactor() );
+    int ret = S.unsetConversionFactor();
+    assertTrue( ret == libsbml.LIBSBML_UNEXPECTED_ATTRIBUTE );
+  }
+
   public void test_Species_create()
   {
     assertTrue( S.getTypeCode() == libsbml.SBML_SPECIES );
@@ -184,10 +186,72 @@ public class TestSpecies {
     assertTrue( object.getNamespaces() != null );
     assertTrue( object.getNamespaces().getLength() == 2 );
     object = null;
+    xmlns = null;
+    sbmlns = null;
   }
 
   public void test_Species_free_NULL()
   {
+  }
+
+  public void test_Species_getsetBoundaryCondition()
+  {
+    assertTrue( S.getBoundaryCondition() == false );
+    assertTrue( S.isSetBoundaryCondition() == true );
+    S.setBoundaryCondition(true);
+    assertTrue( S.getBoundaryCondition() == true );
+    assertTrue( S.isSetBoundaryCondition() == true );
+    int ret = S.unsetBoundaryCondition();
+    assertTrue( ret == libsbml.LIBSBML_UNEXPECTED_ATTRIBUTE );
+    assertTrue( S.getBoundaryCondition() == false );
+    assertTrue( S.isSetBoundaryCondition() == true );
+    S.setBoundaryCondition(false);
+    assertTrue( S.getBoundaryCondition() == false );
+    assertTrue( S.isSetBoundaryCondition() == true );
+    ret = S.unsetBoundaryCondition();
+    assertTrue( ret == libsbml.LIBSBML_UNEXPECTED_ATTRIBUTE );
+    assertTrue( S.getBoundaryCondition() == false );
+    assertTrue( S.isSetBoundaryCondition() == true );
+  }
+
+  public void test_Species_getsetConstant()
+  {
+    assertTrue( S.getConstant() == false );
+    assertTrue( S.isSetConstant() == true );
+    S.setConstant(true);
+    assertTrue( S.getConstant() == true );
+    assertTrue( S.isSetConstant() == true );
+    int ret = S.unsetConstant();
+    assertTrue( ret == libsbml.LIBSBML_UNEXPECTED_ATTRIBUTE );
+    assertTrue( S.getConstant() == false );
+    assertTrue( S.isSetConstant() == true );
+    S.setConstant(false);
+    assertTrue( S.getConstant() == false );
+    assertTrue( S.isSetConstant() == true );
+    ret = S.unsetConstant();
+    assertTrue( ret == libsbml.LIBSBML_UNEXPECTED_ATTRIBUTE );
+    assertTrue( S.getConstant() == false );
+    assertTrue( S.isSetConstant() == true );
+  }
+
+  public void test_Species_getsetHasOnlySubstanceUnits()
+  {
+    assertTrue( S.getHasOnlySubstanceUnits() == false );
+    assertTrue( S.isSetHasOnlySubstanceUnits() == true );
+    S.setHasOnlySubstanceUnits(true);
+    assertTrue( S.getHasOnlySubstanceUnits() == true );
+    assertTrue( S.isSetHasOnlySubstanceUnits() == true );
+    int ret = S.unsetHasOnlySubstanceUnits();
+    assertTrue( ret == libsbml.LIBSBML_UNEXPECTED_ATTRIBUTE );
+    assertTrue( S.getHasOnlySubstanceUnits() == false );
+    assertTrue( S.isSetHasOnlySubstanceUnits() == true );
+    S.setHasOnlySubstanceUnits(false);
+    assertTrue( S.getHasOnlySubstanceUnits() == false );
+    assertTrue( S.isSetHasOnlySubstanceUnits() == true );
+    ret = S.unsetHasOnlySubstanceUnits();
+    assertTrue( ret == libsbml.LIBSBML_UNEXPECTED_ATTRIBUTE );
+    assertTrue( S.getHasOnlySubstanceUnits() == false );
+    assertTrue( S.isSetHasOnlySubstanceUnits() == true );
   }
 
   public void test_Species_setCompartment()
@@ -320,6 +384,22 @@ public class TestSpecies {
     }
   }
 
+  public void test_Species_unsetCompartment()
+  {
+    String compartment =  "cell";
+    S.setCompartment(compartment);
+    assertTrue(S.getCompartment().equals(compartment));
+    assertEquals( true, S.isSetCompartment() );
+    if (S.getCompartment() == compartment);
+    {
+    }
+    S.unsetCompartment();
+    assertEquals( false, S.isSetCompartment() );
+    if (S.getCompartment() != null);
+    {
+    }
+  }
+
   /**
    * Loads the SWIG-generated libSBML Java module when this class is
    * loaded, or reports a sensible diagnostic message about why it failed.
@@ -373,4 +453,3 @@ public class TestSpecies {
     }
   }
 }
-

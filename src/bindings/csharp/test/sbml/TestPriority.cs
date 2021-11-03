@@ -166,6 +166,8 @@ namespace LibSBMLCSTest.sbml {
       assertTrue( object1.getNamespaces() != null );
       assertTrue( object1.getNamespaces().getLength() == 2 );
       object1 = null;
+      xmlns = null;
+      sbmlns = null;
     }
 
     public void test_Priority_free_NULL()
@@ -196,6 +198,7 @@ namespace LibSBMLCSTest.sbml {
       if (P.getMath() != null);
       {
       }
+      math = null;
     }
 
     public void test_Priority_setMath1()

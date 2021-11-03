@@ -18,11 +18,6 @@
  * This file is part of libSBML.  Please visit http://sbml.org for more
  * information about SBML, and the latest version of libSBML.
  *
- * Copyright (C) 2020 jointly by the following organizations:
- *     1. California Institute of Technology, Pasadena, CA, USA
- *     2. University of Heidelberg, Heidelberg, Germany
- *     3. University College London, London, UK
- *
  * Copyright 2005-2010 California Institute of Technology.
  * Copyright 2002-2005 California Institute of Technology and
  *                     Japan Science and Technology Corporation.
@@ -123,10 +118,15 @@ public class TestL3Reaction {
     throw new AssertionError();
   }
   private Reaction R;
+  private Reaction R32;
 
   protected void setUp() throws Exception
   {
     R = new  Reaction(3,1);
+    if (R == null);
+    {
+    }
+    R32 = new  Reaction(3,2);
     if (R == null);
     {
     }
@@ -135,13 +135,61 @@ public class TestL3Reaction {
   protected void tearDown() throws Exception
   {
     R = null;
+    R32 = null;
+  }
+
+  public void test_L3V2_Reaction_create()
+  {
+    assertTrue( R32.getTypeCode() == libsbml.SBML_REACTION );
+    assertTrue( R32.getMetaId().equals("") == true );
+    assertTrue( R32.getNotes() == null );
+    assertTrue( R32.getAnnotation() == null );
+    assertTrue( R32.getId().equals("") == true );
+    assertTrue( R32.getName().equals("") == true );
+    assertTrue( R32.getCompartment().equals("") == true );
+    assertTrue( R32.getFast() == false );
+    assertTrue( R32.getReversible() == true );
+    assertEquals( false, R32.isSetId() );
+    assertEquals( false, R32.isSetName() );
+    assertEquals( false, R32.isSetCompartment() );
+    assertEquals( false, R32.isSetFast() );
+    assertEquals( false, R32.isSetReversible() );
+  }
+
+  public void test_L3V2_Reaction_fast()
+  {
+    assertTrue( R32.isSetFast() == false );
+    int i = R32.setFast(true);
+    assertTrue( i == libsbml.LIBSBML_UNEXPECTED_ATTRIBUTE );
+    assertTrue( R32.getFast() == false );
+    assertTrue( R32.isSetFast() == false );
+    i = R32.setFast(false);
+    assertTrue( i == libsbml.LIBSBML_UNEXPECTED_ATTRIBUTE );
+    assertTrue( R32.getFast() == false );
+    assertTrue( R32.isSetFast() == false );
+    i = R32.unsetFast();
+    assertTrue( i == libsbml.LIBSBML_UNEXPECTED_ATTRIBUTE );
+    assertTrue( R32.getFast() == false );
+    assertTrue( R32.isSetFast() == false );
+  }
+
+  public void test_L3V2_Reaction_hasRequiredAttributes()
+  {
+    Reaction r = new  Reaction(3,2);
+    assertEquals( false, r.hasRequiredAttributes() );
+    r.setId( "id");
+    assertEquals( false, r.hasRequiredAttributes() );
+    r.setReversible(false);
+    assertEquals( true, r.hasRequiredAttributes() );
+    r = null;
   }
 
   public void test_L3_Reaction_NS()
   {
     assertTrue( R.getNamespaces() != null );
     assertTrue( R.getNamespaces().getLength() == 1 );
-    assertTrue(R.getNamespaces().getURI(0).equals(    "http://www.sbml.org/sbml/level3/version1/core"));
+    String uri = R.getNamespaces().getURI(0);
+    assertTrue(uri.equals( "http://www.sbml.org/sbml/level3/version1/core"));
   }
 
   public void test_L3_Reaction_compartment()
@@ -205,6 +253,8 @@ public class TestL3Reaction {
     assertEquals( false, r.isSetFast() );
     assertEquals( false, r.isSetReversible() );
     r = null;
+    xmlns = null;
+    sbmlns = null;
   }
 
   public void test_L3_Reaction_fast()
@@ -216,6 +266,9 @@ public class TestL3Reaction {
     R.setFast(false);
     assertTrue( R.getFast() == false );
     assertTrue( R.isSetFast() == true );
+    R.unsetFast();
+    assertTrue( R.getFast() == false );
+    assertTrue( R.isSetFast() == false );
   }
 
   public void test_L3_Reaction_free_NULL()
@@ -270,9 +323,17 @@ public class TestL3Reaction {
     R.setReversible(true);
     assertTrue( R.getReversible() == true );
     assertTrue( R.isSetReversible() == true );
+    int ret = R.unsetReversible();
+    assertTrue( ret == libsbml.LIBSBML_OPERATION_SUCCESS );
+    assertTrue( R.getReversible() == true );
+    assertTrue( R.isSetReversible() == false );
     R.setReversible(false);
     assertTrue( R.getReversible() == false );
     assertTrue( R.isSetReversible() == true );
+    ret = R.unsetReversible();
+    assertTrue( ret == libsbml.LIBSBML_OPERATION_SUCCESS );
+    assertTrue( R.getReversible() == false );
+    assertTrue( R.isSetReversible() == false );
   }
 
   /**

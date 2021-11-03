@@ -18,11 +18,6 @@
  * This file is part of libSBML.  Please visit http://sbml.org for more
  * information about SBML, and the latest version of libSBML.
  *
- * Copyright (C) 2020 jointly by the following organizations:
- *     1. California Institute of Technology, Pasadena, CA, USA
- *     2. University of Heidelberg, Heidelberg, Germany
- *     3. University College London, London, UK
- *
  * Copyright 2005-2010 California Institute of Technology.
  * Copyright 2002-2005 California Institute of Technology and
  *                     Japan Science and Technology Corporation.
@@ -123,17 +118,40 @@ public class TestSBMLError {
     throw new AssertionError();
   }
 
+  public void test_SBMLErrorLog_removeAll()
+  {
+    SBMLErrorLog log;
+    log.add(new SBMLError(1234,2,4));
+    log.add(new SBMLError(1234,2,4));
+    log.add(new SBMLError(1234,2,4));
+    log.add(new SBMLError(1234,2,4));
+    assertTrue( log.contains(1234) == true );
+    log.remove(1234);
+    assertTrue( log.contains(1234) == true );
+    log.removeAll(1234);
+    assertTrue( log.contains(1234) == false );
+  }
+
   public void test_SBMLError_create()
   {
     SBMLError error = new SBMLError();
     assertTrue( error != null );
     error = null;
-    error = new SBMLError(libsbml.EmptyListInReaction);
-    assertTrue( error.getErrorId() == libsbml.EmptyListInReaction );
-    //assertTrue( error.getSeverity() == libsbml.LIBSBML_SEV_ERROR );
-    //assertTrue( error.getSeverityAsString().equals( "Error" ) );
+    error = new SBMLError(ConstraintContainsXMLDecl);
+    assertTrue( error.getErrorId().equals(ConstraintContainsXMLDecl) );
+    assertTrue( error.getSeverity() == libsbml.LIBSBML_SEV_ERROR );
+    assertTrue( error.getSeverityAsString().equals( "Error" ) );
     assertTrue( error.getCategory() == libsbml.LIBSBML_CAT_SBML );
     assertTrue( error.getCategoryAsString().equals( "General SBML conformance") );
+    assertTrue( error.isValid() == true );
+    error = null;
+    error = new SBMLError(libsbml.EmptyListInReaction);
+    assertTrue( error.getErrorId() == libsbml.EmptyListInReaction );
+    assertTrue( error.getSeverity() == libsbml.LIBSBML_SEV_NOT_APPLICABLE );
+    assertTrue( error.getSeverityAsString().equals( "Not applicable" ) );
+    assertTrue( error.getCategory() == libsbml.LIBSBML_CAT_SBML );
+    assertTrue( error.getCategoryAsString().equals( "General SBML conformance") );
+    assertTrue( error.isValid() == true );
     error = null;
     error = new SBMLError(libsbml.OverdeterminedSystem,2,1);
     assertTrue( error.getErrorId() == libsbml.OverdeterminedSystem );
@@ -141,6 +159,7 @@ public class TestSBMLError {
     assertTrue( error.getSeverityAsString().equals( "Warning" ) );
     assertTrue( error.getCategory() == libsbml.LIBSBML_CAT_OVERDETERMINED_MODEL );
     assertTrue( error.getCategoryAsString().equals( "Overdetermined model") );
+    assertTrue( error.isValid() == true );
     error = null;
     error = new SBMLError(libsbml.OffsetNoLongerValid,2,2);
     assertTrue( error.getErrorId() == libsbml.OffsetNoLongerValid );
@@ -148,6 +167,7 @@ public class TestSBMLError {
     assertTrue( error.getSeverityAsString().equals( "Error" ) );
     assertTrue( error.getCategory() == libsbml.LIBSBML_CAT_GENERAL_CONSISTENCY );
     assertTrue( error.getCategoryAsString().equals( "SBML component consistency") );
+    assertTrue( error.isValid() == true );
     error = null;
     error = new SBMLError(libsbml.NoSBOTermsInL1,2,2);
     assertTrue( error.getErrorId() == libsbml.NoSBOTermsInL1 );
@@ -155,6 +175,7 @@ public class TestSBMLError {
     assertTrue( error.getSeverityAsString().equals( "Warning" ) );
     assertTrue( error.getCategory() == libsbml.LIBSBML_CAT_SBML_L1_COMPAT );
     assertTrue( error.getCategoryAsString().equals( "Translation to SBML L1V2") );
+    assertTrue( error.isValid() == true );
     error = null;
     error = new SBMLError(libsbml.DisallowedMathMLEncodingUse,2,2);
     assertTrue( error.getErrorId() == libsbml.DisallowedMathMLEncodingUse );
@@ -162,11 +183,13 @@ public class TestSBMLError {
     assertTrue( error.getSeverityAsString().equals( "Error" ) );
     assertTrue( error.getCategory() == libsbml.LIBSBML_CAT_MATHML_CONSISTENCY );
     assertTrue( error.getShortMessage().equals( "Use of the MathML 'encoding' attribute is not allowed on this element") );
+    assertTrue( error.isValid() == true );
     error = null;
     error = new SBMLError(libsbml.DisallowedMathMLEncodingUse,1,2);
     assertTrue( error.getErrorId() == libsbml.DisallowedMathMLEncodingUse );
     assertTrue( error.getSeverity() == libsbml.LIBSBML_SEV_NOT_APPLICABLE );
     assertTrue( error.getCategory() == libsbml.LIBSBML_CAT_MATHML_CONSISTENCY );
+    assertTrue( error.isValid() == true );
     error = null;
     error = new SBMLError(libsbml.UnknownError,2,4);
     assertTrue( error.getErrorId() == libsbml.UnknownError );
@@ -174,6 +197,15 @@ public class TestSBMLError {
     assertTrue( error.getSeverityAsString().equals( "Fatal" ) );
     assertTrue( error.getCategory() == libsbml.LIBSBML_CAT_INTERNAL );
     assertTrue( error.getShortMessage().equals( "Encountered unknown internal libSBML error") );
+    assertTrue( error.isValid() == true );
+    error = null;
+    error = new SBMLError(70912,2,4);
+    assertTrue( error.getErrorId() == 70912 );
+    assertTrue( error.getSeverity() == libsbml.LIBSBML_SEV_WARNING );
+    assertTrue( error.getSeverityAsString().equals( "Warning" ) );
+    assertTrue( error.getCategory() == libsbml.LIBSBML_CAT_INTERNAL );
+    assertTrue( error.getShortMessage().equals( "Encountered unknown internal libSBML error") );
+    assertTrue( error.isValid() == false );
     error = null;
   }
 

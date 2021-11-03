@@ -18,11 +18,6 @@
  * This file is part of libSBML.  Please visit http://sbml.org for more
  * information about SBML, and the latest version of libSBML.
  *
- * Copyright (C) 2020 jointly by the following organizations:
- *     1. California Institute of Technology, Pasadena, CA, USA
- *     2. University of Heidelberg, Heidelberg, Germany
- *     3. University College London, London, UK
- *
  * Copyright 2005-2010 California Institute of Technology.
  * Copyright 2002-2005 California Institute of Technology and
  *                     Japan Science and Technology Corporation.
@@ -163,6 +158,8 @@ public class TestConstraint {
     assertTrue( object.getNamespaces() != null );
     assertTrue( object.getNamespaces().getLength() == 2 );
     object = null;
+    xmlns = null;
+    sbmlns = null;
   }
 
   public void test_Constraint_free_NULL()
@@ -203,12 +200,20 @@ public class TestConstraint {
     assertTrue( C.isSetMessage() == true );
     C.setMessage(C.getMessage());
     assertTrue( !C.getMessage().equals(node) );
-    assertTrue( C.getMessageString() != null );
+    String str = C.getMessageString();
+    assertTrue( str != null );
     C.unsetMessage();
     assertEquals( false, C.isSetMessage() );
     if (C.getMessage() != null);
     {
     }
+    text = null;
+    triple = null;
+    att = null;
+    xmlns = null;
+    p = null;
+    triple1 = null;
+    att1 = null;
     node = null;
   }
 
@@ -265,4 +270,3 @@ public class TestConstraint {
     }
   }
 }
-

@@ -2,8 +2,7 @@
 # @brief   fomula units data unit tests
 #
 # @author  Akiya Jouraku (Ruby conversion)
-# @author  Ben Bornstein
- 
+# @author  Ben Bornstein 
 # 
 # ====== WARNING ===== WARNING ===== WARNING ===== WARNING ===== WARNING ======
 #
@@ -63,6 +62,7 @@ class TestRDFAnnotation < Test::Unit::TestCase
     filename = "../../sbml/annotation/test/test-data/annotation.xml"
     @@d = LibSBML::readSBML(filename)
     @@m = @@d.getModel()
+    filename = nil
   end
 
   def teardown
@@ -77,6 +77,7 @@ class TestRDFAnnotation < Test::Unit::TestCase
     assert( n1.getName() ==  "annotation" )
     assert_equal true, equals(expected,n1.toXMLString())
     node = nil
+    n1 = nil
   end
 
   def test_RDFAnnotation_deleteWithOther
@@ -91,14 +92,14 @@ class TestRDFAnnotation < Test::Unit::TestCase
     "  </jd2:JDesignerLayout>\n" + 
     "</annotation>"
     assert_equal true, equals(expected,node.toXMLString())
+    node = nil
   end
 
   def test_RDFAnnotation_deleteWithOtherRDF
     c = @@m.getCompartment(5)
     node = c.getAnnotation()
-    expected = "<annotation>\n" +
-    "  <jd2:JDesignerLayout version=\"2.0\" MajorVersion=\"2\" MinorVersion=\"0\" BuildVersion=\"41\">\n" + 
-    "    <jd2:header>\n"+ 
+    expected = "<annotation>\n" + "  <jd2:JDesignerLayout version=\"2.0\" MajorVersion=\"2\" MinorVersion=\"0\" BuildVersion=\"41\">\n" + 
+    "    <jd2:header>\n" + 
     "      <jd2:VersionHeader JDesignerVersion=\"2.0\"/>\n" + 
     "      <jd2:ModelHeader Author=\"Mr Untitled\" ModelVersion=\"0.0\" ModelTitle=\"untitled\"/>\n" + 
     "      <jd2:TimeCourseDetails timeStart=\"0\" timeEnd=\"10\" numberOfPoints=\"1000\"/>\n" + 
@@ -205,6 +206,7 @@ class TestRDFAnnotation < Test::Unit::TestCase
     node = nil
     node1 = LibSBML::RDFAnnotationParser.parseCVTerms(nil)
     assert( node1 == nil )
+    node1 = nil
     node1 = LibSBML::RDFAnnotationParser.createCVTerms(nil)
     assert( node1 == nil )
     node1 = LibSBML::RDFAnnotationParser.parseCVTerms(@@m.getCompartment(2))
@@ -222,20 +224,25 @@ class TestRDFAnnotation < Test::Unit::TestCase
     node1 = LibSBML::RDFAnnotationParser.createCVTerms(c)
     assert( node1 == nil )
     cv = LibSBML::CVTerm.new(LibSBML::BIOLOGICAL_QUALIFIER)
-    cv.setBiologicalQualifierType(23)
+    cv.setBiologicalQualifierType(23.t())
     cv.addResource("http://myres")
     c.addCVTerm(cv)
     node1 = LibSBML::RDFAnnotationParser.createCVTerms(c)
     assert( node1 == nil )
     c = nil
+    cv = nil
+    node1 = nil
     m1 = LibSBML::Model.new(3,1)
     m1.setMetaId("_002")
     cv = LibSBML::CVTerm.new(LibSBML::MODEL_QUALIFIER)
-    cv.setModelQualifierType(23)
+    cv.setModelQualifierType(23.t())
     cv.addResource("http://myres")
     m1.addCVTerm(cv)
     node1 = LibSBML::RDFAnnotationParser.createCVTerms(m1)
     assert( node1 == nil )
+    m1 = nil
+    cv = nil
+    node1 = nil
   end
 
   def test_RDFAnnotation_parseModelHistory
@@ -254,6 +261,7 @@ class TestRDFAnnotation < Test::Unit::TestCase
     creator = desc.getChild(0)
     assert ((  "creator" == creator.getName() ))
     assert ((  "dc" == creator.getPrefix() ))
+    assert ((  "http://purl.org/dc/elements/1.1/" == creator.getURI() ))
     assert( creator.getNumChildren() == 1 )
     bag = creator.getChild(0)
     assert ((  "Bag" == bag.getName() ))
@@ -396,8 +404,7 @@ class TestRDFAnnotation < Test::Unit::TestCase
 
   def test_RDFAnnotation_replaceAnnotation1
     n1 = nil
-    noRDF = "<annotation>\n" +
-    "  <jd2:JDesignerLayout version=\"2.0\" MajorVersion=\"2\" MinorVersion=\"3\" BuildVersion=\"41\">\n" + 
+    noRDF = "<annotation>\n" + "  <jd2:JDesignerLayout version=\"2.0\" MajorVersion=\"2\" MinorVersion=\"3\" BuildVersion=\"41\">\n" + 
     "    <jd2:header>\n" + 
     "      <jd2:VersionHeader JDesignerVersion=\"2.0\"/>\n" + 
     "      <jd2:ModelHeader Author=\"Sarah\" ModelVersion=\"0.0\" ModelTitle=\"mine\"/>\n" + 
@@ -412,7 +419,7 @@ class TestRDFAnnotation < Test::Unit::TestCase
     "      <jd2:ModelHeader Author=\"Sarah\" ModelVersion=\"0.0\" ModelTitle=\"mine\"/>\n" + 
     "      <jd2:TimeCourseDetails timeStart=\"0\" timeEnd=\"12\" numberOfPoints=\"1000\"/>\n" + 
     "    </jd2:header>\n" + 
-    "  </jd2:JDesignerLayout>\n"+ 
+    "  </jd2:JDesignerLayout>\n" + 
     "  <rdf:RDF xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\" xmlns:dc=\"http://purl.org/dc/elements/1.1/\" xmlns:dcterms=\"http://purl.org/dc/terms/\" xmlns:vCard=\"http://www.w3.org/2001/vcard-rdf/3.0#\" xmlns:bqbiol=\"http://biomodels.net/biology-qualifiers/\" xmlns:bqmodel=\"http://biomodels.net/model-qualifiers/\">\n" + 
     "    <rdf:Description rdf:about=\"#_000005\">\n" + 
     "      <bqbiol:is>\n" + 
@@ -434,8 +441,7 @@ class TestRDFAnnotation < Test::Unit::TestCase
 
   def test_RDFAnnotation_replaceAnnotation2
     n1 = nil
-    jd = "  <jd2:JDesignerLayout version=\"2.0\" MajorVersion=\"2\" MinorVersion=\"3\" BuildVersion=\"41\">\n" +
-    "    <jd2:header>\n" + 
+    jd = "  <jd2:JDesignerLayout version=\"2.0\" MajorVersion=\"2\" MinorVersion=\"3\" BuildVersion=\"41\">\n" + "    <jd2:header>\n" + 
     "      <jd2:VersionHeader JDesignerVersion=\"2.0\"/>\n" + 
     "      <jd2:ModelHeader Author=\"Sarah\" ModelVersion=\"0.0\" ModelTitle=\"mine\"/>\n" + 
     "      <jd2:TimeCourseDetails timeStart=\"0\" timeEnd=\"12\" numberOfPoints=\"1000\"/>\n" + 
@@ -482,7 +488,8 @@ class TestRDFAnnotation < Test::Unit::TestCase
     model.addCVTerm(term)
     model.setMetaId("")
     test = model.toSBML()
-    assert( test ==  "<model id=\"test1\"/>" )
+    assert ((  "<model id=\"test1\"/>" == test ))
+    test = nil
   end
 
   def test_RDFAnnotation_testMissingAbout
@@ -491,7 +498,7 @@ class TestRDFAnnotation < Test::Unit::TestCase
     "    <rdf:RDF xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\" xmlns:dc=\"http://purl.org/dc/elements/1.1/\" xmlns:dcterms=\"http://purl.org/dc/terms/\" xmlns:vCard=\"http://www.w3.org/2001/vcard-rdf/3.0#\" xmlns:bqbiol=\"http://biomodels.net/biology-qualifiers/\" xmlns:bqmodel=\"http://biomodels.net/model-qualifiers/\">\n" + 
     "      <rdf:Description rdf:about=\"#_000004\">\n" + 
     "        <bqbiol:is>\n" + 
-    "          <rdf:Bag>\n" +    
+    "          <rdf:Bag>\n" + 
     "            <rdf:li rdf:resource=\"http://www.geneontology.org/#GO:0007274\"/>\n" + 
     "          </rdf:Bag>\n" + 
     "        </bqbiol:is>\n" + 
@@ -522,31 +529,68 @@ class TestRDFAnnotation < Test::Unit::TestCase
     "      </rdf:Description>\n" + 
     "    </rdf:RDF>\n" + 
     "  </annotation>"
-    cvTerms = LibSBML::CVTermList.new()
+    cvTerms = List.new()
     stream = LibSBML::XMLInputStream.new( withAbout,false )
     node = LibSBML::XMLNode.new( stream )
     LibSBML::RDFAnnotationParser.parseRDFAnnotation(node,cvTerms)
-    assert( cvTerms.getSize() == 1 )
-    cvTerms = LibSBML::CVTermList.new()
-    LibSBML::RDFAnnotationParser.parseRDFAnnotation(node,cvTerms )
-    assert( cvTerms.getSize() == 1 )
-    cvTerms = nil
-    cvTerms = nil
-    cvTerms = LibSBML::CVTermList.new()
-    stream1 = LibSBML::XMLInputStream.new( emptyAbout,false )
-    node1 = LibSBML::XMLNode.new( stream1 )
-    LibSBML::RDFAnnotationParser.parseRDFAnnotation(node1,cvTerms)
-    assert( cvTerms.getSize() == 0 )
-    cvTerms = nil
-    cvTerms = nil
-    cvTerms = LibSBML::CVTermList.new()
-    stream2 = LibSBML::XMLInputStream.new( noAbout,false )
-    node2 = LibSBML::XMLNode.new( stream2 )
-    LibSBML::RDFAnnotationParser.parseRDFAnnotation(node2,cvTerms)
-    assert( cvTerms.getSize() == 0 )
+    assert( cvterms.getSize() == 1 )
+    if (cvTerms != nil)
+      size = cvterms.getSize()
+      while (size > 0) {delete  cvTerms.remove(0) 
+      size--
+    end
     cvTerms = nil
     cvTerms = nil
   end
+  cvTerms = List.new()
+  LibSBML::RDFAnnotationParser.parseRDFAnnotation(node,cvTerms, "_000004" )
+  assert( cvterms.getSize() == 1 )
+  if (cvTerms != nil)
+    size = cvterms.getSize()
+    while (size > 0) {delete  cvTerms.remove(0) 
+    size--
+  end
+  cvTerms = nil
+  cvTerms = nil
+end
+cvTerms = List.new()
+LibSBML::RDFAnnotationParser.parseRDFAnnotation(node,cvTerms, "badMetaId" )
+assert( cvterms.getSize() == 0 )
+if (cvTerms != nil)
+  size = cvterms.getSize()
+  while (size > 0) {delete  cvTerms.remove(0) 
+  size--
+end
+cvTerms = nil
+cvTerms = nil
+end
+cvTerms = List.new()
+stream1 = LibSBML::XMLInputStream.new( emptyAbout,false )
+node1 = LibSBML::XMLNode.new( stream1 )
+LibSBML::RDFAnnotationParser.parseRDFAnnotation(node1,cvTerms)
+assert( cvterms.getSize() == 0 )
+if (cvTerms != nil)
+size = cvterms.getSize()
+while (size > 0) {delete  cvTerms.remove(0) 
+size--
+end
+cvTerms = nil
+cvTerms = nil
+end
+cvTerms = List.new()
+stream2 = LibSBML::XMLInputStream.new( noAbout,false )
+node2 = LibSBML::XMLNode.new( stream2 )
+LibSBML::RDFAnnotationParser.parseRDFAnnotation(node2,cvTerms)
+assert( cvterms.getSize() == 0 )
+if (cvTerms != nil)
+size = cvterms.getSize()
+while (size > 0) {delete  cvTerms.remove(0) 
+size--
+end
+cvTerms = nil
+cvTerms = nil
+end
+end
 
   def test_RDFAnnotation_testMissingMetaId
     doc = LibSBML::SBMLDocument.new( 3,1 )
@@ -560,7 +604,44 @@ class TestRDFAnnotation < Test::Unit::TestCase
     model.addCVTerm(term)
     model.setMetaId("")
     test = model.toSBML()
-    assert( test ==  "<model id=\"test1\"/>" )
+    assert ((  "<model id=\"test1\"/>" == test ))
+    test = nil
+  end
+
+  def test_invalid_user_annotation
+    invalidL2V1 = "<?xml version='1.0' encoding='UTF-8'?>\n" + "<sbml xmlns='http://www.sbml.org/sbml/level2'\n" + 
+    " level='2'\n" + 
+    " version='1'>\n" + 
+    "  <annotation>\n" + 
+    "    Created by The MathWorks_COMMA_ Inc. SimBiology tool_COMMA_ Version 4.0\n" + 
+    "  </annotation>\n" + 
+    "  <model id='trial_spatial' name='trial_spatial'>\n" + 
+    "    <listOfCompartments>\n" + 
+    "      <compartment id='cytosol' constant='true' size='1'/>\n" + 
+    "    </listOfCompartments>\n" + 
+    "  </model>\n" + 
+    "</sbml>\n"
+    doc = LibSBML::readSBMLFromString(invalidL2V1)
+    numErrors = doc.getNumErrors()
+    assert( numErrors == 1 )
+    doc = nil
+    invalidL2V2 = "<?xml version='1.0' encoding='UTF-8'?>\n" + "<sbml xmlns='http://www.sbml.org/sbml/level2/version2'\n" + 
+    " level='2'\n" + 
+    " version='2'>\n" + 
+    "  <annotation>\n" + 
+    "    Created by The MathWorks_COMMA_ Inc. SimBiology tool_COMMA_ Version 4.0\n" + 
+    "  </annotation>\n" + 
+    "  <model id='trial_spatial' name='trial_spatial'>\n" + 
+    "    <listOfCompartments>\n" + 
+    "      <compartment id='cytosol' constant='true' size='1'/>\n" + 
+    "    </listOfCompartments>\n" + 
+    "  </model>\n" + 
+    "</sbml>\n"
+    doc = LibSBML::readSBMLFromString(invalidL2V2)
+    numErrors = doc.getNumErrors()
+    assert( numErrors == 1 )
+    assert_equal true, doc.getErrorLog().contains(AnnotationNotElement)
+    doc = nil
   end
 
 end

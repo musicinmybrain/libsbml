@@ -201,6 +201,13 @@ namespace LibSBMLCSTest.sbml {
       if (C.getMessage() != null);
       {
       }
+      text = null;
+      triple = null;
+      att = null;
+      xmlns = null;
+      p = null;
+      triple1 = null;
+      att1 = null;
       node = null;
     }
 

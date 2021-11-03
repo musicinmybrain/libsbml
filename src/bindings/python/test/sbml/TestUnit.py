@@ -50,14 +50,14 @@ class TestUnit(unittest.TestCase):
     pass  
 
   def test_Unit_create(self):
-    self.assert_( self.U.getTypeCode() == libsbml.SBML_UNIT )
-    self.assert_( self.U.getMetaId() == "" )
-    self.assert_( self.U.getNotes() == None )
-    self.assert_( self.U.getAnnotation() == None )
-    self.assert_( self.U.getKind() == libsbml.UNIT_KIND_INVALID )
-    self.assert_( self.U.getExponent() == 1 )
-    self.assert_( self.U.getScale() == 0 )
-    self.assert_( self.U.getMultiplier() == 1.0 )
+    self.assertTrue( self.U.getTypeCode() == libsbml.SBML_UNIT )
+    self.assertTrue( self.U.getMetaId() == "" )
+    self.assertTrue( self.U.getNotes() == None )
+    self.assertTrue( self.U.getAnnotation() == None )
+    self.assertTrue( self.U.getKind() == libsbml.UNIT_KIND_INVALID )
+    self.assertTrue( self.U.getExponent() == 1 )
+    self.assertTrue( self.U.getScale() == 0 )
+    self.assertTrue( self.U.getMultiplier() == 1.0 )
     self.assertEqual( False, self.U.isSetKind() )
     self.assertEqual( True, self.U.isSetExponent() )
     self.assertEqual( True, self.U.isSetScale() )
@@ -70,15 +70,17 @@ class TestUnit(unittest.TestCase):
     sbmlns = libsbml.SBMLNamespaces(2,1)
     sbmlns.addNamespaces(xmlns)
     object = libsbml.Unit(sbmlns)
-    self.assert_( object.getTypeCode() == libsbml.SBML_UNIT )
-    self.assert_( object.getMetaId() == "" )
-    self.assert_( object.getNotes() == None )
-    self.assert_( object.getAnnotation() == None )
-    self.assert_( object.getLevel() == 2 )
-    self.assert_( object.getVersion() == 1 )
-    self.assert_( object.getNamespaces() != None )
-    self.assert_( object.getNamespaces().getLength() == 2 )
+    self.assertTrue( object.getTypeCode() == libsbml.SBML_UNIT )
+    self.assertTrue( object.getMetaId() == "" )
+    self.assertTrue( object.getNotes() == None )
+    self.assertTrue( object.getAnnotation() == None )
+    self.assertTrue( object.getLevel() == 2 )
+    self.assertTrue( object.getVersion() == 1 )
+    self.assertTrue( object.getNamespaces() != None )
+    self.assertTrue( object.getNamespaces().getLength() == 2 )
     _dummyList = [ object ]; _dummyList[:] = []; del _dummyList
+    _dummyList = [ xmlns ]; _dummyList[:] = []; del _dummyList
+    _dummyList = [ sbmlns ]; _dummyList[:] = []; del _dummyList
     pass  
 
   def test_Unit_free_NULL(self):
@@ -174,21 +176,88 @@ class TestUnit(unittest.TestCase):
     self.assertEqual( True, self.U.isWeber() )
     pass  
 
-  def test_Unit_set_get(self):
+  def test_Unit_merge(self):
+    old_locale = safe_strdup
+    u1 = libsbml.Unit(2,3)
+    u1.setKind(libsbml.UNIT_KIND_LITRE)
+    u1.setExponent(1.00)
+    u1.setScale(-3)
+    u1.setMultiplier(1.00)
+    u2 = libsbml.Unit(2,3)
+    u2.setKind(libsbml.UNIT_KIND_LITRE)
+    u2.setExponent(-1)
+    u2.setScale(-3)
+    u2.setMultiplier(1)
+    u1.merge(u2)
+    self.assertTrue( u1.getKind() == libsbml.UNIT_KIND_LITRE )
+    self.assertEqual( True, util_isEqual )
+    self.assertTrue( u1.getScale() == 0 )
+    self.assertEqual( True, util_isEqual )
+    _dummyList = [ u1 ]; _dummyList[:] = []; del _dummyList
+    _dummyList = [ u2 ]; _dummyList[:] = []; del _dummyList
+    pass  
+
+  def test_Unit_set_get_unset(self):
     u = libsbml.Unit(2,4)
-    self.assert_( u.getKind() == libsbml.UNIT_KIND_INVALID )
-    self.assert_( u.getExponent() == 1 )
-    self.assert_( u.getScale() == 0 )
-    self.assert_( u.getMultiplier() == 1.0 )
+    self.assertTrue( u.getKind() == libsbml.UNIT_KIND_INVALID )
+    self.assertTrue( u.getExponent() == 1 )
+    self.assertEqual( True, u.isSetExponent() )
+    self.assertTrue( u.getScale() == 0 )
+    self.assertEqual( True, u.isSetScale() )
+    self.assertTrue( u.getMultiplier() == 1.0 )
+    self.assertEqual( True, u.isSetMultiplier() )
     self.assertEqual( False, u.isSetKind() )
     u.setKind(libsbml.UNIT_KIND_WATT)
-    self.assert_( u.getKind() == libsbml.UNIT_KIND_WATT )
+    self.assertTrue( u.getKind() == libsbml.UNIT_KIND_WATT )
     u.setExponent(3)
-    self.assert_( u.getExponent() == 3 )
+    self.assertTrue( u.getExponent() == 3 )
     u.setScale(4)
-    self.assert_( u.getScale() == 4 )
+    self.assertTrue( u.getScale() == 4 )
     u.setMultiplier(3.2)
-    self.assert_( u.getMultiplier() == 3.2 )
+    self.assertTrue( u.getMultiplier() == 3.2 )
+    self.assertTrue( u.unsetKind() == libsbml.LIBSBML_OPERATION_SUCCESS )
+    self.assertTrue( u.unsetExponent() == libsbml.LIBSBML_UNEXPECTED_ATTRIBUTE )
+    self.assertTrue( u.unsetScale() == libsbml.LIBSBML_UNEXPECTED_ATTRIBUTE )
+    self.assertTrue( u.unsetMultiplier() == libsbml.LIBSBML_UNEXPECTED_ATTRIBUTE )
+    self.assertTrue( u.getKind() == libsbml.UNIT_KIND_INVALID )
+    self.assertTrue( u.getExponent() == 1 )
+    self.assertEqual( True, u.isSetExponent() )
+    self.assertTrue( u.getScale() == 0 )
+    self.assertEqual( True, u.isSetScale() )
+    self.assertTrue( u.getMultiplier() == 1.0 )
+    self.assertEqual( True, u.isSetMultiplier() )
+    self.assertEqual( False, u.isSetKind() )
+    _dummyList = [ u ]; _dummyList[:] = []; del _dummyList
+    pass  
+
+  def test_Unit_unset(self):
+    u = libsbml.Unit(2,4)
+    u.setKind(libsbml.UNIT_KIND_WATT)
+    u.setExponent(3)
+    u.setScale(4)
+    u.setMultiplier(3.2)
+    self.assertTrue( u.getKind() == libsbml.UNIT_KIND_WATT )
+    self.assertTrue( u.getExponent() == 3 )
+    self.assertTrue( u.getScale() == 4 )
+    self.assertTrue( u.getMultiplier() == 3.2 )
+    self.assertTrue( u.isSetKind() == 1 )
+    self.assertTrue( u.isSetExponent() == 1 )
+    self.assertTrue( u.isSetScale() == 1 )
+    self.assertTrue( u.isSetMultiplier() == 1 )
+    self.assertTrue( u.isSetOffset() == 0 )
+    u.unsetKind()
+    u.unsetExponent()
+    u.unsetScale()
+    u.unsetMultiplier()
+    self.assertTrue( u.isSetKind() == 0 )
+    self.assertTrue( u.isSetExponent() == 1 )
+    self.assertTrue( u.isSetScale() == 1 )
+    self.assertTrue( u.isSetMultiplier() == 1 )
+    self.assertTrue( u.isSetOffset() == 0 )
+    self.assertTrue( u.getKind() == libsbml.UNIT_KIND_INVALID )
+    self.assertTrue( u.getExponent() == 1 )
+    self.assertTrue( u.getScale() == 0 )
+    self.assertTrue( u.getMultiplier() == 1.0 )
     _dummyList = [ u ]; _dummyList[:] = []; del _dummyList
     pass  
 

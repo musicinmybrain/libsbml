@@ -18,11 +18,6 @@
  * This file is part of libSBML.  Please visit http://sbml.org for more
  * information about SBML, and the latest version of libSBML.
  *
- * Copyright (C) 2020 jointly by the following organizations:
- *     1. California Institute of Technology, Pasadena, CA, USA
- *     2. University of Heidelberg, Heidelberg, Germany
- *     3. University College London, London, UK
- *
  * Copyright 2005-2010 California Institute of Technology.
  * Copyright 2002-2005 California Institute of Technology and
  *                     Japan Science and Technology Corporation.
@@ -141,7 +136,8 @@ public class TestL3Model {
   {
     assertTrue( M.getNamespaces() != null );
     assertTrue( M.getNamespaces().getLength() == 1 );
-    assertTrue(M.getNamespaces().getURI(0).equals(    "http://www.sbml.org/sbml/level3/version1/core"));
+    String uri = M.getNamespaces().getURI(0);
+    assertTrue(uri.equals( "http://www.sbml.org/sbml/level3/version1/core"));
   }
 
   public void test_L3_Model_areaUnits()
@@ -234,6 +230,8 @@ public class TestL3Model {
     assertEquals( false, m.isSetLengthUnits() );
     assertEquals( false, m.isSetConversionFactor() );
     m = null;
+    xmlns = null;
+    sbmlns = null;
   }
 
   public void test_L3_Model_extentUnits()

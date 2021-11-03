@@ -49,22 +49,28 @@ class TestSpecies(unittest.TestCase):
     _dummyList = [ self.S ]; _dummyList[:] = []; del _dummyList
     pass  
 
+  def test_Species_conversionFactor(self):
+    self.assertEqual( False, self.S.isSetConversionFactor() )
+    ret = self.S.unsetConversionFactor()
+    self.assertTrue( ret == libsbml.LIBSBML_UNEXPECTED_ATTRIBUTE )
+    pass  
+
   def test_Species_create(self):
-    self.assert_( self.S.getTypeCode() == libsbml.SBML_SPECIES )
-    self.assert_( self.S.getMetaId() == "" )
-    self.assert_( self.S.getNotes() == None )
-    self.assert_( self.S.getAnnotation() == None )
-    self.assert_( self.S.getId() == "" )
-    self.assert_( self.S.getName() == "" )
-    self.assert_( self.S.getCompartment() == "" )
-    self.assert_( self.S.getInitialAmount() == 0.0 )
-    self.assert_( self.S.getInitialConcentration() == 0.0 )
-    self.assert_( self.S.getSubstanceUnits() == "" )
-    self.assert_( self.S.getSpatialSizeUnits() == "" )
-    self.assert_( self.S.getHasOnlySubstanceUnits() == False )
-    self.assert_( self.S.getBoundaryCondition() == False )
-    self.assert_( self.S.getCharge() == 0 )
-    self.assert_( self.S.getConstant() == False )
+    self.assertTrue( self.S.getTypeCode() == libsbml.SBML_SPECIES )
+    self.assertTrue( self.S.getMetaId() == "" )
+    self.assertTrue( self.S.getNotes() == None )
+    self.assertTrue( self.S.getAnnotation() == None )
+    self.assertTrue( self.S.getId() == "" )
+    self.assertTrue( self.S.getName() == "" )
+    self.assertTrue( self.S.getCompartment() == "" )
+    self.assertTrue( self.S.getInitialAmount() == 0.0 )
+    self.assertTrue( self.S.getInitialConcentration() == 0.0 )
+    self.assertTrue( self.S.getSubstanceUnits() == "" )
+    self.assertTrue( self.S.getSpatialSizeUnits() == "" )
+    self.assertTrue( self.S.getHasOnlySubstanceUnits() == False )
+    self.assertTrue( self.S.getBoundaryCondition() == False )
+    self.assertTrue( self.S.getCharge() == 0 )
+    self.assertTrue( self.S.getConstant() == False )
     self.assertEqual( False, self.S.isSetId() )
     self.assertEqual( False, self.S.isSetName() )
     self.assertEqual( False, self.S.isSetCompartment() )
@@ -85,30 +91,89 @@ class TestSpecies(unittest.TestCase):
     sbmlns = libsbml.SBMLNamespaces(2,1)
     sbmlns.addNamespaces(xmlns)
     object = libsbml.Species(sbmlns)
-    self.assert_( object.getTypeCode() == libsbml.SBML_SPECIES )
-    self.assert_( object.getMetaId() == "" )
-    self.assert_( object.getNotes() == None )
-    self.assert_( object.getAnnotation() == None )
-    self.assert_( object.getLevel() == 2 )
-    self.assert_( object.getVersion() == 1 )
-    self.assert_( object.getNamespaces() != None )
-    self.assert_( object.getNamespaces().getLength() == 2 )
+    self.assertTrue( object.getTypeCode() == libsbml.SBML_SPECIES )
+    self.assertTrue( object.getMetaId() == "" )
+    self.assertTrue( object.getNotes() == None )
+    self.assertTrue( object.getAnnotation() == None )
+    self.assertTrue( object.getLevel() == 2 )
+    self.assertTrue( object.getVersion() == 1 )
+    self.assertTrue( object.getNamespaces() != None )
+    self.assertTrue( object.getNamespaces().getLength() == 2 )
     _dummyList = [ object ]; _dummyList[:] = []; del _dummyList
+    _dummyList = [ xmlns ]; _dummyList[:] = []; del _dummyList
+    _dummyList = [ sbmlns ]; _dummyList[:] = []; del _dummyList
     pass  
 
   def test_Species_free_NULL(self):
     _dummyList = [ None ]; _dummyList[:] = []; del _dummyList
     pass  
 
+  def test_Species_getsetBoundaryCondition(self):
+    self.assertTrue( self.S.getBoundaryCondition() == False )
+    self.assertTrue( self.S.isSetBoundaryCondition() == True )
+    self.S.setBoundaryCondition(True)
+    self.assertTrue( self.S.getBoundaryCondition() == True )
+    self.assertTrue( self.S.isSetBoundaryCondition() == True )
+    ret = self.S.unsetBoundaryCondition()
+    self.assertTrue( ret == libsbml.LIBSBML_UNEXPECTED_ATTRIBUTE )
+    self.assertTrue( self.S.getBoundaryCondition() == False )
+    self.assertTrue( self.S.isSetBoundaryCondition() == True )
+    self.S.setBoundaryCondition(False)
+    self.assertTrue( self.S.getBoundaryCondition() == False )
+    self.assertTrue( self.S.isSetBoundaryCondition() == True )
+    ret = self.S.unsetBoundaryCondition()
+    self.assertTrue( ret == libsbml.LIBSBML_UNEXPECTED_ATTRIBUTE )
+    self.assertTrue( self.S.getBoundaryCondition() == False )
+    self.assertTrue( self.S.isSetBoundaryCondition() == True )
+    pass  
+
+  def test_Species_getsetConstant(self):
+    self.assertTrue( self.S.getConstant() == False )
+    self.assertTrue( self.S.isSetConstant() == True )
+    self.S.setConstant(True)
+    self.assertTrue( self.S.getConstant() == True )
+    self.assertTrue( self.S.isSetConstant() == True )
+    ret = self.S.unsetConstant()
+    self.assertTrue( ret == libsbml.LIBSBML_UNEXPECTED_ATTRIBUTE )
+    self.assertTrue( self.S.getConstant() == False )
+    self.assertTrue( self.S.isSetConstant() == True )
+    self.S.setConstant(False)
+    self.assertTrue( self.S.getConstant() == False )
+    self.assertTrue( self.S.isSetConstant() == True )
+    ret = self.S.unsetConstant()
+    self.assertTrue( ret == libsbml.LIBSBML_UNEXPECTED_ATTRIBUTE )
+    self.assertTrue( self.S.getConstant() == False )
+    self.assertTrue( self.S.isSetConstant() == True )
+    pass  
+
+  def test_Species_getsetHasOnlySubstanceUnits(self):
+    self.assertTrue( self.S.getHasOnlySubstanceUnits() == False )
+    self.assertTrue( self.S.isSetHasOnlySubstanceUnits() == True )
+    self.S.setHasOnlySubstanceUnits(True)
+    self.assertTrue( self.S.getHasOnlySubstanceUnits() == True )
+    self.assertTrue( self.S.isSetHasOnlySubstanceUnits() == True )
+    ret = self.S.unsetHasOnlySubstanceUnits()
+    self.assertTrue( ret == libsbml.LIBSBML_UNEXPECTED_ATTRIBUTE )
+    self.assertTrue( self.S.getHasOnlySubstanceUnits() == False )
+    self.assertTrue( self.S.isSetHasOnlySubstanceUnits() == True )
+    self.S.setHasOnlySubstanceUnits(False)
+    self.assertTrue( self.S.getHasOnlySubstanceUnits() == False )
+    self.assertTrue( self.S.isSetHasOnlySubstanceUnits() == True )
+    ret = self.S.unsetHasOnlySubstanceUnits()
+    self.assertTrue( ret == libsbml.LIBSBML_UNEXPECTED_ATTRIBUTE )
+    self.assertTrue( self.S.getHasOnlySubstanceUnits() == False )
+    self.assertTrue( self.S.isSetHasOnlySubstanceUnits() == True )
+    pass  
+
   def test_Species_setCompartment(self):
     compartment =  "cell";
     self.S.setCompartment(compartment)
-    self.assert_(( compartment == self.S.getCompartment() ))
+    self.assertTrue(( compartment == self.S.getCompartment() ))
     self.assertEqual( True, self.S.isSetCompartment() )
     if (self.S.getCompartment() == compartment):
       pass    
     self.S.setCompartment(self.S.getCompartment())
-    self.assert_(( compartment == self.S.getCompartment() ))
+    self.assertTrue(( compartment == self.S.getCompartment() ))
     self.S.setCompartment("")
     self.assertEqual( False, self.S.isSetCompartment() )
     if (self.S.getCompartment() != None):
@@ -118,12 +183,12 @@ class TestSpecies(unittest.TestCase):
   def test_Species_setId(self):
     id =  "Glucose";
     self.S.setId(id)
-    self.assert_(( id == self.S.getId() ))
+    self.assertTrue(( id == self.S.getId() ))
     self.assertEqual( True, self.S.isSetId() )
     if (self.S.getId() == id):
       pass    
     self.S.setId(self.S.getId())
-    self.assert_(( id == self.S.getId() ))
+    self.assertTrue(( id == self.S.getId() ))
     self.S.setId("")
     self.assertEqual( False, self.S.isSetId() )
     if (self.S.getId() != None):
@@ -136,7 +201,7 @@ class TestSpecies(unittest.TestCase):
     self.S.setInitialAmount(1.2)
     self.assertEqual( True, self.S.isSetInitialAmount() )
     self.assertEqual( False, self.S.isSetInitialConcentration() )
-    self.assert_( self.S.getInitialAmount() == 1.2 )
+    self.assertTrue( self.S.getInitialAmount() == 1.2 )
     pass  
 
   def test_Species_setInitialConcentration(self):
@@ -145,18 +210,18 @@ class TestSpecies(unittest.TestCase):
     self.S.setInitialConcentration(3.4)
     self.assertEqual( False, self.S.isSetInitialAmount() )
     self.assertEqual( True, self.S.isSetInitialConcentration() )
-    self.assert_( self.S.getInitialConcentration() == 3.4 )
+    self.assertTrue( self.S.getInitialConcentration() == 3.4 )
     pass  
 
   def test_Species_setName(self):
     name =  "So_Sweet";
     self.S.setName(name)
-    self.assert_(( name == self.S.getName() ))
+    self.assertTrue(( name == self.S.getName() ))
     self.assertEqual( True, self.S.isSetName() )
     if (self.S.getName() == name):
       pass    
     self.S.setName(self.S.getName())
-    self.assert_(( name == self.S.getName() ))
+    self.assertTrue(( name == self.S.getName() ))
     self.S.setName("")
     self.assertEqual( False, self.S.isSetName() )
     if (self.S.getName() != None):
@@ -167,12 +232,12 @@ class TestSpecies(unittest.TestCase):
     s = libsbml.Species(2,1)
     units =  "volume";
     s.setSpatialSizeUnits(units)
-    self.assert_(( units == s.getSpatialSizeUnits() ))
+    self.assertTrue(( units == s.getSpatialSizeUnits() ))
     self.assertEqual( True, s.isSetSpatialSizeUnits() )
     if (s.getSpatialSizeUnits() == units):
       pass    
     s.setSpatialSizeUnits(s.getSpatialSizeUnits())
-    self.assert_(( units == s.getSpatialSizeUnits() ))
+    self.assertTrue(( units == s.getSpatialSizeUnits() ))
     s.setSpatialSizeUnits("")
     self.assertEqual( False, s.isSetSpatialSizeUnits() )
     if (s.getSpatialSizeUnits() != None):
@@ -183,12 +248,12 @@ class TestSpecies(unittest.TestCase):
   def test_Species_setSubstanceUnits(self):
     units =  "item";
     self.S.setSubstanceUnits(units)
-    self.assert_(( units == self.S.getSubstanceUnits() ))
+    self.assertTrue(( units == self.S.getSubstanceUnits() ))
     self.assertEqual( True, self.S.isSetSubstanceUnits() )
     if (self.S.getSubstanceUnits() == units):
       pass    
     self.S.setSubstanceUnits(self.S.getSubstanceUnits())
-    self.assert_(( units == self.S.getSubstanceUnits() ))
+    self.assertTrue(( units == self.S.getSubstanceUnits() ))
     self.S.setSubstanceUnits("")
     self.assertEqual( False, self.S.isSetSubstanceUnits() )
     if (self.S.getSubstanceUnits() != None):
@@ -198,15 +263,28 @@ class TestSpecies(unittest.TestCase):
   def test_Species_setUnits(self):
     units =  "mole";
     self.S.setUnits(units)
-    self.assert_(( units == self.S.getUnits() ))
+    self.assertTrue(( units == self.S.getUnits() ))
     self.assertEqual( True, self.S.isSetUnits() )
     if (self.S.getSubstanceUnits() == units):
       pass    
     self.S.setUnits(self.S.getSubstanceUnits())
-    self.assert_(( units == self.S.getUnits() ))
+    self.assertTrue(( units == self.S.getUnits() ))
     self.S.setUnits("")
     self.assertEqual( False, self.S.isSetUnits() )
     if (self.S.getSubstanceUnits() != None):
+      pass    
+    pass  
+
+  def test_Species_unsetCompartment(self):
+    compartment =  "cell";
+    self.S.setCompartment(compartment)
+    self.assertTrue(( compartment == self.S.getCompartment() ))
+    self.assertEqual( True, self.S.isSetCompartment() )
+    if (self.S.getCompartment() == compartment):
+      pass    
+    self.S.unsetCompartment()
+    self.assertEqual( False, self.S.isSetCompartment() )
+    if (self.S.getCompartment() != None):
       pass    
     pass  
 

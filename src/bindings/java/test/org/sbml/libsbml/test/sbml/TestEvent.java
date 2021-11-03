@@ -18,11 +18,6 @@
  * This file is part of libSBML.  Please visit http://sbml.org for more
  * information about SBML, and the latest version of libSBML.
  *
- * Copyright (C) 2020 jointly by the following organizations:
- *     1. California Institute of Technology, Pasadena, CA, USA
- *     2. University of Heidelberg, Heidelberg, Germany
- *     3. University College London, London, UK
- *
  * Copyright 2005-2010 California Institute of Technology.
  * Copyright 2002-2005 California Institute of Technology and
  *                     Japan Science and Technology Corporation.
@@ -171,6 +166,8 @@ public class TestEvent {
     assertTrue( object.getNamespaces() != null );
     assertTrue( object.getNamespaces().getLength() == 2 );
     object = null;
+    xmlns = null;
+    sbmlns = null;
   }
 
   public void test_Event_free_NULL()
@@ -195,6 +192,9 @@ public class TestEvent {
     assertNotEquals(e.getEventAssignment(0),ea);
     math = null;
     e = null;
+    math1 = null;
+    trigger = null;
+    ea = null;
   }
 
   public void test_Event_removeEventAssignment()
@@ -233,6 +233,8 @@ public class TestEvent {
     if (E.getDelay() != null);
     {
     }
+    math1 = null;
+    Delay = null;
   }
 
   public void test_Event_setId()
@@ -309,15 +311,43 @@ public class TestEvent {
     if (E.getTrigger() != null);
     {
     }
+    math1 = null;
+    trigger = null;
   }
 
   public void test_Event_setUseValuesFromTriggerTime()
   {
     Event object = new  Event(2,4);
+    assertTrue( object.getUseValuesFromTriggerTime() == true );
+    assertTrue( object.isSetUseValuesFromTriggerTime() == true );
     object.setUseValuesFromTriggerTime(false);
     assertTrue( object.getUseValuesFromTriggerTime() == false );
+    assertTrue( object.isSetUseValuesFromTriggerTime() == true );
     object.setUseValuesFromTriggerTime(true);
     assertTrue( object.getUseValuesFromTriggerTime() == true );
+    assertTrue( object.isSetUseValuesFromTriggerTime() == true );
+    object = null;
+  }
+
+  public void test_Event_unsetUseValuesFromTriggerTime()
+  {
+    Event object = new  Event(2,4);
+    assertTrue( object.getUseValuesFromTriggerTime() == true );
+    assertTrue( object.isSetUseValuesFromTriggerTime() == true );
+    object.setUseValuesFromTriggerTime(true);
+    assertTrue( object.getUseValuesFromTriggerTime() == true );
+    assertTrue( object.isSetUseValuesFromTriggerTime() == true );
+    int ret = object.unsetUseValuesFromTriggerTime();
+    assertTrue( ret == libsbml.LIBSBML_UNEXPECTED_ATTRIBUTE );
+    assertTrue( object.getUseValuesFromTriggerTime() == true );
+    assertTrue( object.isSetUseValuesFromTriggerTime() == true );
+    object.setUseValuesFromTriggerTime(false);
+    assertTrue( object.getUseValuesFromTriggerTime() == false );
+    assertTrue( object.isSetUseValuesFromTriggerTime() == true );
+    ret = object.unsetUseValuesFromTriggerTime();
+    assertTrue( ret == libsbml.LIBSBML_UNEXPECTED_ATTRIBUTE );
+    assertTrue( object.getUseValuesFromTriggerTime() == true );
+    assertTrue( object.isSetUseValuesFromTriggerTime() == true );
     object = null;
   }
 

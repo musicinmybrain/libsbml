@@ -18,11 +18,6 @@
  * This file is part of libSBML.  Please visit http://sbml.org for more
  * information about SBML, and the latest version of libSBML.
  *
- * Copyright (C) 2020 jointly by the following organizations:
- *     1. California Institute of Technology, Pasadena, CA, USA
- *     2. University of Heidelberg, Heidelberg, Germany
- *     3. University College London, London, UK
- *
  * Copyright 2005-2010 California Institute of Technology.
  * Copyright 2002-2005 California Institute of Technology and
  *                     Japan Science and Technology Corporation.
@@ -146,7 +141,9 @@ public class TestEvent_newSetters {
     ea.setVariable( "f");
     i = e.addEventAssignment(ea);
     assertTrue( i == libsbml.LIBSBML_INVALID_OBJECT );
-    ea.setMath(libsbml.parseFormula("a-n"));
+    ASTNode math = libsbml.parseFormula("a-n");
+    ea.setMath(math);
+    math = null;
     i = e.addEventAssignment(ea);
     assertTrue( i == libsbml.LIBSBML_OPERATION_SUCCESS );
     assertTrue( e.getNumEventAssignments() == 1 );
@@ -159,7 +156,9 @@ public class TestEvent_newSetters {
     Event e = new  Event(2,2);
     EventAssignment ea = new  EventAssignment(2,3);
     ea.setVariable( "f");
-    ea.setMath(libsbml.parseFormula("a-n"));
+    ASTNode math = libsbml.parseFormula("a-n");
+    ea.setMath(math);
+    math = null;
     int i = e.addEventAssignment(ea);
     assertTrue( i == libsbml.LIBSBML_VERSION_MISMATCH );
     assertTrue( e.getNumEventAssignments() == 0 );
@@ -181,10 +180,14 @@ public class TestEvent_newSetters {
     Event e = new  Event(2,2);
     EventAssignment ea = new  EventAssignment(2,2);
     ea.setVariable( "c");
-    ea.setMath(libsbml.parseFormula("a-n"));
+    ASTNode math = libsbml.parseFormula("a-n");
+    ea.setMath(math);
+    math = null;
     EventAssignment ea1 = new  EventAssignment(2,2);
     ea1.setVariable( "c");
-    ea1.setMath(libsbml.parseFormula("a-n"));
+    math = libsbml.parseFormula("a-n");
+    ea1.setMath(math);
+    math = null;
     int i = e.addEventAssignment(ea);
     assertTrue( i == libsbml.LIBSBML_OPERATION_SUCCESS );
     assertTrue( e.getNumEventAssignments() == 1 );
@@ -218,17 +221,22 @@ public class TestEvent_newSetters {
     i = E.unsetDelay();
     assertTrue( i == libsbml.LIBSBML_OPERATION_SUCCESS );
     assertEquals( false, E.isSetDelay() );
+    math1 = null;
+    Delay = null;
   }
 
   public void test_Event_setDelay2()
   {
+    ASTNode math1 = libsbml.parseFormula("0");
     Delay Delay = new  Delay(2,1);
-      Delay.setMath(libsbml.parseFormula("1"));
+    Delay.setMath(math1);
     int i = E.setDelay(Delay);
     assertTrue( i == libsbml.LIBSBML_VERSION_MISMATCH );
     assertEquals( false, E.isSetDelay() );
     i = E.unsetDelay();
     assertTrue( i == libsbml.LIBSBML_OPERATION_SUCCESS );
+    math1 = null;
+    Delay = null;
   }
 
   public void test_Event_setId1()
@@ -332,10 +340,13 @@ public class TestEvent_newSetters {
   public void test_Event_setTrigger1()
   {
     Trigger trigger = new  Trigger(2,1);
-      trigger.setMath(libsbml.parseFormula("true"));
+    ASTNode math = libsbml.parseFormula("true");
+    trigger.setMath(math);
+    math = null;
     int i = E.setTrigger(trigger);
     assertTrue( i == libsbml.LIBSBML_VERSION_MISMATCH );
     assertEquals( false, E.isSetTrigger() );
+    trigger = null;
   }
 
   public void test_Event_setTrigger2()
@@ -347,6 +358,8 @@ public class TestEvent_newSetters {
     assertTrue( i == libsbml.LIBSBML_OPERATION_SUCCESS );
     assertNotEquals(E.getTrigger(),null);
     assertEquals( true, E.isSetTrigger() );
+    math1 = null;
+    trigger = null;
   }
 
   public void test_Event_setUseValuesFromTriggerTime1()

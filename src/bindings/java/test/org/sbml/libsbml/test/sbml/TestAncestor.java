@@ -18,11 +18,6 @@
  * This file is part of libSBML.  Please visit http://sbml.org for more
  * information about SBML, and the latest version of libSBML.
  *
- * Copyright (C) 2020 jointly by the following organizations:
- *     1. California Institute of Technology, Pasadena, CA, USA
- *     2. University of Heidelberg, Heidelberg, Germany
- *     3. University College London, London, UK
- *
  * Copyright 2005-2010 California Institute of Technology.
  * Copyright 2002-2005 California Institute of Technology and
  *                     Japan Science and Technology Corporation.
@@ -137,6 +132,7 @@ public class TestAncestor {
     assertTrue( obj.getAncestorOfType(libsbml.SBML_LIST_OF).equals(lo) );
     assertTrue( obj.getAncestorOfType(libsbml.SBML_DOCUMENT) == null );
     assertTrue( obj.getAncestorOfType(libsbml.SBML_EVENT) == null );
+    m = null;
   }
 
   public void test_AssignmentRule_ancestor_create()
@@ -153,6 +149,7 @@ public class TestAncestor {
     assertTrue( obj.getAncestorOfType(libsbml.SBML_LIST_OF).equals(lo) );
     assertTrue( obj.getAncestorOfType(libsbml.SBML_DOCUMENT) == null );
     assertTrue( obj.getAncestorOfType(libsbml.SBML_EVENT) == null );
+    m = null;
   }
 
   public void test_CompartmentType_ancestor_add()
@@ -168,6 +165,7 @@ public class TestAncestor {
     assertTrue( obj.getAncestorOfType(libsbml.SBML_LIST_OF).equals(lo) );
     assertTrue( obj.getAncestorOfType(libsbml.SBML_DOCUMENT) == null );
     assertTrue( obj.getAncestorOfType(libsbml.SBML_EVENT) == null );
+    m = null;
   }
 
   public void test_CompartmentType_ancestor_create()
@@ -184,6 +182,7 @@ public class TestAncestor {
     assertTrue( obj.getAncestorOfType(libsbml.SBML_LIST_OF).equals(lo) );
     assertTrue( obj.getAncestorOfType(libsbml.SBML_DOCUMENT) == null );
     assertTrue( obj.getAncestorOfType(libsbml.SBML_EVENT) == null );
+    m = null;
   }
 
   public void test_Compartment_ancestor_add()
@@ -199,6 +198,7 @@ public class TestAncestor {
     assertTrue( obj.getAncestorOfType(libsbml.SBML_LIST_OF).equals(lo) );
     assertTrue( obj.getAncestorOfType(libsbml.SBML_DOCUMENT) == null );
     assertTrue( obj.getAncestorOfType(libsbml.SBML_EVENT) == null );
+    m = null;
   }
 
   public void test_Compartment_ancestor_create()
@@ -215,13 +215,16 @@ public class TestAncestor {
     assertTrue( obj.getAncestorOfType(libsbml.SBML_LIST_OF).equals(lo) );
     assertTrue( obj.getAncestorOfType(libsbml.SBML_DOCUMENT) == null );
     assertTrue( obj.getAncestorOfType(libsbml.SBML_EVENT) == null );
+    m = null;
   }
 
   public void test_Constraint_ancestor_add()
   {
     Constraint ct = new Constraint(2,4);
     Model m = new Model(2,4);
-    ct.setMath(libsbml.parseFormula("k+k"));
+    ASTNode math = libsbml.parseFormula("k+k");
+    ct.setMath(math);
+    math = null;
     m.addConstraint(ct);
     ct = null;
     ListOf lo = m.getListOfConstraints();
@@ -230,6 +233,7 @@ public class TestAncestor {
     assertTrue( obj.getAncestorOfType(libsbml.SBML_LIST_OF).equals(lo) );
     assertTrue( obj.getAncestorOfType(libsbml.SBML_DOCUMENT) == null );
     assertTrue( obj.getAncestorOfType(libsbml.SBML_EVENT) == null );
+    m = null;
   }
 
   public void test_Constraint_ancestor_create()
@@ -246,13 +250,16 @@ public class TestAncestor {
     assertTrue( obj.getAncestorOfType(libsbml.SBML_LIST_OF).equals(lo) );
     assertTrue( obj.getAncestorOfType(libsbml.SBML_DOCUMENT) == null );
     assertTrue( obj.getAncestorOfType(libsbml.SBML_EVENT) == null );
+    m = null;
   }
 
   public void test_Delay_ancestor_add()
   {
     Delay d = new Delay(2,4);
+    ASTNode math = libsbml.parseFormula("1");
+    d.setMath(math);
+    math = null;
     Event e = new Event(2,4);
-      d.setMath(libsbml.parseFormula("1"));
     e.setDelay(d);
     d = null;
     Delay obj = e.getDelay();
@@ -273,6 +280,7 @@ public class TestAncestor {
     assertTrue( obj.getAncestorOfType(libsbml.SBML_EVENT).equals(e) );
     assertTrue( obj.getAncestorOfType(libsbml.SBML_DOCUMENT) == null );
     assertTrue( obj.getAncestorOfType(libsbml.SBML_COMPARTMENT) == null );
+    e = null;
   }
 
   public void test_Delay_ancestor_create_model()
@@ -289,6 +297,7 @@ public class TestAncestor {
     assertTrue( obj.getAncestorOfType(libsbml.SBML_MODEL).equals(m) );
     assertTrue( obj.getAncestorOfType(libsbml.SBML_DOCUMENT) == null );
     assertTrue( obj.getAncestorOfType(libsbml.SBML_COMPARTMENT) == null );
+    m = null;
   }
 
   public void test_EventAssignment_ancestor_add()
@@ -296,7 +305,9 @@ public class TestAncestor {
     Event e = new Event(2,4);
     EventAssignment ea = new EventAssignment(2,4);
     ea.setVariable("c");
-    ea.setMath(libsbml.parseFormula("K+L"));
+    ASTNode math = libsbml.parseFormula("K+L");
+    ea.setMath(math);
+    math = null;
     e.addEventAssignment(ea);
     ea = null;
     ListOf lo = e.getListOfEventAssignments();
@@ -305,6 +316,7 @@ public class TestAncestor {
     assertTrue( obj.getAncestorOfType(libsbml.SBML_LIST_OF).equals(lo) );
     assertTrue( obj.getAncestorOfType(libsbml.SBML_DOCUMENT) == null );
     assertTrue( obj.getAncestorOfType(libsbml.SBML_COMPARTMENT) == null );
+    e = null;
   }
 
   public void test_EventAssignment_ancestor_create()
@@ -321,6 +333,7 @@ public class TestAncestor {
     assertTrue( obj.getAncestorOfType(libsbml.SBML_LIST_OF).equals(lo) );
     assertTrue( obj.getAncestorOfType(libsbml.SBML_DOCUMENT) == null );
     assertTrue( obj.getAncestorOfType(libsbml.SBML_COMPARTMENT) == null );
+    e = null;
   }
 
   public void test_EventAssignment_ancestor_create_model()
@@ -340,6 +353,7 @@ public class TestAncestor {
     assertTrue( obj.getAncestorOfType(libsbml.SBML_MODEL).equals(m) );
     assertTrue( obj.getAncestorOfType(libsbml.SBML_DOCUMENT) == null );
     assertTrue( obj.getAncestorOfType(libsbml.SBML_COMPARTMENT) == null );
+    m = null;
   }
 
   public void test_Event_ancestor_add()
@@ -347,7 +361,9 @@ public class TestAncestor {
     Event e = new Event(2,4);
     Model m = new Model(2,4);
     Trigger t = new Trigger(2,4);
-      t.setMath(libsbml.parseFormula("true"));
+    ASTNode math = libsbml.parseFormula("1");
+    t.setMath(math);
+    math = null;
     e.setTrigger(t);
     e.createEventAssignment();
     m.addEvent(e);
@@ -358,6 +374,8 @@ public class TestAncestor {
     assertTrue( obj.getAncestorOfType(libsbml.SBML_LIST_OF).equals(lo) );
     assertTrue( obj.getAncestorOfType(libsbml.SBML_DOCUMENT) == null );
     assertTrue( obj.getAncestorOfType(libsbml.SBML_COMPARTMENT) == null );
+    m = null;
+    t = null;
   }
 
   public void test_Event_ancestor_create()
@@ -374,6 +392,7 @@ public class TestAncestor {
     assertTrue( obj.getAncestorOfType(libsbml.SBML_LIST_OF).equals(lo) );
     assertTrue( obj.getAncestorOfType(libsbml.SBML_DOCUMENT) == null );
     assertTrue( obj.getAncestorOfType(libsbml.SBML_EVENT) == null );
+    m = null;
   }
 
   public void test_FunctionDefinition_ancestor_add()
@@ -381,7 +400,9 @@ public class TestAncestor {
     FunctionDefinition fd = new FunctionDefinition(2,4);
     Model m = new Model(2,4);
     fd.setId("fd");
-    fd.setMath(libsbml.parseFormula("l"));
+    ASTNode math = libsbml.parseFormula("l");
+    fd.setMath(math);
+    math = null;
     m.addFunctionDefinition(fd);
     fd = null;
     ListOf lo = m.getListOfFunctionDefinitions();
@@ -390,6 +411,7 @@ public class TestAncestor {
     assertTrue( obj.getAncestorOfType(libsbml.SBML_LIST_OF).equals(lo) );
     assertTrue( obj.getAncestorOfType(libsbml.SBML_DOCUMENT) == null );
     assertTrue( obj.getAncestorOfType(libsbml.SBML_EVENT) == null );
+    m = null;
   }
 
   public void test_FunctionDefinition_ancestor_create()
@@ -406,6 +428,7 @@ public class TestAncestor {
     assertTrue( obj.getAncestorOfType(libsbml.SBML_LIST_OF).equals(lo) );
     assertTrue( obj.getAncestorOfType(libsbml.SBML_DOCUMENT) == null );
     assertTrue( obj.getAncestorOfType(libsbml.SBML_EVENT) == null );
+    m = null;
   }
 
   public void test_InitialAssignment_ancestor_add()
@@ -413,7 +436,9 @@ public class TestAncestor {
     InitialAssignment ia = new InitialAssignment(2,4);
     Model m = new Model(2,4);
     ia.setSymbol("c");
-    ia.setMath(libsbml.parseFormula("9"));
+    ASTNode math = libsbml.parseFormula("9");
+    ia.setMath(math);
+    math = null;
     m.addInitialAssignment(ia);
     ia = null;
     ListOf lo = m.getListOfInitialAssignments();
@@ -422,6 +447,7 @@ public class TestAncestor {
     assertTrue( obj.getAncestorOfType(libsbml.SBML_LIST_OF).equals(lo) );
     assertTrue( obj.getAncestorOfType(libsbml.SBML_DOCUMENT) == null );
     assertTrue( obj.getAncestorOfType(libsbml.SBML_EVENT) == null );
+    m = null;
   }
 
   public void test_InitialAssignment_ancestor_create()
@@ -438,6 +464,7 @@ public class TestAncestor {
     assertTrue( obj.getAncestorOfType(libsbml.SBML_LIST_OF).equals(lo) );
     assertTrue( obj.getAncestorOfType(libsbml.SBML_DOCUMENT) == null );
     assertTrue( obj.getAncestorOfType(libsbml.SBML_EVENT) == null );
+    m = null;
   }
 
   public void test_KineticLaw_Parameter_ancestor_add()
@@ -495,13 +522,15 @@ public class TestAncestor {
     assertTrue( obj.getAncestorOfType(libsbml.SBML_MODEL).equals(m) );
     assertTrue( obj.getAncestorOfType(libsbml.SBML_DOCUMENT) == null );
     assertTrue( obj.getAncestorOfType(libsbml.SBML_COMPARTMENT) == null );
-    kl = null;
+    m = null;
   }
 
   public void test_KineticLaw_ancestor_add()
   {
     KineticLaw kl = new KineticLaw(2,4);
-      kl.setMath(libsbml.parseFormula("1"));
+    ASTNode math = libsbml.parseFormula("1");
+    kl.setMath(math);
+    math = null;
     Reaction r = new Reaction(2,4);
     r.setKineticLaw(kl);
     KineticLaw obj = r.getKineticLaw();
@@ -509,6 +538,7 @@ public class TestAncestor {
     assertTrue( obj.getAncestorOfType(libsbml.SBML_MODEL) == null );
     assertTrue( obj.getAncestorOfType(libsbml.SBML_DOCUMENT) == null );
     r = null;
+    kl = null;
   }
 
   public void test_KineticLaw_ancestor_create()
@@ -541,7 +571,7 @@ public class TestAncestor {
     assertTrue( obj.getAncestorOfType(libsbml.SBML_MODEL).equals(m) );
     assertTrue( obj.getAncestorOfType(libsbml.SBML_DOCUMENT) == null );
     assertTrue( obj.getAncestorOfType(libsbml.SBML_DELAY) == null );
-    r = null;
+    m = null;
   }
 
   public void test_Model_ancestor_add()
@@ -551,6 +581,7 @@ public class TestAncestor {
     d.setModel(m);
     assertTrue( d.equals(d.getModel().getAncestorOfType(libsbml.SBML_DOCUMENT)) );
     d = null;
+    m = null;
   }
 
   public void test_Model_ancestor_create()
@@ -576,6 +607,7 @@ public class TestAncestor {
     assertTrue( obj.getAncestorOfType(libsbml.SBML_LIST_OF).equals(lo) );
     assertTrue( obj.getAncestorOfType(libsbml.SBML_DOCUMENT) == null );
     assertTrue( obj.getAncestorOfType(libsbml.SBML_EVENT) == null );
+    m = null;
   }
 
   public void test_Parameter_ancestor_create()
@@ -592,6 +624,7 @@ public class TestAncestor {
     assertTrue( obj.getAncestorOfType(libsbml.SBML_LIST_OF).equals(lo) );
     assertTrue( obj.getAncestorOfType(libsbml.SBML_DOCUMENT) == null );
     assertTrue( obj.getAncestorOfType(libsbml.SBML_EVENT) == null );
+    m = null;
   }
 
   public void test_RateRule_ancestor_create()
@@ -608,6 +641,7 @@ public class TestAncestor {
     assertTrue( obj.getAncestorOfType(libsbml.SBML_LIST_OF).equals(lo) );
     assertTrue( obj.getAncestorOfType(libsbml.SBML_DOCUMENT) == null );
     assertTrue( obj.getAncestorOfType(libsbml.SBML_EVENT) == null );
+    m = null;
   }
 
   public void test_Reaction_ancestor_add()
@@ -623,6 +657,7 @@ public class TestAncestor {
     assertTrue( obj.getAncestorOfType(libsbml.SBML_LIST_OF).equals(lo) );
     assertTrue( obj.getAncestorOfType(libsbml.SBML_DOCUMENT) == null );
     assertTrue( obj.getAncestorOfType(libsbml.SBML_EVENT) == null );
+    m = null;
   }
 
   public void test_Reaction_ancestor_create()
@@ -639,13 +674,16 @@ public class TestAncestor {
     assertTrue( obj.getAncestorOfType(libsbml.SBML_LIST_OF).equals(lo) );
     assertTrue( obj.getAncestorOfType(libsbml.SBML_DOCUMENT) == null );
     assertTrue( obj.getAncestorOfType(libsbml.SBML_EVENT) == null );
+    m = null;
   }
 
   public void test_Rule_ancestor_add()
   {
     Rule ia = new RateRule(2,4);
     ia.setVariable("a");
-    ia.setMath(libsbml.parseFormula("9"));
+    ASTNode math = libsbml.parseFormula("9");
+    ia.setMath(math);
+    math = null;
     Model m = new Model(2,4);
     m.addRule(ia);
     ia = null;
@@ -655,6 +693,7 @@ public class TestAncestor {
     assertTrue( obj.getAncestorOfType(libsbml.SBML_LIST_OF).equals(lo) );
     assertTrue( obj.getAncestorOfType(libsbml.SBML_DOCUMENT) == null );
     assertTrue( obj.getAncestorOfType(libsbml.SBML_EVENT) == null );
+    m = null;
   }
 
   public void test_SpeciesReference_Modifier_ancestor_add()
@@ -670,6 +709,7 @@ public class TestAncestor {
     assertTrue( obj.getAncestorOfType(libsbml.SBML_LIST_OF).equals(lo) );
     assertTrue( obj.getAncestorOfType(libsbml.SBML_DOCUMENT) == null );
     assertTrue( obj.getAncestorOfType(libsbml.SBML_COMPARTMENT) == null );
+    r = null;
   }
 
   public void test_SpeciesReference_Modifier_ancestor_create()
@@ -686,6 +726,7 @@ public class TestAncestor {
     assertTrue( obj.getAncestorOfType(libsbml.SBML_LIST_OF).equals(lo) );
     assertTrue( obj.getAncestorOfType(libsbml.SBML_DOCUMENT) == null );
     assertTrue( obj.getAncestorOfType(libsbml.SBML_COMPARTMENT) == null );
+    r = null;
   }
 
   public void test_SpeciesReference_Modifier_ancestor_create_model()
@@ -705,6 +746,7 @@ public class TestAncestor {
     assertTrue( obj.getAncestorOfType(libsbml.SBML_MODEL).equals(m) );
     assertTrue( obj.getAncestorOfType(libsbml.SBML_DOCUMENT) == null );
     assertTrue( obj.getAncestorOfType(libsbml.SBML_COMPARTMENT) == null );
+    m = null;
   }
 
   public void test_SpeciesReference_Product_ancestor_add()
@@ -720,6 +762,7 @@ public class TestAncestor {
     assertTrue( obj.getAncestorOfType(libsbml.SBML_LIST_OF).equals(lo) );
     assertTrue( obj.getAncestorOfType(libsbml.SBML_DOCUMENT) == null );
     assertTrue( obj.getAncestorOfType(libsbml.SBML_COMPARTMENT) == null );
+    r = null;
   }
 
   public void test_SpeciesReference_Product_ancestor_create()
@@ -736,6 +779,7 @@ public class TestAncestor {
     assertTrue( obj.getAncestorOfType(libsbml.SBML_LIST_OF).equals(lo) );
     assertTrue( obj.getAncestorOfType(libsbml.SBML_DOCUMENT) == null );
     assertTrue( obj.getAncestorOfType(libsbml.SBML_COMPARTMENT) == null );
+    r = null;
   }
 
   public void test_SpeciesReference_Product_ancestor_create_model()
@@ -755,6 +799,7 @@ public class TestAncestor {
     assertTrue( obj.getAncestorOfType(libsbml.SBML_MODEL).equals(m) );
     assertTrue( obj.getAncestorOfType(libsbml.SBML_DOCUMENT) == null );
     assertTrue( obj.getAncestorOfType(libsbml.SBML_COMPARTMENT) == null );
+    m = null;
   }
 
   public void test_SpeciesReference_Reactant_ancestor_add()
@@ -770,6 +815,7 @@ public class TestAncestor {
     assertTrue( obj.getAncestorOfType(libsbml.SBML_LIST_OF).equals(lo) );
     assertTrue( obj.getAncestorOfType(libsbml.SBML_DOCUMENT) == null );
     assertTrue( obj.getAncestorOfType(libsbml.SBML_COMPARTMENT) == null );
+    r = null;
   }
 
   public void test_SpeciesReference_Reactant_ancestor_create()
@@ -786,6 +832,7 @@ public class TestAncestor {
     assertTrue( obj.getAncestorOfType(libsbml.SBML_LIST_OF).equals(lo) );
     assertTrue( obj.getAncestorOfType(libsbml.SBML_DOCUMENT) == null );
     assertTrue( obj.getAncestorOfType(libsbml.SBML_COMPARTMENT) == null );
+    r = null;
   }
 
   public void test_SpeciesReference_Reactant_ancestor_create_model()
@@ -805,6 +852,7 @@ public class TestAncestor {
     assertTrue( obj.getAncestorOfType(libsbml.SBML_MODEL).equals(m) );
     assertTrue( obj.getAncestorOfType(libsbml.SBML_DOCUMENT) == null );
     assertTrue( obj.getAncestorOfType(libsbml.SBML_COMPARTMENT) == null );
+    m = null;
   }
 
   public void test_SpeciesType_ancestor_add()
@@ -820,6 +868,7 @@ public class TestAncestor {
     assertTrue( obj.getAncestorOfType(libsbml.SBML_LIST_OF).equals(lo) );
     assertTrue( obj.getAncestorOfType(libsbml.SBML_DOCUMENT) == null );
     assertTrue( obj.getAncestorOfType(libsbml.SBML_EVENT) == null );
+    m = null;
   }
 
   public void test_SpeciesType_ancestor_create()
@@ -836,6 +885,7 @@ public class TestAncestor {
     assertTrue( obj.getAncestorOfType(libsbml.SBML_LIST_OF).equals(lo) );
     assertTrue( obj.getAncestorOfType(libsbml.SBML_DOCUMENT) == null );
     assertTrue( obj.getAncestorOfType(libsbml.SBML_EVENT) == null );
+    m = null;
   }
 
   public void test_Species_ancestor_add()
@@ -852,6 +902,7 @@ public class TestAncestor {
     assertTrue( obj.getAncestorOfType(libsbml.SBML_LIST_OF).equals(lo) );
     assertTrue( obj.getAncestorOfType(libsbml.SBML_DOCUMENT) == null );
     assertTrue( obj.getAncestorOfType(libsbml.SBML_EVENT) == null );
+    m = null;
   }
 
   public void test_Species_ancestor_create()
@@ -868,12 +919,15 @@ public class TestAncestor {
     assertTrue( obj.getAncestorOfType(libsbml.SBML_LIST_OF).equals(lo) );
     assertTrue( obj.getAncestorOfType(libsbml.SBML_DOCUMENT) == null );
     assertTrue( obj.getAncestorOfType(libsbml.SBML_EVENT) == null );
+    m = null;
   }
 
   public void test_StoichiometryMath_ancestor_add()
   {
     StoichiometryMath m = new StoichiometryMath(2,4);
-      m.setMath(libsbml.parseFormula("1"));
+    ASTNode math = libsbml.parseFormula("1");
+    m.setMath(math);
+    math = null;
     SpeciesReference sr = new SpeciesReference(2,4);
     sr.setStoichiometryMath(m);
     m = null;
@@ -895,12 +949,15 @@ public class TestAncestor {
     assertTrue( obj.getAncestorOfType(libsbml.SBML_SPECIES_REFERENCE).equals(sr) );
     assertTrue( obj.getAncestorOfType(libsbml.SBML_DOCUMENT) == null );
     assertTrue( obj.getAncestorOfType(libsbml.SBML_COMPARTMENT) == null );
+    sr = null;
   }
 
   public void test_Trigger_ancestor_add()
   {
     Trigger d = new Trigger(2,4);
-    d.setMath(libsbml.parseFormula("true"));
+    ASTNode math = libsbml.parseFormula("1");
+    d.setMath(math);
+    math = null;
     Event e = new Event(2,4);
     e.setTrigger(d);
     d = null;
@@ -922,6 +979,7 @@ public class TestAncestor {
     assertTrue( obj.getAncestorOfType(libsbml.SBML_EVENT).equals(e) );
     assertTrue( obj.getAncestorOfType(libsbml.SBML_DOCUMENT) == null );
     assertTrue( obj.getAncestorOfType(libsbml.SBML_COMPARTMENT) == null );
+    e = null;
   }
 
   public void test_Trigger_ancestor_create_model()
@@ -938,6 +996,7 @@ public class TestAncestor {
     assertTrue( obj.getAncestorOfType(libsbml.SBML_MODEL).equals(m) );
     assertTrue( obj.getAncestorOfType(libsbml.SBML_DOCUMENT) == null );
     assertTrue( obj.getAncestorOfType(libsbml.SBML_COMPARTMENT) == null );
+    m = null;
   }
 
   public void test_UnitDefinition_ancestor_add()
@@ -954,6 +1013,7 @@ public class TestAncestor {
     assertTrue( obj.getAncestorOfType(libsbml.SBML_LIST_OF).equals(lo) );
     assertTrue( obj.getAncestorOfType(libsbml.SBML_DOCUMENT) == null );
     assertTrue( obj.getAncestorOfType(libsbml.SBML_EVENT) == null );
+    m = null;
   }
 
   public void test_UnitDefinition_ancestor_create()
@@ -970,6 +1030,7 @@ public class TestAncestor {
     assertTrue( obj.getAncestorOfType(libsbml.SBML_LIST_OF).equals(lo) );
     assertTrue( obj.getAncestorOfType(libsbml.SBML_DOCUMENT) == null );
     assertTrue( obj.getAncestorOfType(libsbml.SBML_EVENT) == null );
+    m = null;
   }
 
   public void test_Unit_ancestor_add()
@@ -1025,7 +1086,7 @@ public class TestAncestor {
     assertTrue( obj.getAncestorOfType(libsbml.SBML_DOCUMENT) == null );
     assertTrue( obj.getAncestorOfType(libsbml.SBML_MODEL).equals(m) );
     assertTrue( obj.getAncestorOfType(libsbml.SBML_COMPARTMENT) == null );
-    ud = null;
+    m = null;
   }
 
   /**

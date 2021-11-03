@@ -18,11 +18,6 @@
  * This file is part of libSBML.  Please visit http://sbml.org for more
  * information about SBML, and the latest version of libSBML.
  *
- * Copyright (C) 2020 jointly by the following organizations:
- *     1. California Institute of Technology, Pasadena, CA, USA
- *     2. University of Heidelberg, Heidelberg, Germany
- *     3. University College London, London, UK
- *
  * Copyright 2005-2010 California Institute of Technology.
  * Copyright 2002-2005 California Institute of Technology and
  *                     Japan Science and Technology Corporation.
@@ -122,7 +117,7 @@ public class TestAlgebraicRule {
     }
     throw new AssertionError();
   }
-  private Rule AR;
+  private AlgebraicRule AR;
 
   protected void setUp() throws Exception
   {
@@ -134,7 +129,7 @@ public class TestAlgebraicRule {
 
   protected void tearDown() throws Exception
   {
-    AR = null;
+    (AR) = null;
   }
 
   public void test_AlgebraicRule_create()
@@ -151,7 +146,7 @@ public class TestAlgebraicRule {
   {
     ASTNode math;
     String formula;
-    Rule ar = new  AlgebraicRule(2,4);
+    AlgebraicRule ar = new  AlgebraicRule(2,4);
     ar.setFormula( "1 + 1");
     assertTrue( ar.getTypeCode() == libsbml.SBML_ALGEBRAIC_RULE );
     assertTrue( ar.getMetaId().equals("") == true );
@@ -167,13 +162,14 @@ public class TestAlgebraicRule {
   public void test_AlgebraicRule_createWithMath()
   {
     ASTNode math = libsbml.parseFormula("1 + 1");
-    Rule ar = new  AlgebraicRule(2,4);
+    AlgebraicRule ar = new  AlgebraicRule(2,4);
     ar.setMath(math);
     assertTrue( ar.getTypeCode() == libsbml.SBML_ALGEBRAIC_RULE );
     assertTrue( ar.getMetaId().equals("") == true );
     assertTrue(ar.getFormula().equals( "1 + 1"));
     assertTrue( !ar.getMath().equals(math) );
     ar = null;
+    math = null;
   }
 
   public void test_AlgebraicRule_createWithNS()
@@ -182,16 +178,18 @@ public class TestAlgebraicRule {
     xmlns.add( "http://www.sbml.org", "testsbml");
     SBMLNamespaces sbmlns = new  SBMLNamespaces(2,3);
     sbmlns.addNamespaces(xmlns);
-    Rule r = new  AlgebraicRule(sbmlns);
+    AlgebraicRule r = new  AlgebraicRule(sbmlns);
     assertTrue( r.getTypeCode() == libsbml.SBML_ALGEBRAIC_RULE );
     assertTrue( r.getMetaId().equals("") == true );
     assertTrue( r.getNotes() == null );
     assertTrue( r.getAnnotation() == null );
     assertTrue( r.getLevel() == 2 );
     assertTrue( r.getVersion() == 3 );
-    assertTrue( r.getNamespaces() != null );
-    assertTrue( r.getNamespaces().getLength() == 2 );
-    r = null;
+    assertTrue( (r).getNamespaces() != null );
+    assertTrue( (r).getNamespaces().getLength() == 2 );
+    (r) = null;
+    xmlns = null;
+    sbmlns = null;
   }
 
   public void test_AlgebraicRule_free_NULL()
@@ -251,4 +249,3 @@ public class TestAlgebraicRule {
     }
   }
 }
-

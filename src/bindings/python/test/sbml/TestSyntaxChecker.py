@@ -37,21 +37,28 @@ import libsbml
 class TestSyntaxChecker(unittest.TestCase):
 
 
+  def test_SyntaxChecker_accessWithNULL(self):
+    self.assertTrue( libsbml.SyntaxChecker.hasExpectedXHTMLSyntax(None,None) == False )
+    self.assertTrue( libsbml.SyntaxChecker.isValidSBMLSId(None) == False )
+    self.assertTrue( libsbml.SyntaxChecker.isValidUnitSId(None) == False )
+    self.assertTrue( libsbml.SyntaxChecker.isValidXMLID(None) == False )
+    pass  
+
   def test_SyntaxChecker_validID(self):
-    self.assert_( libsbml.SyntaxChecker.isValidXMLID("cell") == True )
-    self.assert_( libsbml.SyntaxChecker.isValidXMLID("1cell") == False )
-    self.assert_( libsbml.SyntaxChecker.isValidXMLID("_cell") == True )
+    self.assertTrue( libsbml.SyntaxChecker.isValidXMLID("cell") == True )
+    self.assertTrue( libsbml.SyntaxChecker.isValidXMLID("1cell") == False )
+    self.assertTrue( libsbml.SyntaxChecker.isValidXMLID("_cell") == True )
     pass  
 
   def test_SyntaxChecker_validId(self):
-    self.assert_( libsbml.SyntaxChecker.isValidSBMLSId("cell") == True )
-    self.assert_( libsbml.SyntaxChecker.isValidSBMLSId("1cell") == False )
-    self.assert_( libsbml.SyntaxChecker.isValidSBMLSId("") == False )
+    self.assertTrue( libsbml.SyntaxChecker.isValidSBMLSId("cell") == True )
+    self.assertTrue( libsbml.SyntaxChecker.isValidSBMLSId("1cell") == False )
+    self.assertTrue( libsbml.SyntaxChecker.isValidSBMLSId("") == False )
     pass  
 
   def test_SyntaxChecker_validUnitId(self):
-    self.assert_( libsbml.SyntaxChecker.isValidUnitSId("cell") == True )
-    self.assert_( libsbml.SyntaxChecker.isValidUnitSId("1cell") == False )
+    self.assertTrue( libsbml.SyntaxChecker.isValidUnitSId("cell") == True )
+    self.assertTrue( libsbml.SyntaxChecker.isValidUnitSId("1cell") == False )
     pass  
 
   def test_SyntaxChecker_validXHTML(self):
@@ -70,28 +77,46 @@ class TestSyntaxChecker(unittest.TestCase):
     node = libsbml.XMLNode(token)
     node.addChild(n1)
     topnode.addChild(node)
-    self.assert_( libsbml.SyntaxChecker.hasExpectedXHTMLSyntax(topnode,None) == True )
-    self.assert_( libsbml.SyntaxChecker.hasExpectedXHTMLSyntax(topnode,NS24) == True )
-    self.assert_( libsbml.SyntaxChecker.hasExpectedXHTMLSyntax(topnode,NS31) == True )
+    self.assertTrue( libsbml.SyntaxChecker.hasExpectedXHTMLSyntax(topnode,None) == True )
+    self.assertTrue( libsbml.SyntaxChecker.hasExpectedXHTMLSyntax(topnode,NS24) == True )
+    self.assertTrue( libsbml.SyntaxChecker.hasExpectedXHTMLSyntax(topnode,NS31) == True )
+    _dummyList = [ triple ]; _dummyList[:] = []; del _dummyList
+    _dummyList = [ token ]; _dummyList[:] = []; del _dummyList
+    _dummyList = [ node ]; _dummyList[:] = []; del _dummyList
     triple = libsbml.XMLTriple("html", "", "")
     token = libsbml.XMLToken(triple,att,ns)
     node = libsbml.XMLNode(token)
     node.addChild(n1)
-    topnode.removeChild(0)
+    _dummyList = [ topnode.removeChild(0) ]; _dummyList[:] = []; del _dummyList
     topnode.addChild(node)
-    self.assert_( libsbml.SyntaxChecker.hasExpectedXHTMLSyntax(topnode,None) == True )
-    self.assert_( libsbml.SyntaxChecker.hasExpectedXHTMLSyntax(topnode,NS24) == False )
-    self.assert_( libsbml.SyntaxChecker.hasExpectedXHTMLSyntax(topnode,NS31) == True )
+    self.assertTrue( libsbml.SyntaxChecker.hasExpectedXHTMLSyntax(topnode,None) == True )
+    self.assertTrue( libsbml.SyntaxChecker.hasExpectedXHTMLSyntax(topnode,NS24) == False )
+    self.assertTrue( libsbml.SyntaxChecker.hasExpectedXHTMLSyntax(topnode,NS31) == True )
+    _dummyList = [ triple ]; _dummyList[:] = []; del _dummyList
     triple = libsbml.XMLTriple("html", "", "")
     ns.clear()
+    _dummyList = [ token ]; _dummyList[:] = []; del _dummyList
+    _dummyList = [ node ]; _dummyList[:] = []; del _dummyList
     token = libsbml.XMLToken(triple,att,ns)
     node = libsbml.XMLNode(token)
     node.addChild(n1)
-    topnode.removeChild(0)
+    _dummyList = [ topnode.removeChild(0) ]; _dummyList[:] = []; del _dummyList
     topnode.addChild(node)
-    self.assert_( libsbml.SyntaxChecker.hasExpectedXHTMLSyntax(topnode,None) == False )
-    self.assert_( libsbml.SyntaxChecker.hasExpectedXHTMLSyntax(topnode,NS24) == False )
-    self.assert_( libsbml.SyntaxChecker.hasExpectedXHTMLSyntax(topnode,NS31) == False )
+    self.assertTrue( libsbml.SyntaxChecker.hasExpectedXHTMLSyntax(topnode,None) == False )
+    self.assertTrue( libsbml.SyntaxChecker.hasExpectedXHTMLSyntax(topnode,NS24) == False )
+    self.assertTrue( libsbml.SyntaxChecker.hasExpectedXHTMLSyntax(topnode,NS31) == False )
+    _dummyList = [ NS24 ]; _dummyList[:] = []; del _dummyList
+    _dummyList = [ NS31 ]; _dummyList[:] = []; del _dummyList
+    _dummyList = [ toptriple ]; _dummyList[:] = []; del _dummyList
+    _dummyList = [ triple ]; _dummyList[:] = []; del _dummyList
+    _dummyList = [ att ]; _dummyList[:] = []; del _dummyList
+    _dummyList = [ ns ]; _dummyList[:] = []; del _dummyList
+    _dummyList = [ tt ]; _dummyList[:] = []; del _dummyList
+    _dummyList = [ n1 ]; _dummyList[:] = []; del _dummyList
+    _dummyList = [ toptoken ]; _dummyList[:] = []; del _dummyList
+    _dummyList = [ topnode ]; _dummyList[:] = []; del _dummyList
+    _dummyList = [ token ]; _dummyList[:] = []; del _dummyList
+    _dummyList = [ node ]; _dummyList[:] = []; del _dummyList
     pass  
 
 def suite():

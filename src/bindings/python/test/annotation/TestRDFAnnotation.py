@@ -3,8 +3,7 @@
 # @brief   fomula units data unit tests
 #
 # @author  Akiya Jouraku (Python conversion)
-# @author  Ben Bornstein
- 
+# @author  Ben Bornstein 
 # 
 # ====== WARNING ===== WARNING ===== WARNING ===== WARNING ===== WARNING ======
 #
@@ -56,6 +55,7 @@ class TestRDFAnnotation(unittest.TestCase):
     filename = "../../sbml/annotation/test/test-data/annotation.xml"
     self.d = libsbml.readSBML(filename)
     self.m = self.d.getModel()
+    filename = None
     pass  
 
   def tearDown(self):
@@ -66,76 +66,11 @@ class TestRDFAnnotation(unittest.TestCase):
     node = libsbml.RDFAnnotationParser.parseCVTerms(self.m.getCompartment(0))
     n1 = libsbml.RDFAnnotationParser.deleteRDFAnnotation(node)
     expected =  "<annotation/>";
-    self.assert_( n1.getNumChildren() == 0 )
-    self.assert_( n1.getName() ==  "annotation" )
+    self.assertTrue( n1.getNumChildren() == 0 )
+    self.assertTrue( n1.getName() ==  "annotation" )
     self.assertEqual( True, self.equals(expected,n1.toXMLString()) )
     node = None
-    pass  
-
-  def test_RDFAnnotation_deleteCVTerms(self):
-    node = self.m.getCompartment(0).getAnnotation()
     n1 = None
-    empty =  "<annotation/>";
-    noRDF = wrapString("<annotation>\n"
-"  <jd2:JDesignerLayout version=\"2.0\" MajorVersion=\"2\" MinorVersion=\"0\" BuildVersion=\"41\">\n"
-    "    <jd2:header>\n"
- + 
-    "      <jd2:VersionHeader JDesignerVersion=\"2.0\"/>\n"
- + 
-    "      <jd2:ModelHeader Author=\"Mr Untitled\" ModelVersion=\"0.0\" ModelTitle=\"untitled\"/>\n"
- + 
-    "      <jd2:TimeCourseDetails timeStart=\"0\" timeEnd=\"10\" numberOfPoints=\"1000\"/>\n"
- + 
-    "    </jd2:header>\n"
- + 
-    "  </jd2:JDesignerLayout>\n"
- + 
-    "</annotation>")
-    otherRDF = wrapString("<annotation>\n"
- + 
-    "  <jd2:JDesignerLayout version=\"2.0\" MajorVersion=\"2\" MinorVersion=\"0\" BuildVersion=\"41\">\n"
- + 
-    "    <jd2:header>\n"
- + 
-    "      <jd2:VersionHeader JDesignerVersion=\"2.0\"/>\n"
- + 
-    "      <jd2:ModelHeader Author=\"Mr Untitled\" ModelVersion=\"0.0\" ModelTitle=\"untitled\"/>\n"
- + 
-    "      <jd2:TimeCourseDetails timeStart=\"0\" timeEnd=\"10\" numberOfPoints=\"1000\"/>\n"
- + 
-    "    </jd2:header>\n"
- + 
-    "  </jd2:JDesignerLayout>\n"
- + 
-    "  <rdf:RDF xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\" xmlns:dc=\"http://purl.org/dc/elements/1.1/\" xmlns:dcterms=\"http://purl.org/dc/terms/\" xmlns:vCard=\"http://www.w3.org/2001/vcard-rdf/3.0#\" xmlns:bqbiol=\"http://biomodels.net/biology-qualifiers/\" xmlns:bqmodel=\"http://biomodels.net/model-qualifiers/\">\n"
- + 
-    "    <rdf:Description>\n"
- + 
-    "      <rdf:other/>\n"
- + 
-    "    </rdf:Description>\n"
- + 
-    "  </rdf:RDF>\n"
- + 
-    "</annotation>")
-    n1 = libsbml.RDFAnnotationParser.deleteRDFCVTermAnnotation(None)
-    self.assert_( n1 == None )
-    n1 = libsbml.RDFAnnotationParser.deleteRDFCVTermAnnotation(node)
-    self.assert_( n1.getNumChildren() == 0 )
-    self.assert_( n1.getName() ==  "annotation" )
-    self.assertEqual( True, self.equals(empty,n1.toXMLString()) )
-    node = self.m.getCompartment(2).getAnnotation()
-    n1 = libsbml.RDFAnnotationParser.deleteRDFCVTermAnnotation(node)
-    self.assertEqual( True, self.equals(noRDF,n1.toXMLString()) )
-    node = self.m.getCompartment(1).getAnnotation()
-    n1 = libsbml.RDFAnnotationParser.deleteRDFCVTermAnnotation(node)
-    self.assertEqual( True, self.equals(noRDF,n1.toXMLString()) )
-    node = self.m.getCompartment(4).getAnnotation()
-    n1 = libsbml.RDFAnnotationParser.deleteRDFCVTermAnnotation(node)
-    self.assertEqual( True, self.equals(otherRDF,n1.toXMLString()) )
-    node = libsbml.XMLNode.convertStringToXMLNode("<notannotatio/>")
-    n1 = libsbml.RDFAnnotationParser.deleteRDFCVTermAnnotation(node)
-    self.assert_( n1 == None )
     pass  
 
   def test_RDFAnnotation_deleteWithOther(self):
@@ -150,36 +85,24 @@ class TestRDFAnnotation(unittest.TestCase):
     "  </jd2:JDesignerLayout>\n" + 
     "</annotation>")
     self.assertEqual( True, self.equals(expected,node.toXMLString()) )
+    node = None
     pass  
 
   def test_RDFAnnotation_deleteWithOtherRDF(self):
     c = self.m.getCompartment(5)
     node = c.getAnnotation()
-    expected = wrapString("<annotation>\n"
-"  <jd2:JDesignerLayout version=\"2.0\" MajorVersion=\"2\" MinorVersion=\"0\" BuildVersion=\"41\">\n"
- + 
-    "    <jd2:header>\n"
- + 
-    "      <jd2:VersionHeader JDesignerVersion=\"2.0\"/>\n"
- + 
-    "      <jd2:ModelHeader Author=\"Mr Untitled\" ModelVersion=\"0.0\" ModelTitle=\"untitled\"/>\n"
- + 
-    "      <jd2:TimeCourseDetails timeStart=\"0\" timeEnd=\"10\" numberOfPoints=\"1000\"/>\n"
- + 
-    "    </jd2:header>\n"
- + 
-    "  </jd2:JDesignerLayout>\n"
- + 
-    "  <rdf:RDF xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\" xmlns:dc=\"http://purl.org/dc/elements/1.1/\" xmlns:dcterms=\"http://purl.org/dc/terms/\" xmlns:vCard=\"http://www.w3.org/2001/vcard-rdf/3.0#\" xmlns:bqbiol=\"http://biomodels.net/biology-qualifiers/\" xmlns:bqmodel=\"http://biomodels.net/model-qualifiers/\">\n"
- + 
-    "    <rdf:Description>\n"
- + 
-    "      <rdf:other/>\n"
- + 
-    "    </rdf:Description>\n"
- + 
-    "  </rdf:RDF>\n"
- + 
+    expected = wrapString("<annotation>\n" + "  <jd2:JDesignerLayout version=\"2.0\" MajorVersion=\"2\" MinorVersion=\"0\" BuildVersion=\"41\">\n" + 
+    "    <jd2:header>\n" + 
+    "      <jd2:VersionHeader JDesignerVersion=\"2.0\"/>\n" + 
+    "      <jd2:ModelHeader Author=\"Mr Untitled\" ModelVersion=\"0.0\" ModelTitle=\"untitled\"/>\n" + 
+    "      <jd2:TimeCourseDetails timeStart=\"0\" timeEnd=\"10\" numberOfPoints=\"1000\"/>\n" + 
+    "    </jd2:header>\n" + 
+    "  </jd2:JDesignerLayout>\n" + 
+    "  <rdf:RDF xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\" xmlns:dc=\"http://purl.org/dc/elements/1.1/\" xmlns:dcterms=\"http://purl.org/dc/terms/\" xmlns:vCard=\"http://www.w3.org/2001/vcard-rdf/3.0#\" xmlns:bqbiol=\"http://biomodels.net/biology-qualifiers/\" xmlns:bqmodel=\"http://biomodels.net/model-qualifiers/\">\n" + 
+    "    <rdf:Description>\n" + 
+    "      <rdf:other/>\n" + 
+    "    </rdf:Description>\n" + 
+    "  </rdf:RDF>\n" + 
     "</annotation>")
     self.assertEqual( True, self.equals(expected,node.toXMLString()) )
     pass  
@@ -199,427 +122,357 @@ class TestRDFAnnotation(unittest.TestCase):
     pass  
 
   def test_RDFAnnotation_getModelHistory(self):
-    self.assert_( (self.m == None) == False )
+    self.assertFalse(self.m == None)
     history = self.m.getModelHistory()
-    self.assert_( history != None )
+    self.assertTrue( history != None )
     mc = history.getCreator(0)
-    self.assert_((  "Le Novere" == mc.getFamilyName() ))
-    self.assert_((  "Nicolas" == mc.getGivenName() ))
-    self.assert_((  "lenov@ebi.ac.uk" == mc.getEmail() ))
-    self.assert_((  "EMBL-EBI" == mc.getOrganisation() ))
+    self.assertTrue((  "Le Novere" == mc.getFamilyName() ))
+    self.assertTrue((  "Nicolas" == mc.getGivenName() ))
+    self.assertTrue((  "lenov@ebi.ac.uk" == mc.getEmail() ))
+    self.assertTrue((  "EMBL-EBI" == mc.getOrganisation() ))
     date = history.getCreatedDate()
-    self.assert_( date.getYear() == 2005 )
-    self.assert_( date.getMonth() == 2 )
-    self.assert_( date.getDay() == 2 )
-    self.assert_( date.getHour() == 14 )
-    self.assert_( date.getMinute() == 56 )
-    self.assert_( date.getSecond() == 11 )
-    self.assert_( date.getSignOffset() == 0 )
-    self.assert_( date.getHoursOffset() == 0 )
-    self.assert_( date.getMinutesOffset() == 0 )
-    self.assert_((  "2005-02-02T14:56:11Z" == date.getDateAsString() ))
+    self.assertTrue( date.getYear() == 2005 )
+    self.assertTrue( date.getMonth() == 2 )
+    self.assertTrue( date.getDay() == 2 )
+    self.assertTrue( date.getHour() == 14 )
+    self.assertTrue( date.getMinute() == 56 )
+    self.assertTrue( date.getSecond() == 11 )
+    self.assertTrue( date.getSignOffset() == 0 )
+    self.assertTrue( date.getHoursOffset() == 0 )
+    self.assertTrue( date.getMinutesOffset() == 0 )
+    self.assertTrue((  "2005-02-02T14:56:11Z" == date.getDateAsString() ))
     date = history.getModifiedDate()
-    self.assert_( date.getYear() == 2006 )
-    self.assert_( date.getMonth() == 5 )
-    self.assert_( date.getDay() == 30 )
-    self.assert_( date.getHour() == 10 )
-    self.assert_( date.getMinute() == 46 )
-    self.assert_( date.getSecond() == 2 )
-    self.assert_( date.getSignOffset() == 0 )
-    self.assert_( date.getHoursOffset() == 0 )
-    self.assert_( date.getMinutesOffset() == 0 )
-    self.assert_((  "2006-05-30T10:46:02Z" == date.getDateAsString() ))
+    self.assertTrue( date.getYear() == 2006 )
+    self.assertTrue( date.getMonth() == 5 )
+    self.assertTrue( date.getDay() == 30 )
+    self.assertTrue( date.getHour() == 10 )
+    self.assertTrue( date.getMinute() == 46 )
+    self.assertTrue( date.getSecond() == 2 )
+    self.assertTrue( date.getSignOffset() == 0 )
+    self.assertTrue( date.getHoursOffset() == 0 )
+    self.assertTrue( date.getMinutesOffset() == 0 )
+    self.assertTrue((  "2006-05-30T10:46:02Z" == date.getDateAsString() ))
     pass  
 
   def test_RDFAnnotation_parseCVTerms(self):
     node = libsbml.RDFAnnotationParser.parseCVTerms(self.m.getCompartment(0))
-    self.assert_( node.getNumChildren() == 1 )
+    self.assertTrue( node.getNumChildren() == 1 )
     rdf = node.getChild(0)
-    self.assert_((  "RDF" == rdf.getName() ))
-    self.assert_((  "rdf" == rdf.getPrefix() ))
-    self.assert_((  "http://www.w3.org/1999/02/22-rdf-syntax-ns#" == rdf.getURI() ))
-    self.assert_( rdf.getNumChildren() == 1 )
+    self.assertTrue((  "RDF" == rdf.getName() ))
+    self.assertTrue((  "rdf" == rdf.getPrefix() ))
+    self.assertTrue((  "http://www.w3.org/1999/02/22-rdf-syntax-ns#" == rdf.getURI() ))
+    self.assertTrue( rdf.getNumChildren() == 1 )
     desc = rdf.getChild(0)
-    self.assert_((  "Description" == desc.getName() ))
-    self.assert_((  "rdf" == desc.getPrefix() ))
-    self.assert_((  "http://www.w3.org/1999/02/22-rdf-syntax-ns#" == desc.getURI() ))
-    self.assert_( desc.getNumChildren() == 1 )
+    self.assertTrue((  "Description" == desc.getName() ))
+    self.assertTrue((  "rdf" == desc.getPrefix() ))
+    self.assertTrue((  "http://www.w3.org/1999/02/22-rdf-syntax-ns#" == desc.getURI() ))
+    self.assertTrue( desc.getNumChildren() == 1 )
     is1 = desc.getChild(0)
-    self.assert_((  "is" == is1.getName() ))
-    self.assert_((  "bqbiol" == is1.getPrefix() ))
-    self.assert_( is1.getNumChildren() == 1 )
+    self.assertTrue((  "is" == is1.getName() ))
+    self.assertTrue((  "bqbiol" == is1.getPrefix() ))
+    self.assertTrue( is1.getNumChildren() == 1 )
     Bag = is1.getChild(0)
-    self.assert_((  "Bag" == Bag.getName() ))
-    self.assert_((  "rdf" == Bag.getPrefix() ))
-    self.assert_((  "http://www.w3.org/1999/02/22-rdf-syntax-ns#" == Bag.getURI() ))
-    self.assert_( Bag.getNumChildren() == 4 )
+    self.assertTrue((  "Bag" == Bag.getName() ))
+    self.assertTrue((  "rdf" == Bag.getPrefix() ))
+    self.assertTrue((  "http://www.w3.org/1999/02/22-rdf-syntax-ns#" == Bag.getURI() ))
+    self.assertTrue( Bag.getNumChildren() == 4 )
     li = Bag.getChild(0)
-    self.assert_((  "li" == li.getName() ))
-    self.assert_((  "rdf" == li.getPrefix() ))
-    self.assert_((  "http://www.w3.org/1999/02/22-rdf-syntax-ns#" == li.getURI() ))
-    self.assert_( li.getNumChildren() == 0 )
+    self.assertTrue((  "li" == li.getName() ))
+    self.assertTrue((  "rdf" == li.getPrefix() ))
+    self.assertTrue((  "http://www.w3.org/1999/02/22-rdf-syntax-ns#" == li.getURI() ))
+    self.assertTrue( li.getNumChildren() == 0 )
     li1 = Bag.getChild(1)
-    self.assert_((  "li" == li1.getName() ))
-    self.assert_((  "rdf" == li1.getPrefix() ))
-    self.assert_((  "http://www.w3.org/1999/02/22-rdf-syntax-ns#" == li1.getURI() ))
-    self.assert_( li1.getNumChildren() == 0 )
+    self.assertTrue((  "li" == li1.getName() ))
+    self.assertTrue((  "rdf" == li1.getPrefix() ))
+    self.assertTrue((  "http://www.w3.org/1999/02/22-rdf-syntax-ns#" == li1.getURI() ))
+    self.assertTrue( li1.getNumChildren() == 0 )
     li2 = Bag.getChild(2)
-    self.assert_((  "li" == li2.getName() ))
-    self.assert_((  "rdf" == li2.getPrefix() ))
-    self.assert_((  "http://www.w3.org/1999/02/22-rdf-syntax-ns#" == li2.getURI() ))
-    self.assert_( li2.getNumChildren() == 0 )
+    self.assertTrue((  "li" == li2.getName() ))
+    self.assertTrue((  "rdf" == li2.getPrefix() ))
+    self.assertTrue((  "http://www.w3.org/1999/02/22-rdf-syntax-ns#" == li2.getURI() ))
+    self.assertTrue( li2.getNumChildren() == 0 )
     li3 = Bag.getChild(3)
-    self.assert_((  "li" == li3.getName() ))
-    self.assert_((  "rdf" == li3.getPrefix() ))
-    self.assert_((  "http://www.w3.org/1999/02/22-rdf-syntax-ns#" == li3.getURI() ))
-    self.assert_( li3.getNumChildren() == 0 )
+    self.assertTrue((  "li" == li3.getName() ))
+    self.assertTrue((  "rdf" == li3.getPrefix() ))
+    self.assertTrue((  "http://www.w3.org/1999/02/22-rdf-syntax-ns#" == li3.getURI() ))
+    self.assertTrue( li3.getNumChildren() == 0 )
     node = None
     node1 = libsbml.RDFAnnotationParser.parseCVTerms(None)
-    self.assert_( node1 == None )
+    self.assertTrue( node1 == None )
+    node1 = None
     node1 = libsbml.RDFAnnotationParser.createCVTerms(None)
-    self.assert_( node1 == None )
+    self.assertTrue( node1 == None )
     node1 = libsbml.RDFAnnotationParser.parseCVTerms(self.m.getCompartment(2))
-    self.assert_( node1 == None )
+    self.assertTrue( node1 == None )
     node1 = libsbml.RDFAnnotationParser.createCVTerms(self.m.getCompartment(2))
-    self.assert_( node1 == None )
+    self.assertTrue( node1 == None )
     node1 = libsbml.RDFAnnotationParser.parseCVTerms(self.m)
-    self.assert_( node1 == None )
+    self.assertTrue( node1 == None )
     node1 = libsbml.RDFAnnotationParser.createCVTerms(self.m)
-    self.assert_( node1 == None )
+    self.assertTrue( node1 == None )
     c = libsbml.Compartment(3,1)
     c.setMetaId("_002")
     node1 = libsbml.RDFAnnotationParser.parseCVTerms(c)
-    self.assert_( node1 == None )
+    self.assertTrue( node1 == None )
     node1 = libsbml.RDFAnnotationParser.createCVTerms(c)
-    self.assert_( node1 == None )
+    self.assertTrue( node1 == None )
     cv = libsbml.CVTerm(libsbml.BIOLOGICAL_QUALIFIER)
-    cv.setBiologicalQualifierType(23)
+    cv.setBiologicalQualifierType(23.t())
     cv.addResource("http://myres")
     c.addCVTerm(cv)
     node1 = libsbml.RDFAnnotationParser.createCVTerms(c)
-    self.assert_( node1 == None )
+    self.assertTrue( node1 == None )
     c = None
+    cv = None
+    node1 = None
     m1 = libsbml.Model(3,1)
     m1.setMetaId("_002")
     cv = libsbml.CVTerm(libsbml.MODEL_QUALIFIER)
-    cv.setModelQualifierType(23)
+    cv.setModelQualifierType(23.t())
     cv.addResource("http://myres")
     m1.addCVTerm(cv)
     node1 = libsbml.RDFAnnotationParser.createCVTerms(m1)
-    self.assert_( node1 == None )
+    self.assertTrue( node1 == None )
+    m1 = None
+    cv = None
+    node1 = None
     pass  
 
   def test_RDFAnnotation_parseModelHistory(self):
     node = libsbml.RDFAnnotationParser.parseModelHistory(self.m)
-    self.assert_( node.getNumChildren() == 1 )
+    self.assertTrue( node.getNumChildren() == 1 )
     rdf = node.getChild(0)
-    self.assert_((  "RDF" == rdf.getName() ))
-    self.assert_((  "rdf" == rdf.getPrefix() ))
-    self.assert_((  "http://www.w3.org/1999/02/22-rdf-syntax-ns#" == rdf.getURI() ))
-    self.assert_( rdf.getNumChildren() == 1 )
+    self.assertTrue((  "RDF" == rdf.getName() ))
+    self.assertTrue((  "rdf" == rdf.getPrefix() ))
+    self.assertTrue((  "http://www.w3.org/1999/02/22-rdf-syntax-ns#" == rdf.getURI() ))
+    self.assertTrue( rdf.getNumChildren() == 1 )
     desc = rdf.getChild(0)
-    self.assert_((  "Description" == desc.getName() ))
-    self.assert_((  "rdf" == desc.getPrefix() ))
-    self.assert_((  "http://www.w3.org/1999/02/22-rdf-syntax-ns#" == desc.getURI() ))
-    self.assert_( desc.getNumChildren() == 3 )
+    self.assertTrue((  "Description" == desc.getName() ))
+    self.assertTrue((  "rdf" == desc.getPrefix() ))
+    self.assertTrue((  "http://www.w3.org/1999/02/22-rdf-syntax-ns#" == desc.getURI() ))
+    self.assertTrue( desc.getNumChildren() == 3 )
     creator = desc.getChild(0)
-    self.assert_((  "creator" == creator.getName() ))
-    self.assert_((  "dc" == creator.getPrefix() ))
-    self.assert_( creator.getNumChildren() == 1 )
+    self.assertTrue((  "creator" == creator.getName() ))
+    self.assertTrue((  "dc" == creator.getPrefix() ))
+    self.assertTrue((  "http://purl.org/dc/elements/1.1/" == creator.getURI() ))
+    self.assertTrue( creator.getNumChildren() == 1 )
     Bag = creator.getChild(0)
-    self.assert_((  "Bag" == Bag.getName() ))
-    self.assert_((  "rdf" == Bag.getPrefix() ))
-    self.assert_((  "http://www.w3.org/1999/02/22-rdf-syntax-ns#" == Bag.getURI() ))
-    self.assert_( Bag.getNumChildren() == 1 )
+    self.assertTrue((  "Bag" == Bag.getName() ))
+    self.assertTrue((  "rdf" == Bag.getPrefix() ))
+    self.assertTrue((  "http://www.w3.org/1999/02/22-rdf-syntax-ns#" == Bag.getURI() ))
+    self.assertTrue( Bag.getNumChildren() == 1 )
     li = Bag.getChild(0)
-    self.assert_((  "li" == li.getName() ))
-    self.assert_((  "rdf" == li.getPrefix() ))
-    self.assert_((  "http://www.w3.org/1999/02/22-rdf-syntax-ns#" == li.getURI() ))
-    self.assert_( li.getNumChildren() == 3 )
+    self.assertTrue((  "li" == li.getName() ))
+    self.assertTrue((  "rdf" == li.getPrefix() ))
+    self.assertTrue((  "http://www.w3.org/1999/02/22-rdf-syntax-ns#" == li.getURI() ))
+    self.assertTrue( li.getNumChildren() == 3 )
     N = li.getChild(0)
-    self.assert_((  "N" == N.getName() ))
-    self.assert_((  "vCard" == N.getPrefix() ))
-    self.assert_((  "http://www.w3.org/2001/vcard-rdf/3.0#" == N.getURI() ))
-    self.assert_( N.getNumChildren() == 2 )
+    self.assertTrue((  "N" == N.getName() ))
+    self.assertTrue((  "vCard" == N.getPrefix() ))
+    self.assertTrue((  "http://www.w3.org/2001/vcard-rdf/3.0#" == N.getURI() ))
+    self.assertTrue( N.getNumChildren() == 2 )
     Family = N.getChild(0)
-    self.assert_((  "Family" == Family.getName() ))
-    self.assert_((  "vCard" == Family.getPrefix() ))
-    self.assert_((  "http://www.w3.org/2001/vcard-rdf/3.0#" == Family.getURI() ))
-    self.assert_( Family.getNumChildren() == 1 )
+    self.assertTrue((  "Family" == Family.getName() ))
+    self.assertTrue((  "vCard" == Family.getPrefix() ))
+    self.assertTrue((  "http://www.w3.org/2001/vcard-rdf/3.0#" == Family.getURI() ))
+    self.assertTrue( Family.getNumChildren() == 1 )
     Given = N.getChild(1)
-    self.assert_((  "Given" == Given.getName() ))
-    self.assert_((  "vCard" == Given.getPrefix() ))
-    self.assert_((  "http://www.w3.org/2001/vcard-rdf/3.0#" == Given.getURI() ))
-    self.assert_( Given.getNumChildren() == 1 )
+    self.assertTrue((  "Given" == Given.getName() ))
+    self.assertTrue((  "vCard" == Given.getPrefix() ))
+    self.assertTrue((  "http://www.w3.org/2001/vcard-rdf/3.0#" == Given.getURI() ))
+    self.assertTrue( Given.getNumChildren() == 1 )
     EMAIL = li.getChild(1)
-    self.assert_((  "EMAIL" == EMAIL.getName() ))
-    self.assert_((  "vCard" == EMAIL.getPrefix() ))
-    self.assert_((  "http://www.w3.org/2001/vcard-rdf/3.0#" == EMAIL.getURI() ))
-    self.assert_( EMAIL.getNumChildren() == 1 )
+    self.assertTrue((  "EMAIL" == EMAIL.getName() ))
+    self.assertTrue((  "vCard" == EMAIL.getPrefix() ))
+    self.assertTrue((  "http://www.w3.org/2001/vcard-rdf/3.0#" == EMAIL.getURI() ))
+    self.assertTrue( EMAIL.getNumChildren() == 1 )
     ORG = li.getChild(2)
-    self.assert_((  "ORG" == ORG.getName() ))
-    self.assert_((  "vCard" == ORG.getPrefix() ))
-    self.assert_((  "http://www.w3.org/2001/vcard-rdf/3.0#" == ORG.getURI() ))
-    self.assert_( ORG.getNumChildren() == 1 )
+    self.assertTrue((  "ORG" == ORG.getName() ))
+    self.assertTrue((  "vCard" == ORG.getPrefix() ))
+    self.assertTrue((  "http://www.w3.org/2001/vcard-rdf/3.0#" == ORG.getURI() ))
+    self.assertTrue( ORG.getNumChildren() == 1 )
     Orgname = ORG.getChild(0)
-    self.assert_((  "Orgname" == Orgname.getName() ))
-    self.assert_((  "vCard" == Orgname.getPrefix() ))
-    self.assert_((  "http://www.w3.org/2001/vcard-rdf/3.0#" == Orgname.getURI() ))
-    self.assert_( Orgname.getNumChildren() == 1 )
+    self.assertTrue((  "Orgname" == Orgname.getName() ))
+    self.assertTrue((  "vCard" == Orgname.getPrefix() ))
+    self.assertTrue((  "http://www.w3.org/2001/vcard-rdf/3.0#" == Orgname.getURI() ))
+    self.assertTrue( Orgname.getNumChildren() == 1 )
     created = desc.getChild(1)
-    self.assert_((  "created" == created.getName() ))
-    self.assert_((  "dcterms" == created.getPrefix() ))
-    self.assert_((  "http://purl.org/dc/terms/" == created.getURI() ))
-    self.assert_( created.getNumChildren() == 1 )
+    self.assertTrue((  "created" == created.getName() ))
+    self.assertTrue((  "dcterms" == created.getPrefix() ))
+    self.assertTrue((  "http://purl.org/dc/terms/" == created.getURI() ))
+    self.assertTrue( created.getNumChildren() == 1 )
     cr_date = created.getChild(0)
-    self.assert_((  "W3CDTF" == cr_date.getName() ))
-    self.assert_((  "dcterms" == cr_date.getPrefix() ))
-    self.assert_((  "http://purl.org/dc/terms/" == cr_date.getURI() ))
-    self.assert_( cr_date.getNumChildren() == 1 )
+    self.assertTrue((  "W3CDTF" == cr_date.getName() ))
+    self.assertTrue((  "dcterms" == cr_date.getPrefix() ))
+    self.assertTrue((  "http://purl.org/dc/terms/" == cr_date.getURI() ))
+    self.assertTrue( cr_date.getNumChildren() == 1 )
     modified = desc.getChild(2)
-    self.assert_((  "modified" == modified.getName() ))
-    self.assert_((  "dcterms" == modified.getPrefix() ))
-    self.assert_((  "http://purl.org/dc/terms/" == modified.getURI() ))
-    self.assert_( modified.getNumChildren() == 1 )
+    self.assertTrue((  "modified" == modified.getName() ))
+    self.assertTrue((  "dcterms" == modified.getPrefix() ))
+    self.assertTrue((  "http://purl.org/dc/terms/" == modified.getURI() ))
+    self.assertTrue( modified.getNumChildren() == 1 )
     mo_date = created.getChild(0)
-    self.assert_((  "W3CDTF" == mo_date.getName() ))
-    self.assert_((  "dcterms" == mo_date.getPrefix() ))
-    self.assert_((  "http://purl.org/dc/terms/" == mo_date.getURI() ))
-    self.assert_( mo_date.getNumChildren() == 1 )
+    self.assertTrue((  "W3CDTF" == mo_date.getName() ))
+    self.assertTrue((  "dcterms" == mo_date.getPrefix() ))
+    self.assertTrue((  "http://purl.org/dc/terms/" == mo_date.getURI() ))
+    self.assertTrue( mo_date.getNumChildren() == 1 )
     node = None
     pass  
 
   def test_RDFAnnotation_removeAnnotation(self):
     n1 = None
-    expected = wrapString("<annotation>\n"
- + 
-    "  <rdf:RDF xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\" xmlns:dc=\"http://purl.org/dc/elements/1.1/\" xmlns:dcterms=\"http://purl.org/dc/terms/\" xmlns:vCard=\"http://www.w3.org/2001/vcard-rdf/3.0#\" xmlns:bqbiol=\"http://biomodels.net/biology-qualifiers/\" xmlns:bqmodel=\"http://biomodels.net/model-qualifiers/\">\n"
- + 
-    "    <rdf:Description rdf:about=\"#_000005\">\n"
- + 
-    "      <bqbiol:is>\n"
- + 
-    "        <rdf:Bag>\n"
- + 
-    "          <rdf:li rdf:resource=\"http://www.geneontology.org/#GO:0007274\"/>\n"
- + 
-    "        </rdf:Bag>\n"
- + 
-    "      </bqbiol:is>\n"
- + 
-    "    </rdf:Description>\n"
- + 
-    "    <rdf:Description>\n"
- + 
-    "      <rdf:other/>\n"
- + 
-    "    </rdf:Description>\n"
- + 
-    "  </rdf:RDF>\n"
- + 
+    expected = wrapString("<annotation>\n" + 
+    "  <rdf:RDF xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\" xmlns:dc=\"http://purl.org/dc/elements/1.1/\" xmlns:dcterms=\"http://purl.org/dc/terms/\" xmlns:vCard=\"http://www.w3.org/2001/vcard-rdf/3.0#\" xmlns:bqbiol=\"http://biomodels.net/biology-qualifiers/\" xmlns:bqmodel=\"http://biomodels.net/model-qualifiers/\">\n" + 
+    "    <rdf:Description rdf:about=\"#_000005\">\n" + 
+    "      <bqbiol:is>\n" + 
+    "        <rdf:Bag>\n" + 
+    "          <rdf:li rdf:resource=\"http://www.geneontology.org/#GO:0007274\"/>\n" + 
+    "        </rdf:Bag>\n" + 
+    "      </bqbiol:is>\n" + 
+    "    </rdf:Description>\n" + 
+    "    <rdf:Description>\n" + 
+    "      <rdf:other/>\n" + 
+    "    </rdf:Description>\n" + 
+    "  </rdf:RDF>\n" + 
     "</annotation>")
     i = self.m.getCompartment(4).removeTopLevelAnnotationElement("JDesignerLayout")
     n1 = self.m.getCompartment(4).getAnnotation()
-    self.assert_( i == libsbml.LIBSBML_OPERATION_SUCCESS )
+    self.assertTrue( i == libsbml.LIBSBML_OPERATION_SUCCESS )
     self.assertEqual( True, self.equals(expected,n1.toXMLString()) )
     i = self.m.getListOfCompartments().removeTopLevelAnnotationElement("RDF")
-    self.assert_( i == libsbml.LIBSBML_OPERATION_SUCCESS )
+    self.assertTrue( i == libsbml.LIBSBML_OPERATION_SUCCESS )
     pass  
 
   def test_RDFAnnotation_removeSingleAnnotation(self):
     n1 = None
     i = self.m.getCompartment(0).removeTopLevelAnnotationElement("RDF")
     n1 = self.m.getCompartment(0).getAnnotation()
-    self.assert_( i == libsbml.LIBSBML_OPERATION_SUCCESS )
-    self.assert_( n1 == None )
+    self.assertTrue( i == libsbml.LIBSBML_OPERATION_SUCCESS )
+    self.assertTrue( n1 == None )
     i = self.m.getCompartment(2).removeTopLevelAnnotationElement("JDesignerLayout")
     n1 = self.m.getCompartment(2).getAnnotation()
-    self.assert_( i == libsbml.LIBSBML_OPERATION_SUCCESS )
-    self.assert_( n1 == None )
+    self.assertTrue( i == libsbml.LIBSBML_OPERATION_SUCCESS )
+    self.assertTrue( n1 == None )
     i = self.m.getCompartment(3).removeTopLevelAnnotationElement("RDF", "http://www.w3.org/1999/02/22-rdf-syntax-ns#")
     n1 = self.m.getCompartment(3).getAnnotation()
-    self.assert_( i == libsbml.LIBSBML_OPERATION_SUCCESS )
-    self.assert_( n1 == None )
+    self.assertTrue( i == libsbml.LIBSBML_OPERATION_SUCCESS )
+    self.assertTrue( n1 == None )
     pass  
 
   def test_RDFAnnotation_removeSingleAnnotation1(self):
     n1 = None
     i = self.m.getCompartment(0).removeTopLevelAnnotationElement("RDF1")
     n1 = self.m.getCompartment(0).getAnnotation()
-    self.assert_( i == libsbml.LIBSBML_ANNOTATION_NAME_NOT_FOUND )
-    self.assert_( n1.getNumChildren() == 1 )
+    self.assertTrue( i == libsbml.LIBSBML_ANNOTATION_NAME_NOT_FOUND )
+    self.assertTrue( n1.getNumChildren() == 1 )
     i = self.m.getCompartment(2).removeTopLevelAnnotationElement("JDLayout")
     n1 = self.m.getCompartment(2).getAnnotation()
-    self.assert_( i == libsbml.LIBSBML_ANNOTATION_NAME_NOT_FOUND )
-    self.assert_( n1.getNumChildren() == 1 )
+    self.assertTrue( i == libsbml.LIBSBML_ANNOTATION_NAME_NOT_FOUND )
+    self.assertTrue( n1.getNumChildren() == 1 )
     i = self.m.getCompartment(3).removeTopLevelAnnotationElement("RDF", "http://www.w3.org/1999/02/22-rdf-syntax-ns")
     n1 = self.m.getCompartment(3).getAnnotation()
-    self.assert_( i == libsbml.LIBSBML_ANNOTATION_NS_NOT_FOUND )
-    self.assert_( n1.getNumChildren() == 1 )
+    self.assertTrue( i == libsbml.LIBSBML_ANNOTATION_NS_NOT_FOUND )
+    self.assertTrue( n1.getNumChildren() == 1 )
     pass  
 
   def test_RDFAnnotation_replaceAnnotation(self):
     node = self.m.getCompartment(3).getAnnotation()
     n1 = None
-    expected = wrapString("<annotation>\n"
- + 
-    "  <rdf:RDF xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\" xmlns:dc=\"http://purl.org/dc/elements/1.1/\" xmlns:dcterms=\"http://purl.org/dc/terms/\" xmlns:vCard=\"http://www.w3.org/2001/vcard-rdf/3.0#\" xmlns:bqbiol=\"http://biomodels.net/biology-qualifiers/\" xmlns:bqmodel=\"http://biomodels.net/model-qualifiers/\">\n"
- + 
-    "    <rdf:Description rdf:about=\"#_000002\">\n"
- + 
-    "      <bqbiol:is>\n"
- + 
-    "        <rdf:Bag>\n"
- + 
-    "          <rdf:li rdf:resource=\"http://www.geneontology.org/#GO:0007274\"/>\n"
- + 
-    "        </rdf:Bag>\n"
- + 
-    "      </bqbiol:is>\n"
- + 
-    "    </rdf:Description>\n"
- + 
-    "  </rdf:RDF>\n"
- + 
+    expected = wrapString("<annotation>\n" + 
+    "  <rdf:RDF xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\" xmlns:dc=\"http://purl.org/dc/elements/1.1/\" xmlns:dcterms=\"http://purl.org/dc/terms/\" xmlns:vCard=\"http://www.w3.org/2001/vcard-rdf/3.0#\" xmlns:bqbiol=\"http://biomodels.net/biology-qualifiers/\" xmlns:bqmodel=\"http://biomodels.net/model-qualifiers/\">\n" + 
+    "    <rdf:Description rdf:about=\"#_000002\">\n" + 
+    "      <bqbiol:is>\n" + 
+    "        <rdf:Bag>\n" + 
+    "          <rdf:li rdf:resource=\"http://www.geneontology.org/#GO:0007274\"/>\n" + 
+    "        </rdf:Bag>\n" + 
+    "      </bqbiol:is>\n" + 
+    "    </rdf:Description>\n" + 
+    "  </rdf:RDF>\n" + 
     "</annotation>")
     i = self.m.getCompartment(0).replaceTopLevelAnnotationElement(node)
     n1 = self.m.getCompartment(0).getAnnotation()
-    self.assert_( i == libsbml.LIBSBML_OPERATION_SUCCESS )
+    self.assertTrue( i == libsbml.LIBSBML_OPERATION_SUCCESS )
     self.assertEqual( True, self.equals(expected,n1.toXMLString()) )
     pass  
 
   def test_RDFAnnotation_replaceAnnotation1(self):
     n1 = None
-    noRDF = wrapString("<annotation>\n"
-"  <jd2:JDesignerLayout version=\"2.0\" MajorVersion=\"2\" MinorVersion=\"3\" BuildVersion=\"41\">\n"
- + 
-    "    <jd2:header>\n"
- + 
-    "      <jd2:VersionHeader JDesignerVersion=\"2.0\"/>\n"
- + 
-    "      <jd2:ModelHeader Author=\"Sarah\" ModelVersion=\"0.0\" ModelTitle=\"mine\"/>\n"
- + 
-    "      <jd2:TimeCourseDetails timeStart=\"0\" timeEnd=\"12\" numberOfPoints=\"1000\"/>\n"
- + 
-    "    </jd2:header>\n"
- + 
-    "  </jd2:JDesignerLayout>\n"
- + 
+    noRDF = wrapString("<annotation>\n" + "  <jd2:JDesignerLayout version=\"2.0\" MajorVersion=\"2\" MinorVersion=\"3\" BuildVersion=\"41\">\n" + 
+    "    <jd2:header>\n" + 
+    "      <jd2:VersionHeader JDesignerVersion=\"2.0\"/>\n" + 
+    "      <jd2:ModelHeader Author=\"Sarah\" ModelVersion=\"0.0\" ModelTitle=\"mine\"/>\n" + 
+    "      <jd2:TimeCourseDetails timeStart=\"0\" timeEnd=\"12\" numberOfPoints=\"1000\"/>\n" + 
+    "    </jd2:header>\n" + 
+    "  </jd2:JDesignerLayout>\n" + 
     "</annotation>")
-    expected = wrapString("<annotation>\n"
- + 
-    "  <jd2:JDesignerLayout version=\"2.0\" MajorVersion=\"2\" MinorVersion=\"3\" BuildVersion=\"41\">\n"
- + 
-    "    <jd2:header>\n"
- + 
-    "      <jd2:VersionHeader JDesignerVersion=\"2.0\"/>\n"
- + 
-    "      <jd2:ModelHeader Author=\"Sarah\" ModelVersion=\"0.0\" ModelTitle=\"mine\"/>\n"
- + 
-    "      <jd2:TimeCourseDetails timeStart=\"0\" timeEnd=\"12\" numberOfPoints=\"1000\"/>\n"
- + 
-    "    </jd2:header>\n"
- + 
-    "  </jd2:JDesignerLayout>\n"
- + 
-    "  <rdf:RDF xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\" xmlns:dc=\"http://purl.org/dc/elements/1.1/\" xmlns:dcterms=\"http://purl.org/dc/terms/\" xmlns:vCard=\"http://www.w3.org/2001/vcard-rdf/3.0#\" xmlns:bqbiol=\"http://biomodels.net/biology-qualifiers/\" xmlns:bqmodel=\"http://biomodels.net/model-qualifiers/\">\n"
- + 
-    "    <rdf:Description rdf:about=\"#_000005\">\n"
- + 
-    "      <bqbiol:is>\n"
- + 
-    "        <rdf:Bag>\n"
- + 
-    "          <rdf:li rdf:resource=\"http://www.geneontology.org/#GO:0007274\"/>\n"
- + 
-    "        </rdf:Bag>\n"
- + 
-    "      </bqbiol:is>\n"
- + 
-    "    </rdf:Description>\n"
- + 
-    "    <rdf:Description>\n"
- + 
-    "      <rdf:other/>\n"
- + 
-    "    </rdf:Description>\n"
- + 
-    "  </rdf:RDF>\n"
- + 
+    expected = wrapString("<annotation>\n" + 
+    "  <jd2:JDesignerLayout version=\"2.0\" MajorVersion=\"2\" MinorVersion=\"3\" BuildVersion=\"41\">\n" + 
+    "    <jd2:header>\n" + 
+    "      <jd2:VersionHeader JDesignerVersion=\"2.0\"/>\n" + 
+    "      <jd2:ModelHeader Author=\"Sarah\" ModelVersion=\"0.0\" ModelTitle=\"mine\"/>\n" + 
+    "      <jd2:TimeCourseDetails timeStart=\"0\" timeEnd=\"12\" numberOfPoints=\"1000\"/>\n" + 
+    "    </jd2:header>\n" + 
+    "  </jd2:JDesignerLayout>\n" + 
+    "  <rdf:RDF xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\" xmlns:dc=\"http://purl.org/dc/elements/1.1/\" xmlns:dcterms=\"http://purl.org/dc/terms/\" xmlns:vCard=\"http://www.w3.org/2001/vcard-rdf/3.0#\" xmlns:bqbiol=\"http://biomodels.net/biology-qualifiers/\" xmlns:bqmodel=\"http://biomodels.net/model-qualifiers/\">\n" + 
+    "    <rdf:Description rdf:about=\"#_000005\">\n" + 
+    "      <bqbiol:is>\n" + 
+    "        <rdf:Bag>\n" + 
+    "          <rdf:li rdf:resource=\"http://www.geneontology.org/#GO:0007274\"/>\n" + 
+    "        </rdf:Bag>\n" + 
+    "      </bqbiol:is>\n" + 
+    "    </rdf:Description>\n" + 
+    "    <rdf:Description>\n" + 
+    "      <rdf:other/>\n" + 
+    "    </rdf:Description>\n" + 
+    "  </rdf:RDF>\n" + 
     "</annotation>")
     i = self.m.getCompartment(4).replaceTopLevelAnnotationElement(noRDF)
     n1 = self.m.getCompartment(4).getAnnotation()
-    self.assert_( i == libsbml.LIBSBML_OPERATION_SUCCESS )
+    self.assertTrue( i == libsbml.LIBSBML_OPERATION_SUCCESS )
     self.assertEqual( True, self.equals(expected,n1.toXMLString()) )
     pass  
 
   def test_RDFAnnotation_replaceAnnotation2(self):
     n1 = None
-    jd = wrapString("  <jd2:JDesignerLayout version=\"2.0\" MajorVersion=\"2\" MinorVersion=\"3\" BuildVersion=\"41\">\n"
-"    <jd2:header>\n"
- + 
-    "      <jd2:VersionHeader JDesignerVersion=\"2.0\"/>\n"
- + 
-    "      <jd2:ModelHeader Author=\"Sarah\" ModelVersion=\"0.0\" ModelTitle=\"mine\"/>\n"
- + 
-    "      <jd2:TimeCourseDetails timeStart=\"0\" timeEnd=\"12\" numberOfPoints=\"1000\"/>\n"
- + 
-    "    </jd2:header>\n"
- + 
+    jd = wrapString("  <jd2:JDesignerLayout version=\"2.0\" MajorVersion=\"2\" MinorVersion=\"3\" BuildVersion=\"41\">\n" + "    <jd2:header>\n" + 
+    "      <jd2:VersionHeader JDesignerVersion=\"2.0\"/>\n" + 
+    "      <jd2:ModelHeader Author=\"Sarah\" ModelVersion=\"0.0\" ModelTitle=\"mine\"/>\n" + 
+    "      <jd2:TimeCourseDetails timeStart=\"0\" timeEnd=\"12\" numberOfPoints=\"1000\"/>\n" + 
+    "    </jd2:header>\n" + 
     "  </jd2:JDesignerLayout>")
-    twoAnn = wrapString("<annotation>\n"
- + 
-    "  <jd2:JDesignerLayout version=\"2.0\" MajorVersion=\"2\" MinorVersion=\"3\" BuildVersion=\"41\">\n"
- + 
-    "    <jd2:header>\n"
- + 
-    "      <jd2:VersionHeader JDesignerVersion=\"2.0\"/>\n"
- + 
-    "      <jd2:ModelHeader Author=\"Sarah\" ModelVersion=\"0.0\" ModelTitle=\"mine\"/>\n"
- + 
-    "      <jd2:TimeCourseDetails timeStart=\"0\" timeEnd=\"12\" numberOfPoints=\"1000\"/>\n"
- + 
-    "    </jd2:header>\n"
- + 
-    "  </jd2:JDesignerLayout>\n"
- + 
-    "  <rdf:RDF xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\" xmlns:dc=\"http://purl.org/dc/elements/1.1/\" xmlns:dcterms=\"http://purl.org/dc/terms/\" xmlns:vCard=\"http://www.w3.org/2001/vcard-rdf/3.0#\" xmlns:bqbiol=\"http://biomodels.net/biology-qualifiers/\" xmlns:bqmodel=\"http://biomodels.net/model-qualifiers/\">\n"
- + 
-    "    <rdf:Description rdf:about=\"#_000005\">\n"
- + 
-    "      <bqbiol:is>\n"
- + 
-    "        <rdf:Bag>\n"
- + 
-    "          <rdf:li rdf:resource=\"http://www.geneontology.org/#GO:0007274\"/>\n"
- + 
-    "        </rdf:Bag>\n"
- + 
-    "      </bqbiol:is>\n"
- + 
-    "    </rdf:Description>\n"
- + 
-    "    <rdf:Description>\n"
- + 
-    "      <rdf:other/>\n"
- + 
-    "    </rdf:Description>\n"
- + 
-    "  </rdf:RDF>\n"
- + 
+    twoAnn = wrapString("<annotation>\n" + 
+    "  <jd2:JDesignerLayout version=\"2.0\" MajorVersion=\"2\" MinorVersion=\"3\" BuildVersion=\"41\">\n" + 
+    "    <jd2:header>\n" + 
+    "      <jd2:VersionHeader JDesignerVersion=\"2.0\"/>\n" + 
+    "      <jd2:ModelHeader Author=\"Sarah\" ModelVersion=\"0.0\" ModelTitle=\"mine\"/>\n" + 
+    "      <jd2:TimeCourseDetails timeStart=\"0\" timeEnd=\"12\" numberOfPoints=\"1000\"/>\n" + 
+    "    </jd2:header>\n" + 
+    "  </jd2:JDesignerLayout>\n" + 
+    "  <rdf:RDF xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\" xmlns:dc=\"http://purl.org/dc/elements/1.1/\" xmlns:dcterms=\"http://purl.org/dc/terms/\" xmlns:vCard=\"http://www.w3.org/2001/vcard-rdf/3.0#\" xmlns:bqbiol=\"http://biomodels.net/biology-qualifiers/\" xmlns:bqmodel=\"http://biomodels.net/model-qualifiers/\">\n" + 
+    "    <rdf:Description rdf:about=\"#_000005\">\n" + 
+    "      <bqbiol:is>\n" + 
+    "        <rdf:Bag>\n" + 
+    "          <rdf:li rdf:resource=\"http://www.geneontology.org/#GO:0007274\"/>\n" + 
+    "        </rdf:Bag>\n" + 
+    "      </bqbiol:is>\n" + 
+    "    </rdf:Description>\n" + 
+    "    <rdf:Description>\n" + 
+    "      <rdf:other/>\n" + 
+    "    </rdf:Description>\n" + 
+    "  </rdf:RDF>\n" + 
     "</annotation>")
     i = self.m.getCompartment(4).replaceTopLevelAnnotationElement(twoAnn)
-    self.assert_( i == libsbml.LIBSBML_INVALID_OBJECT )
+    self.assertTrue( i == libsbml.LIBSBML_INVALID_OBJECT )
     i = self.m.getCompartment(4).replaceTopLevelAnnotationElement(jd)
     n1 = self.m.getCompartment(4).getAnnotation()
-    self.assert_( i == libsbml.LIBSBML_OPERATION_SUCCESS )
+    self.assertTrue( i == libsbml.LIBSBML_OPERATION_SUCCESS )
     self.assertEqual( True, self.equals(twoAnn,n1.toXMLString()) )
     pass  
 
   def test_RDFAnnotation_testAnnotationForMetaId(self):
     doc = libsbml.SBMLDocument( 3,1 )
     model = doc.createModel()
-    self.assert_( model != None )
+    self.assertTrue( model != None )
     model.setId("test1")
     term = libsbml.CVTerm( libsbml.MODEL_QUALIFIER )
     term.addResource("testResource")
@@ -628,111 +481,114 @@ class TestRDFAnnotation(unittest.TestCase):
     model.addCVTerm(term)
     model.setMetaId("")
     test = model.toSBML()
-    self.assert_( test ==  "<model id=\"test1\"/>" )
+    self.assertTrue((  "<model id=\"test1\"/>" == test ))
+    test = None
     pass  
 
-
   def test_RDFAnnotation_testMissingAbout(self):
-    withAbout = wrapString("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n"
- + 
-    "  <annotation>\n"
- + 
-    "    <rdf:RDF xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\" xmlns:dc=\"http://purl.org/dc/elements/1.1/\" xmlns:dcterms=\"http://purl.org/dc/terms/\" xmlns:vCard=\"http://www.w3.org/2001/vcard-rdf/3.0#\" xmlns:bqbiol=\"http://biomodels.net/biology-qualifiers/\" xmlns:bqmodel=\"http://biomodels.net/model-qualifiers/\">\n"
- + 
-    "      <rdf:Description rdf:about=\"#_000004\">\n"
- + 
-    "        <bqbiol:is>\n"
- + 
-    "          <rdf:Bag>\n"
- + 
-    "            <rdf:li rdf:resource=\"http://www.geneontology.org/#GO:0007274\"/>\n"
- + 
-    "          </rdf:Bag>\n"
- + 
-    "        </bqbiol:is>\n"
- + 
-    "      </rdf:Description>\n"
- + 
-    "    </rdf:RDF>\n"
- + 
+    withAbout = wrapString("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" + 
+    "  <annotation>\n" + 
+    "    <rdf:RDF xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\" xmlns:dc=\"http://purl.org/dc/elements/1.1/\" xmlns:dcterms=\"http://purl.org/dc/terms/\" xmlns:vCard=\"http://www.w3.org/2001/vcard-rdf/3.0#\" xmlns:bqbiol=\"http://biomodels.net/biology-qualifiers/\" xmlns:bqmodel=\"http://biomodels.net/model-qualifiers/\">\n" + 
+    "      <rdf:Description rdf:about=\"#_000004\">\n" + 
+    "        <bqbiol:is>\n" + 
+    "          <rdf:Bag>\n" + 
+    "            <rdf:li rdf:resource=\"http://www.geneontology.org/#GO:0007274\"/>\n" + 
+    "          </rdf:Bag>\n" + 
+    "        </bqbiol:is>\n" + 
+    "      </rdf:Description>\n" + 
+    "    </rdf:RDF>\n" + 
     "  </annotation>")
-    emptyAbout = wrapString("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n"
- + 
-    "  <annotation>\n"
- + 
-    "    <rdf:RDF xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\" xmlns:dc=\"http://purl.org/dc/elements/1.1/\" xmlns:dcterms=\"http://purl.org/dc/terms/\" xmlns:vCard=\"http://www.w3.org/2001/vcard-rdf/3.0#\" xmlns:bqbiol=\"http://biomodels.net/biology-qualifiers/\" xmlns:bqmodel=\"http://biomodels.net/model-qualifiers/\">\n"
- + 
-    "      <rdf:Description rdf:about=\"\">\n"
- + 
-    "        <bqbiol:is>\n"
- + 
-    "          <rdf:Bag>\n"
- + 
-    "            <rdf:li rdf:resource=\"http://www.geneontology.org/#GO:0007274\"/>\n"
- + 
-    "          </rdf:Bag>\n"
- + 
-    "        </bqbiol:is>\n"
- + 
-    "      </rdf:Description>\n"
- + 
-    "    </rdf:RDF>\n"
- + 
+    emptyAbout = wrapString("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" + 
+    "  <annotation>\n" + 
+    "    <rdf:RDF xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\" xmlns:dc=\"http://purl.org/dc/elements/1.1/\" xmlns:dcterms=\"http://purl.org/dc/terms/\" xmlns:vCard=\"http://www.w3.org/2001/vcard-rdf/3.0#\" xmlns:bqbiol=\"http://biomodels.net/biology-qualifiers/\" xmlns:bqmodel=\"http://biomodels.net/model-qualifiers/\">\n" + 
+    "      <rdf:Description rdf:about=\"\">\n" + 
+    "        <bqbiol:is>\n" + 
+    "          <rdf:Bag>\n" + 
+    "            <rdf:li rdf:resource=\"http://www.geneontology.org/#GO:0007274\"/>\n" + 
+    "          </rdf:Bag>\n" + 
+    "        </bqbiol:is>\n" + 
+    "      </rdf:Description>\n" + 
+    "    </rdf:RDF>\n" + 
     "  </annotation>")
-    noAbout = wrapString("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n"
- + 
-    "  <annotation>\n"
- + 
-    "    <rdf:RDF xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\" xmlns:dc=\"http://purl.org/dc/elements/1.1/\" xmlns:dcterms=\"http://purl.org/dc/terms/\" xmlns:vCard=\"http://www.w3.org/2001/vcard-rdf/3.0#\" xmlns:bqbiol=\"http://biomodels.net/biology-qualifiers/\" xmlns:bqmodel=\"http://biomodels.net/model-qualifiers/\">\n"
- + 
-    "      <rdf:Description>\n"
- + 
-    "        <bqbiol:is>\n"
- + 
-    "          <rdf:Bag>\n"
- + 
-    "            <rdf:li rdf:resource=\"http://www.geneontology.org/#GO:0007274\"/>\n"
- + 
-    "          </rdf:Bag>\n"
- + 
-    "        </bqbiol:is>\n"
- + 
-    "      </rdf:Description>\n"
- + 
-    "    </rdf:RDF>\n"
- + 
+    noAbout = wrapString("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" + 
+    "  <annotation>\n" + 
+    "    <rdf:RDF xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\" xmlns:dc=\"http://purl.org/dc/elements/1.1/\" xmlns:dcterms=\"http://purl.org/dc/terms/\" xmlns:vCard=\"http://www.w3.org/2001/vcard-rdf/3.0#\" xmlns:bqbiol=\"http://biomodels.net/biology-qualifiers/\" xmlns:bqmodel=\"http://biomodels.net/model-qualifiers/\">\n" + 
+    "      <rdf:Description>\n" + 
+    "        <bqbiol:is>\n" + 
+    "          <rdf:Bag>\n" + 
+    "            <rdf:li rdf:resource=\"http://www.geneontology.org/#GO:0007274\"/>\n" + 
+    "          </rdf:Bag>\n" + 
+    "        </bqbiol:is>\n" + 
+    "      </rdf:Description>\n" + 
+    "    </rdf:RDF>\n" + 
     "  </annotation>")
-    cvTerms = libsbml.CVTermList()
+    cvTerms = List()
     stream = libsbml.XMLInputStream( withAbout,False )
     node = libsbml.XMLNode( stream )
     libsbml.RDFAnnotationParser.parseRDFAnnotation(node,cvTerms)
-    self.assert_( cvTerms.getSize() == 1 )
-    cvTerms = None
-    cvTerms = libsbml.CVTermList()
-    libsbml.RDFAnnotationParser.parseRDFAnnotation(node,cvTerms )
-    self.assert_( cvTerms.getSize() == 1 )
-    cvTerms = None
-    cvTerms = None
-    cvTerms = libsbml.CVTermList()
-    stream1 = libsbml.XMLInputStream( emptyAbout,False )
-    node1 = libsbml.XMLNode( stream1 )
-    libsbml.RDFAnnotationParser.parseRDFAnnotation(node1,cvTerms)
-    self.assert_( cvTerms.getSize() == 0 )
-    cvTerms = None
-    cvTerms = None
-    cvTerms = libsbml.CVTermList()
-    stream2 = libsbml.XMLInputStream( noAbout,False )
-    node2 = libsbml.XMLNode( stream2 )
-    libsbml.RDFAnnotationParser.parseRDFAnnotation(node2,cvTerms)
-    self.assert_( cvTerms.getSize() == 0 )
+    self.assertTrue( cvTerms.getSize() == 1 )
+    if (cvTerms != None):
+      size = cvTerms.getSize()
+      while (size > 0) {delete  cvTerms.remove(0) 
+      size--
+      pass    
     cvTerms = None
     cvTerms = None
     pass  
+  cvTerms = List()
+  libsbml.RDFAnnotationParser.parseRDFAnnotation(node,cvTerms, "_000004" )
+  self.assertTrue( cvTerms.getSize() == 1 )
+  if (cvTerms != None):
+    size = cvTerms.getSize()
+    while (size > 0) {delete  cvTerms.remove(0) 
+    size--
+    pass  
+  cvTerms = None
+  cvTerms = None
+  pass
+cvTerms = List()
+libsbml.RDFAnnotationParser.parseRDFAnnotation(node,cvTerms, "badMetaId" )
+self.assertTrue( cvTerms.getSize() == 0 )
+if (cvTerms != None):
+  size = cvTerms.getSize()
+  while (size > 0) {delete  cvTerms.remove(0) 
+  size--
+  pass
+cvTerms = None
+cvTerms = None
+pass
+cvTerms = List()
+stream1 = libsbml.XMLInputStream( emptyAbout,False )
+node1 = libsbml.XMLNode( stream1 )
+libsbml.RDFAnnotationParser.parseRDFAnnotation(node1,cvTerms)
+self.assertTrue( cvTerms.getSize() == 0 )
+if (cvTerms != None):
+size = cvTerms.getSize()
+while (size > 0) {delete  cvTerms.remove(0) 
+size--
+pass
+cvTerms = None
+cvTerms = None
+pass
+cvTerms = List()
+stream2 = libsbml.XMLInputStream( noAbout,False )
+node2 = libsbml.XMLNode( stream2 )
+libsbml.RDFAnnotationParser.parseRDFAnnotation(node2,cvTerms)
+self.assertTrue( cvTerms.getSize() == 0 )
+if (cvTerms != None):
+size = cvTerms.getSize()
+while (size > 0) {delete  cvTerms.remove(0) 
+size--
+pass
+cvTerms = None
+cvTerms = None
+pass
+pass
 
   def test_RDFAnnotation_testMissingMetaId(self):
     doc = libsbml.SBMLDocument( 3,1 )
     model = doc.createModel()
-    self.assert_( model != None )
+    self.assertTrue( model != None )
     model.setId("test1")
     term = libsbml.CVTerm( libsbml.MODEL_QUALIFIER )
     term.addResource("testResource")
@@ -741,7 +597,44 @@ class TestRDFAnnotation(unittest.TestCase):
     model.addCVTerm(term)
     model.setMetaId("")
     test = model.toSBML()
-    self.assert_( test ==  "<model id=\"test1\"/>" )
+    self.assertTrue((  "<model id=\"test1\"/>" == test ))
+    test = None
+    pass  
+
+  def test_invalid_user_annotation(self):
+    invalidL2V1 = wrapString("<?xml version='1.0' encoding='UTF-8'?>\n" + "<sbml xmlns='http://www.sbml.org/sbml/level2'\n" + 
+    " level='2'\n" + 
+    " version='1'>\n" + 
+    "  <annotation>\n" + 
+    "    Created by The MathWorks_COMMA_ Inc. SimBiology tool_COMMA_ Version 4.0\n" + 
+    "  </annotation>\n" + 
+    "  <model id='trial_spatial' name='trial_spatial'>\n" + 
+    "    <listOfCompartments>\n" + 
+    "      <compartment id='cytosol' constant='true' size='1'/>\n" + 
+    "    </listOfCompartments>\n" + 
+    "  </model>\n" + 
+    "</sbml>\n")
+    doc = libsbml.readSBMLFromString(invalidL2V1)
+    numErrors = doc.getNumErrors()
+    self.assertTrue( numErrors == 1 )
+    doc = None
+    invalidL2V2 = wrapString("<?xml version='1.0' encoding='UTF-8'?>\n" + "<sbml xmlns='http://www.sbml.org/sbml/level2/version2'\n" + 
+    " level='2'\n" + 
+    " version='2'>\n" + 
+    "  <annotation>\n" + 
+    "    Created by The MathWorks_COMMA_ Inc. SimBiology tool_COMMA_ Version 4.0\n" + 
+    "  </annotation>\n" + 
+    "  <model id='trial_spatial' name='trial_spatial'>\n" + 
+    "    <listOfCompartments>\n" + 
+    "      <compartment id='cytosol' constant='true' size='1'/>\n" + 
+    "    </listOfCompartments>\n" + 
+    "  </model>\n" + 
+    "</sbml>\n")
+    doc = libsbml.readSBMLFromString(invalidL2V2)
+    numErrors = doc.getNumErrors()
+    self.assertTrue( numErrors == 1 )
+    self.assertEqual( True, doc.getErrorLog().contains(AnnotationNotElement) )
+    doc = None
     pass  
 
 def suite():
