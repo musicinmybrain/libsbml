@@ -43,13 +43,14 @@ class TestInternalConsistencyChecks(unittest.TestCase):
     fd = m.createFunctionDefinition()
     fd.setId("fd")
     errors = d.checkInternalConsistency()
-    self.assert_( errors == 1 )
-    self.assert_( d.getError(0).getErrorId() == 20306 )
+    self.assertTrue( errors == 1 )
+    self.assertTrue( d.getError(0).getErrorId() == 20306 )
     ast = libsbml.parseFormula("lambda(x, 2*x)")
     fd.setMath(ast)
     errors = d.checkInternalConsistency()
-    self.assert_( errors == 0 )
+    self.assertTrue( errors == 0 )
     d = None
+    ast = None
     pass  
 
   def test_internal_consistency_check_20307(self):
@@ -59,13 +60,14 @@ class TestInternalConsistencyChecks(unittest.TestCase):
     ast = libsbml.parseFormula("lambda(x, 2*x)")
     fd.setMath(ast)
     errors = d.checkInternalConsistency()
-    self.assert_( errors == 1 )
-    self.assert_( d.getError(0).getErrorId() == 20307 )
+    self.assertTrue( errors == 1 )
+    self.assertTrue( d.getError(0).getErrorId() == 20307 )
     fd.setId("fd")
     d.getErrorLog().clearLog()
     errors = d.checkInternalConsistency()
-    self.assert_( errors == 0 )
+    self.assertTrue( errors == 0 )
     d = None
+    ast = None
     pass  
 
   def test_internal_consistency_check_20419(self):
@@ -73,12 +75,12 @@ class TestInternalConsistencyChecks(unittest.TestCase):
     m = d.createModel()
     ud = m.createUnitDefinition()
     errors = d.checkInternalConsistency()
-    self.assert_( errors == 1 )
-    self.assert_( d.getError(0).getErrorId() == 20419 )
+    self.assertTrue( errors == 1 )
+    self.assertTrue( d.getError(0).getErrorId() == 20419 )
     ud.setId("ud")
     d.getErrorLog().clearLog()
     errors = d.checkInternalConsistency()
-    self.assert_( errors == 0 )
+    self.assertTrue( errors == 0 )
     d = None
     pass  
 
@@ -89,33 +91,33 @@ class TestInternalConsistencyChecks(unittest.TestCase):
     ud.setId("ud")
     u = ud.createUnit()
     errors = d.checkInternalConsistency()
-    self.assert_( errors == 4 )
-    self.assert_( d.getError(0).getErrorId() == 20421 )
-    self.assert_( d.getError(1).getErrorId() == 20421 )
-    self.assert_( d.getError(2).getErrorId() == 20421 )
-    self.assert_( d.getError(3).getErrorId() == 20421 )
+    self.assertTrue( errors == 4 )
+    self.assertTrue( d.getError(0).getErrorId() == 20421 )
+    self.assertTrue( d.getError(1).getErrorId() == 20421 )
+    self.assertTrue( d.getError(2).getErrorId() == 20421 )
+    self.assertTrue( d.getError(3).getErrorId() == 20421 )
     u.setKind(libsbml.UNIT_KIND_MOLE)
     d.getErrorLog().clearLog()
     errors = d.checkInternalConsistency()
-    self.assert_( errors == 3 )
-    self.assert_( d.getError(0).getErrorId() == 20421 )
-    self.assert_( d.getError(1).getErrorId() == 20421 )
-    self.assert_( d.getError(2).getErrorId() == 20421 )
+    self.assertTrue( errors == 3 )
+    self.assertTrue( d.getError(0).getErrorId() == 20421 )
+    self.assertTrue( d.getError(1).getErrorId() == 20421 )
+    self.assertTrue( d.getError(2).getErrorId() == 20421 )
     u.setExponent(1.0)
     d.getErrorLog().clearLog()
     errors = d.checkInternalConsistency()
-    self.assert_( errors == 2 )
-    self.assert_( d.getError(0).getErrorId() == 20421 )
-    self.assert_( d.getError(1).getErrorId() == 20421 )
+    self.assertTrue( errors == 2 )
+    self.assertTrue( d.getError(0).getErrorId() == 20421 )
+    self.assertTrue( d.getError(1).getErrorId() == 20421 )
     u.setScale(0)
     d.getErrorLog().clearLog()
     errors = d.checkInternalConsistency()
-    self.assert_( errors == 1 )
-    self.assert_( d.getError(0).getErrorId() == 20421 )
+    self.assertTrue( errors == 1 )
+    self.assertTrue( d.getError(0).getErrorId() == 20421 )
     u.setMultiplier(1.0)
     d.getErrorLog().clearLog()
     errors = d.checkInternalConsistency()
-    self.assert_( errors == 0 )
+    self.assertTrue( errors == 0 )
     d = None
     pass  
 
@@ -124,18 +126,18 @@ class TestInternalConsistencyChecks(unittest.TestCase):
     m = d.createModel()
     c = m.createCompartment()
     errors = d.checkInternalConsistency()
-    self.assert_( errors == 2 )
-    self.assert_( d.getError(0).getErrorId() == 20517 )
-    self.assert_( d.getError(1).getErrorId() == 20517 )
+    self.assertTrue( errors == 2 )
+    self.assertTrue( d.getError(0).getErrorId() == 20517 )
+    self.assertTrue( d.getError(1).getErrorId() == 20517 )
     c.setId("c")
     d.getErrorLog().clearLog()
     errors = d.checkInternalConsistency()
-    self.assert_( errors == 1 )
-    self.assert_( d.getError(0).getErrorId() == 20517 )
+    self.assertTrue( errors == 1 )
+    self.assertTrue( d.getError(0).getErrorId() == 20517 )
     c.setConstant(True)
     d.getErrorLog().clearLog()
     errors = d.checkInternalConsistency()
-    self.assert_( errors == 0 )
+    self.assertTrue( errors == 0 )
     d = None
     pass  
 
@@ -147,42 +149,42 @@ class TestInternalConsistencyChecks(unittest.TestCase):
     c.setConstant(True)
     s = m.createSpecies()
     errors = d.checkInternalConsistency()
-    self.assert_( errors == 5 )
-    self.assert_( d.getError(0).getErrorId() == 20623 )
-    self.assert_( d.getError(1).getErrorId() == 20614 )
-    self.assert_( d.getError(2).getErrorId() == 20623 )
-    self.assert_( d.getError(3).getErrorId() == 20623 )
-    self.assert_( d.getError(4).getErrorId() == 20623 )
+    self.assertTrue( errors == 5 )
+    self.assertTrue( d.getError(0).getErrorId() == 20623 )
+    self.assertTrue( d.getError(1).getErrorId() == 20614 )
+    self.assertTrue( d.getError(2).getErrorId() == 20623 )
+    self.assertTrue( d.getError(3).getErrorId() == 20623 )
+    self.assertTrue( d.getError(4).getErrorId() == 20623 )
     s.setId("s")
     d.getErrorLog().clearLog()
     errors = d.checkInternalConsistency()
-    self.assert_( errors == 4 )
-    self.assert_( d.getError(0).getErrorId() == 20614 )
-    self.assert_( d.getError(1).getErrorId() == 20623 )
-    self.assert_( d.getError(2).getErrorId() == 20623 )
-    self.assert_( d.getError(3).getErrorId() == 20623 )
+    self.assertTrue( errors == 4 )
+    self.assertTrue( d.getError(0).getErrorId() == 20614 )
+    self.assertTrue( d.getError(1).getErrorId() == 20623 )
+    self.assertTrue( d.getError(2).getErrorId() == 20623 )
+    self.assertTrue( d.getError(3).getErrorId() == 20623 )
     s.setCompartment("c")
     d.getErrorLog().clearLog()
     errors = d.checkInternalConsistency()
-    self.assert_( errors == 3 )
-    self.assert_( d.getError(0).getErrorId() == 20623 )
-    self.assert_( d.getError(1).getErrorId() == 20623 )
-    self.assert_( d.getError(2).getErrorId() == 20623 )
+    self.assertTrue( errors == 3 )
+    self.assertTrue( d.getError(0).getErrorId() == 20623 )
+    self.assertTrue( d.getError(1).getErrorId() == 20623 )
+    self.assertTrue( d.getError(2).getErrorId() == 20623 )
     s.setHasOnlySubstanceUnits(True)
     d.getErrorLog().clearLog()
     errors = d.checkInternalConsistency()
-    self.assert_( errors == 2 )
-    self.assert_( d.getError(0).getErrorId() == 20623 )
-    self.assert_( d.getError(1).getErrorId() == 20623 )
+    self.assertTrue( errors == 2 )
+    self.assertTrue( d.getError(0).getErrorId() == 20623 )
+    self.assertTrue( d.getError(1).getErrorId() == 20623 )
     s.setBoundaryCondition(True)
     d.getErrorLog().clearLog()
     errors = d.checkInternalConsistency()
-    self.assert_( errors == 1 )
-    self.assert_( d.getError(0).getErrorId() == 20623 )
+    self.assertTrue( errors == 1 )
+    self.assertTrue( d.getError(0).getErrorId() == 20623 )
     s.setConstant(True)
     d.getErrorLog().clearLog()
     errors = d.checkInternalConsistency()
-    self.assert_( errors == 0 )
+    self.assertTrue( errors == 0 )
     d = None
     pass  
 
@@ -191,18 +193,18 @@ class TestInternalConsistencyChecks(unittest.TestCase):
     m = d.createModel()
     p = m.createParameter()
     errors = d.checkInternalConsistency()
-    self.assert_( errors == 2 )
-    self.assert_( d.getError(0).getErrorId() == 20706 )
-    self.assert_( d.getError(1).getErrorId() == 20706 )
+    self.assertTrue( errors == 2 )
+    self.assertTrue( d.getError(0).getErrorId() == 20706 )
+    self.assertTrue( d.getError(1).getErrorId() == 20706 )
     p.setId("c")
     d.getErrorLog().clearLog()
     errors = d.checkInternalConsistency()
-    self.assert_( errors == 1 )
-    self.assert_( d.getError(0).getErrorId() == 20706 )
+    self.assertTrue( errors == 1 )
+    self.assertTrue( d.getError(0).getErrorId() == 20706 )
     p.setConstant(True)
     d.getErrorLog().clearLog()
     errors = d.checkInternalConsistency()
-    self.assert_( errors == 0 )
+    self.assertTrue( errors == 0 )
     d = None
     pass  
 
@@ -212,14 +214,15 @@ class TestInternalConsistencyChecks(unittest.TestCase):
     ia = m.createInitialAssignment()
     ia.setSymbol("fd")
     errors = d.checkInternalConsistency()
-    self.assert_( errors == 1 )
-    self.assert_( d.getError(0).getErrorId() == 20804 )
+    self.assertTrue( errors == 1 )
+    self.assertTrue( d.getError(0).getErrorId() == 20804 )
     ast = libsbml.parseFormula("lambda(x, 2*x)")
     ia.setMath(ast)
     d.getErrorLog().clearLog()
     errors = d.checkInternalConsistency()
-    self.assert_( errors == 0 )
+    self.assertTrue( errors == 0 )
     d = None
+    ast = None
     pass  
 
   def test_internal_consistency_check_20805(self):
@@ -229,13 +232,14 @@ class TestInternalConsistencyChecks(unittest.TestCase):
     ast = libsbml.parseFormula("lambda(x, 2*x)")
     ia.setMath(ast)
     errors = d.checkInternalConsistency()
-    self.assert_( errors == 1 )
-    self.assert_( d.getError(0).getErrorId() == 20805 )
+    self.assertTrue( errors == 1 )
+    self.assertTrue( d.getError(0).getErrorId() == 20805 )
     ia.setSymbol("fd")
     d.getErrorLog().clearLog()
     errors = d.checkInternalConsistency()
-    self.assert_( errors == 0 )
+    self.assertTrue( errors == 0 )
     d = None
+    ast = None
     pass  
 
   def test_internal_consistency_check_20907_alg(self):
@@ -243,14 +247,15 @@ class TestInternalConsistencyChecks(unittest.TestCase):
     m = d.createModel()
     r = m.createAlgebraicRule()
     errors = d.checkInternalConsistency()
-    self.assert_( errors == 1 )
-    self.assert_( d.getError(0).getErrorId() == 20907 )
+    self.assertTrue( errors == 1 )
+    self.assertTrue( d.getError(0).getErrorId() == 20907 )
     ast = libsbml.parseFormula("lambda(x, 2*x)")
     r.setMath(ast)
     d.getErrorLog().clearLog()
     errors = d.checkInternalConsistency()
-    self.assert_( errors == 0 )
+    self.assertTrue( errors == 0 )
     d = None
+    ast = None
     pass  
 
   def test_internal_consistency_check_20907_assign(self):
@@ -259,14 +264,15 @@ class TestInternalConsistencyChecks(unittest.TestCase):
     r = m.createAssignmentRule()
     r.setVariable("fd")
     errors = d.checkInternalConsistency()
-    self.assert_( errors == 1 )
-    self.assert_( d.getError(0).getErrorId() == 20907 )
+    self.assertTrue( errors == 1 )
+    self.assertTrue( d.getError(0).getErrorId() == 20907 )
     ast = libsbml.parseFormula("lambda(x, 2*x)")
     r.setMath(ast)
     d.getErrorLog().clearLog()
     errors = d.checkInternalConsistency()
-    self.assert_( errors == 0 )
+    self.assertTrue( errors == 0 )
     d = None
+    ast = None
     pass  
 
   def test_internal_consistency_check_20907_rate(self):
@@ -275,14 +281,15 @@ class TestInternalConsistencyChecks(unittest.TestCase):
     r = m.createRateRule()
     r.setVariable("fd")
     errors = d.checkInternalConsistency()
-    self.assert_( errors == 1 )
-    self.assert_( d.getError(0).getErrorId() == 20907 )
+    self.assertTrue( errors == 1 )
+    self.assertTrue( d.getError(0).getErrorId() == 20907 )
     ast = libsbml.parseFormula("lambda(x, 2*x)")
     r.setMath(ast)
     d.getErrorLog().clearLog()
     errors = d.checkInternalConsistency()
-    self.assert_( errors == 0 )
+    self.assertTrue( errors == 0 )
     d = None
+    ast = None
     pass  
 
   def test_internal_consistency_check_20908(self):
@@ -292,13 +299,14 @@ class TestInternalConsistencyChecks(unittest.TestCase):
     ast = libsbml.parseFormula("lambda(x, 2*x)")
     r.setMath(ast)
     errors = d.checkInternalConsistency()
-    self.assert_( errors == 1 )
-    self.assert_( d.getError(0).getErrorId() == 20908 )
+    self.assertTrue( errors == 1 )
+    self.assertTrue( d.getError(0).getErrorId() == 20908 )
     r.setVariable("fd")
     d.getErrorLog().clearLog()
     errors = d.checkInternalConsistency()
-    self.assert_( errors == 0 )
+    self.assertTrue( errors == 0 )
     d = None
+    ast = None
     pass  
 
   def test_internal_consistency_check_20909(self):
@@ -308,13 +316,14 @@ class TestInternalConsistencyChecks(unittest.TestCase):
     ast = libsbml.parseFormula("lambda(x, 2*x)")
     r.setMath(ast)
     errors = d.checkInternalConsistency()
-    self.assert_( errors == 1 )
-    self.assert_( d.getError(0).getErrorId() == 20909 )
+    self.assertTrue( errors == 1 )
+    self.assertTrue( d.getError(0).getErrorId() == 20909 )
     r.setVariable("fd")
     d.getErrorLog().clearLog()
     errors = d.checkInternalConsistency()
-    self.assert_( errors == 0 )
+    self.assertTrue( errors == 0 )
     d = None
+    ast = None
     pass  
 
   def test_internal_consistency_check_21007(self):
@@ -322,14 +331,15 @@ class TestInternalConsistencyChecks(unittest.TestCase):
     m = d.createModel()
     r = m.createConstraint()
     errors = d.checkInternalConsistency()
-    self.assert_( errors == 1 )
-    self.assert_( d.getError(0).getErrorId() == 21007 )
+    self.assertTrue( errors == 1 )
+    self.assertTrue( d.getError(0).getErrorId() == 21007 )
     ast = libsbml.parseFormula("lambda(x, 2*x)")
     r.setMath(ast)
     d.getErrorLog().clearLog()
     errors = d.checkInternalConsistency()
-    self.assert_( errors == 0 )
+    self.assertTrue( errors == 0 )
     d = None
+    ast = None
     pass  
 
   def test_internal_consistency_check_21101(self):
@@ -340,14 +350,14 @@ class TestInternalConsistencyChecks(unittest.TestCase):
     r.setReversible(True)
     r.setFast(False)
     errors = d.checkInternalConsistency()
-    self.assert_( errors == 1 )
-    self.assert_( d.getError(0).getErrorId() == 21101 )
+    self.assertTrue( errors == 1 )
+    self.assertTrue( d.getError(0).getErrorId() == 21101 )
     sr = r.createReactant()
     sr.setSpecies("s")
     sr.setConstant(True)
     d.getErrorLog().clearLog()
     errors = d.checkInternalConsistency()
-    self.assert_( errors == 0 )
+    self.assertTrue( errors == 0 )
     d = None
     pass  
 
@@ -359,25 +369,25 @@ class TestInternalConsistencyChecks(unittest.TestCase):
     sr.setSpecies("s")
     sr.setConstant(True)
     errors = d.checkInternalConsistency()
-    self.assert_( errors == 3 )
-    self.assert_( d.getError(0).getErrorId() == 21110 )
-    self.assert_( d.getError(1).getErrorId() == 21110 )
-    self.assert_( d.getError(2).getErrorId() == 21110 )
+    self.assertTrue( errors == 3 )
+    self.assertTrue( d.getError(0).getErrorId() == 21110 )
+    self.assertTrue( d.getError(1).getErrorId() == 21110 )
+    self.assertTrue( d.getError(2).getErrorId() == 21110 )
     r.setId("r")
     d.getErrorLog().clearLog()
     errors = d.checkInternalConsistency()
-    self.assert_( errors == 2 )
-    self.assert_( d.getError(0).getErrorId() == 21110 )
-    self.assert_( d.getError(1).getErrorId() == 21110 )
+    self.assertTrue( errors == 2 )
+    self.assertTrue( d.getError(0).getErrorId() == 21110 )
+    self.assertTrue( d.getError(1).getErrorId() == 21110 )
     r.setReversible(True)
     d.getErrorLog().clearLog()
     errors = d.checkInternalConsistency()
-    self.assert_( errors == 1 )
-    self.assert_( d.getError(0).getErrorId() == 21110 )
+    self.assertTrue( errors == 1 )
+    self.assertTrue( d.getError(0).getErrorId() == 21110 )
     r.setFast(False)
     d.getErrorLog().clearLog()
     errors = d.checkInternalConsistency()
-    self.assert_( errors == 0 )
+    self.assertTrue( errors == 0 )
     d = None
     pass  
 
@@ -390,18 +400,18 @@ class TestInternalConsistencyChecks(unittest.TestCase):
     r.setFast(False)
     sr = r.createReactant()
     errors = d.checkInternalConsistency()
-    self.assert_( errors == 2 )
-    self.assert_( d.getError(0).getErrorId() == 21116 )
-    self.assert_( d.getError(1).getErrorId() == 21116 )
+    self.assertTrue( errors == 2 )
+    self.assertTrue( d.getError(0).getErrorId() == 21116 )
+    self.assertTrue( d.getError(1).getErrorId() == 21116 )
     sr.setSpecies("s")
     d.getErrorLog().clearLog()
     errors = d.checkInternalConsistency()
-    self.assert_( errors == 1 )
-    self.assert_( d.getError(0).getErrorId() == 21116 )
+    self.assertTrue( errors == 1 )
+    self.assertTrue( d.getError(0).getErrorId() == 21116 )
     sr.setConstant(True)
     d.getErrorLog().clearLog()
     errors = d.checkInternalConsistency()
-    self.assert_( errors == 0 )
+    self.assertTrue( errors == 0 )
     d = None
     pass  
 
@@ -418,12 +428,12 @@ class TestInternalConsistencyChecks(unittest.TestCase):
     msr = r.createModifier()
     d.getErrorLog().clearLog()
     errors = d.checkInternalConsistency()
-    self.assert_( errors == 1 )
-    self.assert_( d.getError(0).getErrorId() == 21117 )
+    self.assertTrue( errors == 1 )
+    self.assertTrue( d.getError(0).getErrorId() == 21117 )
     msr.setSpecies("s")
     d.getErrorLog().clearLog()
     errors = d.checkInternalConsistency()
-    self.assert_( errors == 0 )
+    self.assertTrue( errors == 0 )
     d = None
     pass  
 
@@ -441,14 +451,15 @@ class TestInternalConsistencyChecks(unittest.TestCase):
     lp = kl.createLocalParameter()
     lp.setId("s")
     errors = d.checkInternalConsistency()
-    self.assert_( errors == 1 )
-    self.assert_( d.getError(0).getErrorId() == 21130 )
+    self.assertTrue( errors == 1 )
+    self.assertTrue( d.getError(0).getErrorId() == 21130 )
     ast = libsbml.parseFormula("2*x")
     kl.setMath(ast)
     d.getErrorLog().clearLog()
     errors = d.checkInternalConsistency()
-    self.assert_( errors == 0 )
+    self.assertTrue( errors == 0 )
     d = None
+    ast = None
     pass  
 
   def test_internal_consistency_check_21172(self):
@@ -466,13 +477,14 @@ class TestInternalConsistencyChecks(unittest.TestCase):
     kl.setMath(ast)
     lp = kl.createLocalParameter()
     errors = d.checkInternalConsistency()
-    self.assert_( errors == 1 )
-    self.assert_( d.getError(0).getErrorId() == 21172 )
+    self.assertTrue( errors == 1 )
+    self.assertTrue( d.getError(0).getErrorId() == 21172 )
     lp.setId("pp")
     d.getErrorLog().clearLog()
     errors = d.checkInternalConsistency()
-    self.assert_( errors == 0 )
+    self.assertTrue( errors == 0 )
     d = None
+    ast = None
     pass  
 
   def test_internal_consistency_check_21201(self):
@@ -486,16 +498,17 @@ class TestInternalConsistencyChecks(unittest.TestCase):
     ea.setMath(ast)
     d.getErrorLog().clearLog()
     errors = d.checkInternalConsistency()
-    self.assert_( errors == 1 )
-    self.assert_( d.getError(0).getErrorId() == 21201 )
+    self.assertTrue( errors == 1 )
+    self.assertTrue( d.getError(0).getErrorId() == 21201 )
     t = r.createTrigger()
     t.setPersistent(True)
     t.setInitialValue(False)
     t.setMath(ast)
     d.getErrorLog().clearLog()
     errors = d.checkInternalConsistency()
-    self.assert_( errors == 0 )
+    self.assertTrue( errors == 0 )
     d = None
+    ast = None
     pass  
 
   def test_internal_consistency_check_21203(self):
@@ -510,15 +523,39 @@ class TestInternalConsistencyChecks(unittest.TestCase):
     t.setInitialValue(False)
     d.getErrorLog().clearLog()
     errors = d.checkInternalConsistency()
-    self.assert_( errors == 0 )
-    #self.assert_( d.getError(0).getErrorId() == 21203 )
+    self.assertTrue( errors == 0 )
     ea = r.createEventAssignment()
     ea.setVariable("ea")
     ea.setMath(ast)
     d.getErrorLog().clearLog()
     errors = d.checkInternalConsistency()
-    self.assert_( errors == 0 )
+    self.assertTrue( errors == 0 )
     d = None
+    ast = None
+    pass  
+
+  def test_internal_consistency_check_21203_l2v4(self):
+    d = libsbml.SBMLDocument(2,4)
+    m = d.createModel()
+    r = m.createEvent()
+    r.setUseValuesFromTriggerTime(True)
+    ast = libsbml.parseFormula("2*x")
+    t = r.createTrigger()
+    t.setMath(ast)
+    t.setPersistent(True)
+    t.setInitialValue(False)
+    d.getErrorLog().clearLog()
+    errors = d.checkInternalConsistency()
+    self.assertTrue( errors == 1 )
+    self.assertTrue( d.getError(0).getErrorId() == 21203 )
+    ea = r.createEventAssignment()
+    ea.setVariable("ea")
+    ea.setMath(ast)
+    d.getErrorLog().clearLog()
+    errors = d.checkInternalConsistency()
+    self.assertTrue( errors == 0 )
+    d = None
+    ast = None
     pass  
 
   def test_internal_consistency_check_21209(self):
@@ -535,13 +572,14 @@ class TestInternalConsistencyChecks(unittest.TestCase):
     t.setInitialValue(False)
     d.getErrorLog().clearLog()
     errors = d.checkInternalConsistency()
-    self.assert_( errors == 1 )
-    self.assert_( d.getError(0).getErrorId() == 21209 )
+    self.assertTrue( errors == 1 )
+    self.assertTrue( d.getError(0).getErrorId() == 21209 )
     t.setMath(ast)
     d.getErrorLog().clearLog()
     errors = d.checkInternalConsistency()
-    self.assert_( errors == 0 )
+    self.assertTrue( errors == 0 )
     d = None
+    ast = None
     pass  
 
   def test_internal_consistency_check_21210(self):
@@ -560,13 +598,14 @@ class TestInternalConsistencyChecks(unittest.TestCase):
     delay = r.createDelay()
     d.getErrorLog().clearLog()
     errors = d.checkInternalConsistency()
-    self.assert_( errors == 1 )
-    self.assert_( d.getError(0).getErrorId() == 21210 )
+    self.assertTrue( errors == 1 )
+    self.assertTrue( d.getError(0).getErrorId() == 21210 )
     delay.setMath(ast)
     d.getErrorLog().clearLog()
     errors = d.checkInternalConsistency()
-    self.assert_( errors == 0 )
+    self.assertTrue( errors == 0 )
     d = None
+    ast = None
     pass  
 
   def test_internal_consistency_check_21213(self):
@@ -583,13 +622,14 @@ class TestInternalConsistencyChecks(unittest.TestCase):
     t.setMath(ast)
     d.getErrorLog().clearLog()
     errors = d.checkInternalConsistency()
-    self.assert_( errors == 1 )
-    self.assert_( d.getError(0).getErrorId() == 21213 )
+    self.assertTrue( errors == 1 )
+    self.assertTrue( d.getError(0).getErrorId() == 21213 )
     ea.setMath(ast)
     d.getErrorLog().clearLog()
     errors = d.checkInternalConsistency()
-    self.assert_( errors == 0 )
+    self.assertTrue( errors == 0 )
     d = None
+    ast = None
     pass  
 
   def test_internal_consistency_check_21214(self):
@@ -606,13 +646,14 @@ class TestInternalConsistencyChecks(unittest.TestCase):
     t.setMath(ast)
     d.getErrorLog().clearLog()
     errors = d.checkInternalConsistency()
-    self.assert_( errors == 1 )
-    self.assert_( d.getError(0).getErrorId() == 21214 )
+    self.assertTrue( errors == 1 )
+    self.assertTrue( d.getError(0).getErrorId() == 21214 )
     ea.setVariable("s")
     d.getErrorLog().clearLog()
     errors = d.checkInternalConsistency()
-    self.assert_( errors == 0 )
+    self.assertTrue( errors == 0 )
     d = None
+    ast = None
     pass  
 
   def test_internal_consistency_check_21225(self):
@@ -629,13 +670,14 @@ class TestInternalConsistencyChecks(unittest.TestCase):
     t.setMath(ast)
     d.getErrorLog().clearLog()
     errors = d.checkInternalConsistency()
-    self.assert_( errors == 1 )
-    self.assert_( d.getError(0).getErrorId() == 21225 )
+    self.assertTrue( errors == 1 )
+    self.assertTrue( d.getError(0).getErrorId() == 21225 )
     r.setUseValuesFromTriggerTime(True)
     d.getErrorLog().clearLog()
     errors = d.checkInternalConsistency()
-    self.assert_( errors == 0 )
+    self.assertTrue( errors == 0 )
     d = None
+    ast = None
     pass  
 
   def test_internal_consistency_check_21226(self):
@@ -651,19 +693,20 @@ class TestInternalConsistencyChecks(unittest.TestCase):
     t.setMath(ast)
     d.getErrorLog().clearLog()
     errors = d.checkInternalConsistency()
-    self.assert_( errors == 2 )
-    self.assert_( d.getError(0).getErrorId() == 21226 )
-    self.assert_( d.getError(1).getErrorId() == 21226 )
+    self.assertTrue( errors == 2 )
+    self.assertTrue( d.getError(0).getErrorId() == 21226 )
+    self.assertTrue( d.getError(1).getErrorId() == 21226 )
     t.setPersistent(True)
     d.getErrorLog().clearLog()
     errors = d.checkInternalConsistency()
-    self.assert_( errors == 1 )
-    self.assert_( d.getError(0).getErrorId() == 21226 )
+    self.assertTrue( errors == 1 )
+    self.assertTrue( d.getError(0).getErrorId() == 21226 )
     t.setInitialValue(False)
     d.getErrorLog().clearLog()
     errors = d.checkInternalConsistency()
-    self.assert_( errors == 0 )
+    self.assertTrue( errors == 0 )
     d = None
+    ast = None
     pass  
 
   def test_internal_consistency_check_21231(self):
@@ -682,13 +725,14 @@ class TestInternalConsistencyChecks(unittest.TestCase):
     prior = r.createPriority()
     d.getErrorLog().clearLog()
     errors = d.checkInternalConsistency()
-    self.assert_( errors == 1 )
-    self.assert_( d.getError(0).getErrorId() == 21231 )
+    self.assertTrue( errors == 1 )
+    self.assertTrue( d.getError(0).getErrorId() == 21231 )
     prior.setMath(ast)
     d.getErrorLog().clearLog()
     errors = d.checkInternalConsistency()
-    self.assert_( errors == 0 )
+    self.assertTrue( errors == 0 )
     d = None
+    ast = None
     pass  
 
   def test_internal_consistency_check_99901(self):
@@ -701,9 +745,10 @@ class TestInternalConsistencyChecks(unittest.TestCase):
     c.setId("c")
     m.addCompartment(c)
     errors = d.checkInternalConsistency()
-    self.assert_( errors == 1 )
-    self.assert_( d.getError(0).getErrorId() == 10103 )
+    self.assertTrue( errors == 1 )
+    self.assertTrue( d.getError(0).getErrorId() == 10103 )
     d = None
+    c = None
     pass  
 
   def test_internal_consistency_check_99902(self):
@@ -715,9 +760,10 @@ class TestInternalConsistencyChecks(unittest.TestCase):
     c.setId("c")
     m.addCompartment(c)
     errors = d.checkInternalConsistency()
-    self.assert_( errors == 1 )
-    self.assert_( d.getError(0).getErrorId() == 10103 )
+    self.assertTrue( errors == 1 )
+    self.assertTrue( d.getError(0).getErrorId() == 10103 )
     d = None
+    c = None
     pass  
 
   def test_internal_consistency_check_99903(self):
@@ -732,8 +778,9 @@ class TestInternalConsistencyChecks(unittest.TestCase):
     r.setVariable("c")
     r.setFormula("2*3")
     errors = d.checkInternalConsistency()
-    self.assert_( errors == 3 )
+    self.assertTrue( errors == 3 )
     d = None
+    c = None
     pass  
 
   def test_internal_consistency_check_99903_localparam(self):
@@ -753,8 +800,9 @@ class TestInternalConsistencyChecks(unittest.TestCase):
     p.setConstant(False)
     kl.addParameter(p)
     errors = d.checkInternalConsistency()
-    self.assert_( errors == 0 )
+    self.assertTrue( errors == 0 )
     d = None
+    p = None
     pass  
 
   def test_internal_consistency_check_99903_param(self):
@@ -771,8 +819,9 @@ class TestInternalConsistencyChecks(unittest.TestCase):
     r.setVariable("c")
     r.setFormula("2*3")
     errors = d.checkInternalConsistency()
-    self.assert_( errors == 2 )
+    self.assertTrue( errors == 2 )
     d = None
+    p = None
     pass  
 
   def test_internal_consistency_check_99904(self):
@@ -784,9 +833,10 @@ class TestInternalConsistencyChecks(unittest.TestCase):
     c.setMetaId("mmm")
     m.addCompartment(c)
     errors = d.checkInternalConsistency()
-    self.assert_( errors == 1 )
-    self.assert_( d.getError(0).getErrorId() == 10103 )
+    self.assertTrue( errors == 1 )
+    self.assertTrue( d.getError(0).getErrorId() == 10103 )
     d = None
+    c = None
     pass  
 
   def test_internal_consistency_check_99904_kl(self):
@@ -804,8 +854,9 @@ class TestInternalConsistencyChecks(unittest.TestCase):
     kl.setMetaId("mmm")
     r.setKineticLaw(kl)
     errors = d.checkInternalConsistency()
-    self.assert_( errors == 0 )
+    self.assertTrue( errors == 0 )
     d = None
+    kl = None
     pass  
 
   def test_internal_consistency_check_99904_model(self):
@@ -817,9 +868,10 @@ class TestInternalConsistencyChecks(unittest.TestCase):
     m.setMetaId("mmm")
     d.setModel(m)
     errors = d.checkInternalConsistency()
-    self.assert_( errors == 1 )
-    self.assert_( d.getError(0).getErrorId() == 20201 )
+    self.assertTrue( errors == 1 )
+    self.assertTrue( d.getError(0).getErrorId() == 20201 )
     d = None
+    m = None
     pass  
 
   def test_internal_consistency_check_99904_param(self):
@@ -833,8 +885,9 @@ class TestInternalConsistencyChecks(unittest.TestCase):
     p.setMetaId("mmm")
     m.addParameter(p)
     errors = d.checkInternalConsistency()
-    self.assert_( errors == 0 )
+    self.assertTrue( errors == 0 )
     d = None
+    p = None
     pass  
 
   def test_internal_consistency_check_99904_react(self):
@@ -848,8 +901,9 @@ class TestInternalConsistencyChecks(unittest.TestCase):
     r.setMetaId("mmm")
     m.addReaction(r)
     errors = d.checkInternalConsistency()
-    self.assert_( errors == 0 )
+    self.assertTrue( errors == 0 )
     d = None
+    r = None
     pass  
 
   def test_internal_consistency_check_99904_rule_alg(self):
@@ -863,8 +917,9 @@ class TestInternalConsistencyChecks(unittest.TestCase):
     r.setFormula("2")
     m.addRule(r)
     errors = d.checkInternalConsistency()
-    self.assert_( errors == 0 )
+    self.assertTrue( errors == 0 )
     d = None
+    r = None
     pass  
 
   def test_internal_consistency_check_99904_rule_assign(self):
@@ -880,8 +935,9 @@ class TestInternalConsistencyChecks(unittest.TestCase):
     r.setMetaId("mmm")
     m.addRule(r)
     errors = d.checkInternalConsistency()
-    self.assert_( errors == 0 )
+    self.assertTrue( errors == 0 )
     d = None
+    r = None
     pass  
 
   def test_internal_consistency_check_99904_rule_rate(self):
@@ -897,8 +953,9 @@ class TestInternalConsistencyChecks(unittest.TestCase):
     r.setMetaId("mmm")
     m.addRule(r)
     errors = d.checkInternalConsistency()
-    self.assert_( errors == 0 )
+    self.assertTrue( errors == 0 )
     d = None
+    r = None
     pass  
 
   def test_internal_consistency_check_99904_species(self):
@@ -913,8 +970,9 @@ class TestInternalConsistencyChecks(unittest.TestCase):
     s.setMetaId("mmm")
     m.addSpecies(s)
     errors = d.checkInternalConsistency()
-    self.assert_( errors == 0 )
+    self.assertTrue( errors == 0 )
     d = None
+    s = None
     pass  
 
   def test_internal_consistency_check_99904_speciesRef(self):
@@ -933,9 +991,10 @@ class TestInternalConsistencyChecks(unittest.TestCase):
     sr.setMetaId("mmm")
     r.addProduct(sr)
     errors = d.checkInternalConsistency()
-    self.assert_( errors == 1 )
-    self.assert_( d.getError(0).getErrorId() == 21101 )
+    self.assertTrue( errors == 1 )
+    self.assertTrue( d.getError(0).getErrorId() == 21101 )
     d = None
+    sr = None
     pass  
 
   def test_internal_consistency_check_99904_unit(self):
@@ -951,8 +1010,9 @@ class TestInternalConsistencyChecks(unittest.TestCase):
     u.setKind(libsbml.UNIT_KIND_MOLE)
     ud.addUnit(u)
     errors = d.checkInternalConsistency()
-    self.assert_( errors == 0 )
+    self.assertTrue( errors == 0 )
     d = None
+    u = None
     pass  
 
   def test_internal_consistency_check_99904_unitdef(self):
@@ -967,8 +1027,9 @@ class TestInternalConsistencyChecks(unittest.TestCase):
     u.createUnit()
     m.addUnitDefinition(u)
     errors = d.checkInternalConsistency()
-    self.assert_( errors == 0 )
+    self.assertTrue( errors == 0 )
     d = None
+    u = None
     pass  
 
   def test_internal_consistency_check_99905(self):
@@ -980,9 +1041,10 @@ class TestInternalConsistencyChecks(unittest.TestCase):
     c.setSBOTerm(2)
     m.addCompartment(c)
     errors = d.checkInternalConsistency()
-    self.assert_( errors == 1 )
-    self.assert_( d.getError(0).getErrorId() == 10103 )
+    self.assertTrue( errors == 1 )
+    self.assertTrue( d.getError(0).getErrorId() == 10103 )
     d = None
+    c = None
     pass  
 
   def test_internal_consistency_check_99905_ct(self):
@@ -994,8 +1056,9 @@ class TestInternalConsistencyChecks(unittest.TestCase):
     ct.setSBOTerm(5)
     m.addCompartmentType(ct)
     errors = d.checkInternalConsistency()
-    self.assert_( errors == 0 )
+    self.assertTrue( errors == 0 )
     d = None
+    ct = None
     pass  
 
   def test_internal_consistency_check_99905_delay(self):
@@ -1008,8 +1071,10 @@ class TestInternalConsistencyChecks(unittest.TestCase):
     e.setDelay(delay)
     m.addEvent(e)
     errors = d.checkInternalConsistency()
-    self.assert_( errors == 0 )
+    self.assertTrue( errors == 0 )
     d = None
+    delay = None
+    e = None
     pass  
 
   def test_internal_consistency_check_99905_species(self):
@@ -1024,8 +1089,9 @@ class TestInternalConsistencyChecks(unittest.TestCase):
     s.setSBOTerm(2)
     m.addSpecies(s)
     errors = d.checkInternalConsistency()
-    self.assert_( errors == 0 )
+    self.assertTrue( errors == 0 )
     d = None
+    s = None
     pass  
 
   def test_internal_consistency_check_99905_st(self):
@@ -1037,8 +1103,9 @@ class TestInternalConsistencyChecks(unittest.TestCase):
     ct.setSBOTerm(5)
     m.addSpeciesType(ct)
     errors = d.checkInternalConsistency()
-    self.assert_( errors == 0 )
+    self.assertTrue( errors == 0 )
     d = None
+    ct = None
     pass  
 
   def test_internal_consistency_check_99905_stoichmath(self):
@@ -1058,8 +1125,9 @@ class TestInternalConsistencyChecks(unittest.TestCase):
     sm.setSBOTerm(5)
     sr.setStoichiometryMath(sm)
     errors = d.checkInternalConsistency()
-    self.assert_( errors == 0 )
+    self.assertTrue( errors == 0 )
     d = None
+    sm = None
     pass  
 
   def test_internal_consistency_check_99905_trigger(self):
@@ -1072,8 +1140,10 @@ class TestInternalConsistencyChecks(unittest.TestCase):
     e.setTrigger(trigger)
     m.addEvent(e)
     errors = d.checkInternalConsistency()
-    self.assert_( errors == 0 )
+    self.assertTrue( errors == 0 )
     d = None
+    trigger = None
+    e = None
     pass  
 
   def test_internal_consistency_check_99905_unit(self):
@@ -1087,8 +1157,9 @@ class TestInternalConsistencyChecks(unittest.TestCase):
     u.setSBOTerm(9)
     ud.addUnit(u)
     errors = d.checkInternalConsistency()
-    self.assert_( errors == 0 )
+    self.assertTrue( errors == 0 )
     d = None
+    u = None
     pass  
 
   def test_internal_consistency_check_99905_unitdef(self):
@@ -1101,8 +1172,9 @@ class TestInternalConsistencyChecks(unittest.TestCase):
     u.createUnit()
     m.addUnitDefinition(u)
     errors = d.checkInternalConsistency()
-    self.assert_( errors == 0 )
+    self.assertTrue( errors == 0 )
     d = None
+    u = None
     pass  
 
   def test_internal_consistency_check_99906(self):
@@ -1114,9 +1186,10 @@ class TestInternalConsistencyChecks(unittest.TestCase):
     c.setUnits("mole")
     m.addCompartment(c)
     errors = d.checkInternalConsistency()
-    self.assert_( errors == 1 )
-    self.assert_( d.getError(0).getErrorId() == 10103 )
+    self.assertTrue( errors == 1 )
+    self.assertTrue( d.getError(0).getErrorId() == 10103 )
     d = None
+    c = None
     pass  
 
   def test_internal_consistency_check_99907(self):
@@ -1128,9 +1201,10 @@ class TestInternalConsistencyChecks(unittest.TestCase):
     c.unsetVolume()
     m.addCompartment(c)
     errors = d.checkInternalConsistency()
-    self.assert_( errors == 1 )
-    self.assert_( d.getError(0).getErrorId() == 10103 )
+    self.assertTrue( errors == 1 )
+    self.assertTrue( d.getError(0).getErrorId() == 10103 )
     d = None
+    c = None
     pass  
 
   def test_internal_consistency_check_99908(self):
@@ -1141,8 +1215,9 @@ class TestInternalConsistencyChecks(unittest.TestCase):
     ct.setId("ct")
     m.addCompartmentType(ct)
     errors = d.checkInternalConsistency()
-    self.assert_( errors == 0 )
+    self.assertTrue( errors == 0 )
     d = None
+    ct = None
     pass  
 
   def test_internal_consistency_check_99909(self):
@@ -1152,8 +1227,9 @@ class TestInternalConsistencyChecks(unittest.TestCase):
     d.setLevelAndVersion(2,1,False)
     m.addConstraint(ct)
     errors = d.checkInternalConsistency()
-    self.assert_( errors == 0 )
+    self.assertTrue( errors == 0 )
     d = None
+    ct = None
     pass  
 
   def test_internal_consistency_check_99910(self):
@@ -1166,8 +1242,9 @@ class TestInternalConsistencyChecks(unittest.TestCase):
     c.setConstant(False)
     m.addEvent(e)
     errors = d.checkInternalConsistency()
-    self.assert_( errors == 0 )
+    self.assertTrue( errors == 0 )
     d = None
+    e = None
     pass  
 
   def test_internal_consistency_check_99911_ea(self):
@@ -1187,9 +1264,11 @@ class TestInternalConsistencyChecks(unittest.TestCase):
     ea.setMath(ast)
     e.addEventAssignment(ea)
     errors = d.checkInternalConsistency()
-    self.assert_( errors == 1 )
-    self.assert_( d.getError(0).getErrorId() == 21203 )
+    self.assertTrue( errors == 1 )
+    self.assertTrue( d.getError(0).getErrorId() == 21203 )
     d = None
+    ast = None
+    ea = None
     pass  
 
   def test_internal_consistency_check_99911_event(self):
@@ -1200,8 +1279,9 @@ class TestInternalConsistencyChecks(unittest.TestCase):
     e.setSBOTerm(2)
     m.addEvent(e)
     errors = d.checkInternalConsistency()
-    self.assert_( errors == 0 )
+    self.assertTrue( errors == 0 )
     d = None
+    e = None
     pass  
 
   def test_internal_consistency_check_99911_fd(self):
@@ -1213,8 +1293,9 @@ class TestInternalConsistencyChecks(unittest.TestCase):
     fd.setSBOTerm(2)
     m.addFunctionDefinition(fd)
     errors = d.checkInternalConsistency()
-    self.assert_( errors == 0 )
+    self.assertTrue( errors == 0 )
     d = None
+    fd = None
     pass  
 
   def test_internal_consistency_check_99911_kl(self):
@@ -1231,8 +1312,9 @@ class TestInternalConsistencyChecks(unittest.TestCase):
     p.setId("p")
     r.setKineticLaw(kl)
     errors = d.checkInternalConsistency()
-    self.assert_( errors == 0 )
+    self.assertTrue( errors == 0 )
     d = None
+    kl = None
     pass  
 
   def test_internal_consistency_check_99911_model(self):
@@ -1242,9 +1324,10 @@ class TestInternalConsistencyChecks(unittest.TestCase):
     m.setSBOTerm(2)
     d.setModel(m)
     errors = d.checkInternalConsistency()
-    self.assert_( errors == 1 )
-    self.assert_( d.getError(0).getErrorId() == 20201 )
+    self.assertTrue( errors == 1 )
+    self.assertTrue( d.getError(0).getErrorId() == 20201 )
     d = None
+    m = None
     pass  
 
   def test_internal_consistency_check_99911_param(self):
@@ -1256,8 +1339,9 @@ class TestInternalConsistencyChecks(unittest.TestCase):
     p.setSBOTerm(2)
     m.addParameter(p)
     errors = d.checkInternalConsistency()
-    self.assert_( errors == 0 )
+    self.assertTrue( errors == 0 )
     d = None
+    p = None
     pass  
 
   def test_internal_consistency_check_99911_react(self):
@@ -1269,8 +1353,9 @@ class TestInternalConsistencyChecks(unittest.TestCase):
     r.setSBOTerm(2)
     m.addReaction(r)
     errors = d.checkInternalConsistency()
-    self.assert_( errors == 0 )
+    self.assertTrue( errors == 0 )
     d = None
+    r = None
     pass  
 
   def test_internal_consistency_check_99911_rule_alg(self):
@@ -1281,8 +1366,9 @@ class TestInternalConsistencyChecks(unittest.TestCase):
     r.setSBOTerm(2)
     m.addRule(r)
     errors = d.checkInternalConsistency()
-    self.assert_( errors == 0 )
+    self.assertTrue( errors == 0 )
     d = None
+    r = None
     pass  
 
   def test_internal_consistency_check_99911_rule_assign(self):
@@ -1297,8 +1383,9 @@ class TestInternalConsistencyChecks(unittest.TestCase):
     r.setSBOTerm(2)
     m.addRule(r)
     errors = d.checkInternalConsistency()
-    self.assert_( errors == 0 )
+    self.assertTrue( errors == 0 )
     d = None
+    r = None
     pass  
 
   def test_internal_consistency_check_99911_rule_rate(self):
@@ -1313,8 +1400,9 @@ class TestInternalConsistencyChecks(unittest.TestCase):
     r.setSBOTerm(2)
     m.addRule(r)
     errors = d.checkInternalConsistency()
-    self.assert_( errors == 0 )
+    self.assertTrue( errors == 0 )
     d = None
+    r = None
     pass  
 
   def test_internal_consistency_check_99911_speciesRef(self):
@@ -1333,9 +1421,10 @@ class TestInternalConsistencyChecks(unittest.TestCase):
     sr.setSBOTerm(4)
     r.addReactant(sr)
     errors = d.checkInternalConsistency()
-    self.assert_( errors == 1 )
-    self.assert_( d.getError(0).getErrorId() == 21101 )
+    self.assertTrue( errors == 1 )
+    self.assertTrue( d.getError(0).getErrorId() == 21101 )
     d = None
+    sr = None
     pass  
 
   def test_internal_consistency_check_99912(self):
@@ -1348,8 +1437,9 @@ class TestInternalConsistencyChecks(unittest.TestCase):
     c.setConstant(False)
     m.addFunctionDefinition(fd)
     errors = d.checkInternalConsistency()
-    self.assert_( errors == 0 )
+    self.assertTrue( errors == 0 )
     d = None
+    fd = None
     pass  
 
   def test_internal_consistency_check_99913(self):
@@ -1362,8 +1452,9 @@ class TestInternalConsistencyChecks(unittest.TestCase):
     c.setConstant(False)
     m.addInitialAssignment(ia)
     errors = d.checkInternalConsistency()
-    self.assert_( errors == 0 )
+    self.assertTrue( errors == 0 )
     d = None
+    ia = None
     pass  
 
   def test_internal_consistency_check_99914(self):
@@ -1374,8 +1465,9 @@ class TestInternalConsistencyChecks(unittest.TestCase):
     r.setVariable("kk")
     m.addRule(r)
     errors = d.checkInternalConsistency()
-    self.assert_( errors == 0 )
+    self.assertTrue( errors == 0 )
     d = None
+    r = None
     pass  
 
   def test_internal_consistency_check_99915_alg(self):
@@ -1386,8 +1478,9 @@ class TestInternalConsistencyChecks(unittest.TestCase):
     r.setUnits("kk")
     m.addRule(r)
     errors = d.checkInternalConsistency()
-    self.assert_( errors == 0 )
+    self.assertTrue( errors == 0 )
     d = None
+    r = None
     pass  
 
   def test_internal_consistency_check_99915_assign(self):
@@ -1403,7 +1496,7 @@ class TestInternalConsistencyChecks(unittest.TestCase):
     r.setFormula("2")
     r.setUnits("mmm")
     errors = d.checkInternalConsistency()
-    self.assert_( errors == 0 )
+    self.assertTrue( errors == 0 )
     d = None
     pass  
 
@@ -1420,7 +1513,7 @@ class TestInternalConsistencyChecks(unittest.TestCase):
     r.setVariable("c")
     r.setUnits("mmm")
     errors = d.checkInternalConsistency()
-    self.assert_( errors == 0 )
+    self.assertTrue( errors == 0 )
     d = None
     pass  
 
@@ -1440,8 +1533,9 @@ class TestInternalConsistencyChecks(unittest.TestCase):
     sr.setSpecies("s")
     m.addSpecies(s)
     errors = d.checkInternalConsistency()
-    self.assert_( errors == 0 )
+    self.assertTrue( errors == 0 )
     d = None
+    s = None
     pass  
 
   def test_internal_consistency_check_99916_rule(self):
@@ -1459,8 +1553,9 @@ class TestInternalConsistencyChecks(unittest.TestCase):
     r.setVariable("s")
     r.setFormula("2")
     errors = d.checkInternalConsistency()
-    self.assert_( errors == 2 )
+    self.assertTrue( errors == 2 )
     d = None
+    s = None
     pass  
 
   def test_internal_consistency_check_99917(self):
@@ -1475,8 +1570,9 @@ class TestInternalConsistencyChecks(unittest.TestCase):
     s.setSpatialSizeUnits("kkk")
     m.addSpecies(s)
     errors = d.checkInternalConsistency()
-    self.assert_( errors == 0 )
+    self.assertTrue( errors == 0 )
     d = None
+    s = None
     pass  
 
   def test_internal_consistency_check_99918(self):
@@ -1491,8 +1587,9 @@ class TestInternalConsistencyChecks(unittest.TestCase):
     s.setSpeciesType("kkk")
     m.addSpecies(s)
     errors = d.checkInternalConsistency()
-    self.assert_( errors == 0 )
+    self.assertTrue( errors == 0 )
     d = None
+    s = None
     pass  
 
   def test_internal_consistency_check_99919(self):
@@ -1507,8 +1604,9 @@ class TestInternalConsistencyChecks(unittest.TestCase):
     s.setHasOnlySubstanceUnits(True)
     m.addSpecies(s)
     errors = d.checkInternalConsistency()
-    self.assert_( errors == 0 )
+    self.assertTrue( errors == 0 )
     d = None
+    s = None
     pass  
 
   def test_internal_consistency_check_99920(self):
@@ -1527,9 +1625,10 @@ class TestInternalConsistencyChecks(unittest.TestCase):
     sr.setId("mmm")
     r.addProduct(sr)
     errors = d.checkInternalConsistency()
-    self.assert_( errors == 1 )
-    self.assert_( d.getError(0).getErrorId() == 21101 )
+    self.assertTrue( errors == 1 )
+    self.assertTrue( d.getError(0).getErrorId() == 21101 )
     d = None
+    sr = None
     pass  
 
   def test_internal_consistency_check_99921(self):
@@ -1548,9 +1647,10 @@ class TestInternalConsistencyChecks(unittest.TestCase):
     sr.setName("mmm")
     r.addReactant(sr)
     errors = d.checkInternalConsistency()
-    self.assert_( errors == 1 )
-    self.assert_( d.getError(0).getErrorId() == 21101 )
+    self.assertTrue( errors == 1 )
+    self.assertTrue( d.getError(0).getErrorId() == 21101 )
     d = None
+    sr = None
     pass  
 
   def test_internal_consistency_check_99922(self):
@@ -1561,8 +1661,9 @@ class TestInternalConsistencyChecks(unittest.TestCase):
     d.setLevelAndVersion(2,1,False)
     m.addSpeciesType(ct)
     errors = d.checkInternalConsistency()
-    self.assert_( errors == 0 )
+    self.assertTrue( errors == 0 )
     d = None
+    ct = None
     pass  
 
   def test_internal_consistency_check_99923(self):
@@ -1581,8 +1682,9 @@ class TestInternalConsistencyChecks(unittest.TestCase):
     sr.setSpecies("s")
     sr.setStoichiometryMath(sm)
     errors = d.checkInternalConsistency()
-    self.assert_( errors == 0 )
+    self.assertTrue( errors == 0 )
     d = None
+    sm = None
     pass  
 
   def test_internal_consistency_check_99924(self):
@@ -1598,8 +1700,9 @@ class TestInternalConsistencyChecks(unittest.TestCase):
     u.setMultiplier(9)
     ud.addUnit(u)
     errors = d.checkInternalConsistency()
-    self.assert_( errors == 0 )
+    self.assertTrue( errors == 0 )
     d = None
+    u = None
     pass  
 
   def test_internal_consistency_check_99925(self):
@@ -1615,8 +1718,9 @@ class TestInternalConsistencyChecks(unittest.TestCase):
     u.setOffset(9)
     ud.addUnit(u)
     errors = d.checkInternalConsistency()
-    self.assert_( errors == 0 )
+    self.assertTrue( errors == 0 )
     d = None
+    u = None
     pass  
 
 def suite():
@@ -1630,4 +1734,3 @@ if __name__ == "__main__":
     sys.exit(0)
   else:
     sys.exit(1)
-

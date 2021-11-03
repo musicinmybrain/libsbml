@@ -18,11 +18,6 @@
  * This file is part of libSBML.  Please visit http://sbml.org for more
  * information about SBML, and the latest version of libSBML.
  *
- * Copyright (C) 2020 jointly by the following organizations:
- *     1. California Institute of Technology, Pasadena, CA, USA
- *     2. University of Heidelberg, Heidelberg, Germany
- *     3. University College London, London, UK
- *
  * Copyright 2005-2010 California Institute of Technology.
  * Copyright 2002-2005 California Institute of Technology and
  *                     Japan Science and Technology Corporation.
@@ -128,7 +123,7 @@ public class TestConsistencyChecks {
     SBMLReader reader = new SBMLReader();
     SBMLDocument d;
     long errors;
-    String filename = new String( "../../sbml/test/test-data/" );
+    String filename = new String( "../../sbml/sbml/test/test-data/" );
     filename += "inconsistent.xml";
     d = reader.readSBML(filename);
     if (d == null);
@@ -140,7 +135,7 @@ public class TestConsistencyChecks {
     d.getErrorLog().clearLog();
     d.setConsistencyChecks(libsbml.LIBSBML_CAT_IDENTIFIER_CONSISTENCY,false);
     errors = d.checkConsistency();
-    assertTrue( errors == 2);
+    assertTrue( errors == 2 );
     assertTrue( d.getError(0).getErrorId() == 10214 );
     assertTrue( d.getError(1).getErrorId() == 20612 );
     d.getErrorLog().clearLog();
@@ -165,6 +160,27 @@ public class TestConsistencyChecks {
     d.setConsistencyChecks(libsbml.LIBSBML_CAT_UNITS_CONSISTENCY,false);
     errors = d.checkConsistency();
     assertTrue( errors == 0 );
+    d = null;
+  }
+
+  public void test_strict_unit_consistency_checks()
+  {
+    SBMLReader reader = new SBMLReader();
+    SBMLDocument d;
+    long errors;
+    String filename = new String( "../../sbml/sbml/test/test-data/" );
+    filename += "l3v1-units.xml";
+    d = reader.readSBML(filename);
+    if (d == null);
+    {
+    }
+    errors = d.checkConsistency();
+    assertTrue( errors == 0 );
+    d.getErrorLog().clearLog();
+    errors = d.checkConsistencyWithStrictUnits();
+    assertTrue( errors == 1 );
+    assertTrue( d.getError(0).getErrorId() == 10513 );
+    assertTrue( d.getError(0).getSeverity() == libsbml.LIBSBML_SEV_ERROR );
     d = null;
   }
 
@@ -221,4 +237,3 @@ public class TestConsistencyChecks {
     }
   }
 }
-

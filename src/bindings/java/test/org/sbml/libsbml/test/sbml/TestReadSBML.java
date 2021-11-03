@@ -18,11 +18,6 @@
  * This file is part of libSBML.  Please visit http://sbml.org for more
  * information about SBML, and the latest version of libSBML.
  *
- * Copyright (C) 2020 jointly by the following organizations:
- *     1. California Institute of Technology, Pasadena, CA, USA
- *     2. University of Heidelberg, Heidelberg, Germany
- *     3. University College London, London, UK
- *
  * Copyright 2005-2010 California Institute of Technology.
  * Copyright 2002-2005 California Institute of Technology and
  *                     Japan Science and Technology Corporation.
@@ -128,12 +123,12 @@ public class TestReadSBML {
     }
     throw new AssertionError();
   }
-  private SBMLDocument D;
   private Model M;
+  private SBMLDocument D;
 
   public String SBML_FOOTER()
   {
-    return "</model> </sbml>";
+    return "  </model>\n</sbml>\n";
   }
 
   public String SBML_HEADER_L1v1()
@@ -143,12 +138,12 @@ public class TestReadSBML {
 
   public String SBML_HEADER_L1v2()
   {
-    return "<sbml xmlns='http://www.sbml.org/sbml/level1' level='1' version='2'> <model name='m'>\n";
+    return "<sbml xmlns=\"http://www.sbml.org/sbml/level1\" level=\"1\" version=\"2\">\n  <model name=\"m\">\n";
   }
 
   public String SBML_HEADER_L2v1()
   {
-    return "<sbml xmlns='http://www.sbml.org/sbml/level2' level='2' version='1'> <model name='m'>\n";
+    return "<sbml xmlns='http://www.sbml.org/sbml/level2' level='2' version='1'>\n  <model name='m'>\n";
   }
 
   public String SBML_HEADER_L2v2()
@@ -163,7 +158,7 @@ public class TestReadSBML {
 
   public String XML_HEADER()
   {
-    return "<?xml version='1.0' encoding='UTF-8'?>\n";
+    return "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n";
   }
 
   public String wrapSBML_L1v1(String s)
@@ -317,6 +312,7 @@ public class TestReadSBML {
     assertTrue( ar != null );
     assertEquals( true, ar.isSetMath() );
     math = ar.getMath();
+    assertTrue( math != null );
     formula = ar.getFormula();
     assertTrue( formula != null );
     assertTrue(formula.equals( "S1 + S2 - T"));
@@ -345,6 +341,7 @@ public class TestReadSBML {
     assertTrue( ar != null );
     assertEquals( true, ar.isSetMath() );
     math = ar.getMath();
+    assertTrue( math != null );
     formula = ar.getFormula();
     assertTrue( formula != null );
     assertTrue(formula.equals( "k3 / k2"));
@@ -586,6 +583,76 @@ public class TestReadSBML {
     assertTrue(formula.equals( "lambda(x, pow(x, 3))"));
   }
 
+  public void test_ReadSBML_FunctionDefinition_MathReturnsCN()
+  {
+    FunctionDefinition fd;
+    ASTNode math;
+    String formula;
+    String s = wrapSBML_L2v1("<listOfFunctionDefinitions>" + 
+    "  <functionDefinition id='getNumber'>" + 
+    "    <math>" + 
+    "      <lambda>" + 
+    "        <bvar><ci> x </ci></bvar>" + 
+    "        <cn> 42 </cn>" + 
+    "      </lambda>" + 
+    "    </math>" + 
+    "  </functionDefinition>" + 
+    "</listOfFunctionDefinitions>");
+    D = libsbml.readSBMLFromString(s);
+    M = D.getModel();
+    assertTrue( M.getNumFunctionDefinitions() == 1 );
+    fd = M.getFunctionDefinition(0);
+    assertTrue( fd != null );
+    assertEquals( true, fd.isSetId() );
+    assertEquals( false, fd.isSetName() );
+    assertTrue(fd.getId().equals( "getNumber"  ));
+    assertEquals( true, fd.isSetMath() );
+    math = fd.getMath();
+    formula = libsbml.formulaToString(math);
+    assertTrue( formula != null );
+    assertTrue(formula.equals( "lambda(x, 42)"));
+  }
+
+  public void test_ReadSBML_FunctionDefinition_OnlyBVars()
+  {
+    FunctionDefinition fd;
+    SBMLError error;
+    int numErrors;
+    ASTNode math;
+    String formula;
+    String s = wrapSBML_L2v1("<listOfFunctionDefinitions>" + 
+    "  <functionDefinition id='invalid'>" + 
+    "    <math xmlns='http://www.w3.org/1998/Math/MathML'>" + 
+    "      <lambda>" + 
+    "        <bvar><ci> x </ci></bvar>" + 
+    "        <bvar><ci> y </ci></bvar>" + 
+    "        <bvar><ci> z </ci></bvar>" + 
+    "      </lambda>" + 
+    "    </math>" + 
+    "  </functionDefinition>" + 
+    "</listOfFunctionDefinitions>");
+    D = libsbml.readSBMLFromString(s);
+    M = D.getModel();
+    D.checkInternalConsistency();
+    D.checkConsistency();
+    numErrors = D.getNumErrors();
+    assertTrue( numErrors == 1 );
+    error = D.getError(0);
+    assertTrue( error.getErrorId().equals(NoBodyInFunctionDef) );
+    assertTrue( M.getNumFunctionDefinitions() == 1 );
+    fd = M.getFunctionDefinition(0);
+    assertTrue( fd != null );
+    assertEquals( true, fd.isSetId() );
+    assertEquals( false, fd.isSetName() );
+    assertTrue(fd.getId().equals( "invalid"  ));
+    assertTrue( fd.getBody() == null );
+    assertEquals( true, fd.isSetMath() );
+    math = fd.getMath();
+    formula = libsbml.formulaToString(math);
+    assertTrue( formula != null );
+    assertTrue(formula.equals( "lambda(x, y, z)"));
+  }
+
   public void test_ReadSBML_KineticLaw()
   {
     Reaction r;
@@ -632,6 +699,7 @@ public class TestReadSBML {
     assertTrue( kl != null );
     assertEquals( true, kl.isSetMath() );
     math = kl.getMath();
+    assertTrue( math != null );
     formula = kl.getFormula();
     assertTrue( formula != null );
     assertTrue(formula.equals( "k * S2 * X0"));
@@ -683,6 +751,21 @@ public class TestReadSBML {
     assertEquals( true, M.isSetId() );
     assertEquals( false, M.isSetName() );
     assertTrue(M.getId().equals( "testModel"));
+  }
+
+  public void test_ReadSBML_Model_withoutEncoding()
+  {
+    String s = "<sbml level='2' version='1' xmlns='http://www.sbml.org/sbml/level2'>" + 
+    "  <model id='testModel'></model>" + 
+    "</sbml>";
+    D = libsbml.readSBMLFromString(s);
+    M = D.getModel();
+    assertTrue(M.getId().equals( "testModel"));
+    assertTrue( D.getNumErrors() == 0 );
+    D = libsbml.readSBMLFromString(s);
+    M = D.getModel();
+    assertTrue(M.getId().equals( "testModel"));
+    assertTrue( D.getNumErrors() == 0 );
   }
 
   public void test_ReadSBML_Parameter()
@@ -784,6 +867,7 @@ public class TestReadSBML {
     assertTrue( rr != null );
     assertEquals( true, rr.isSetMath() );
     math = rr.getMath();
+    assertTrue( math != null );
     formula = rr.getFormula();
     assertTrue( formula != null );
     assertTrue(formula.equals( "(1 - x) * log(x)"));
@@ -859,6 +943,22 @@ public class TestReadSBML {
     D = libsbml.readSBMLFromString(s);
     assertTrue( D.getLevel() == 1 );
     assertTrue( D.getVersion() == 1 );
+  }
+
+  public void test_ReadSBML_SBML_ONLY()
+  {
+    String s = wrapXML("<sbml/>");
+    D = libsbml.readSBMLFromString(s);
+    String sSBML = D.toSBML();
+    assertTrue( sSBML != null );
+    sSBML = null;
+    if (D.getLevel() == 3 && SBMLDocument_getVersion(D) == 2);
+    {
+      assertTrue( D.getNumErrors() == 1 );
+    }
+    {
+      assertTrue( D.getNumErrors() == 2 );
+    }
   }
 
   public void test_ReadSBML_Specie()
@@ -1287,11 +1387,13 @@ public class TestReadSBML {
   {
     Unit u;
     UnitDefinition ud;
-    String s = wrapSBML_L1v2("<listOfUnitDefinitions>" + 
-    "  <unitDefinition name='bogomips'>" + 
-    "    <listOfUnits> <unit kind='second'/> </listOfUnits>" + 
-    "  </unitDefinition>" + 
-    "</listOfUnitDefinitions>");
+    String s = wrapSBML_L1v2("    <listOfUnitDefinitions>\n" + 
+    "      <unitDefinition name=\"bogomips\">\n" + 
+    "        <listOfUnits>\n" + 
+    "          <unit kind=\"second\"/>\n" + 
+    "        </listOfUnits>\n" + 
+    "      </unitDefinition>\n" + 
+    "    </listOfUnitDefinitions>\n");
     D = libsbml.readSBMLFromString(s);
     M = D.getModel();
     assertTrue( M.getNumUnitDefinitions() == 1 );
@@ -1304,6 +1406,8 @@ public class TestReadSBML {
     assertTrue( u.getScale() == 0 );
     assertTrue( u.getMultiplier() == 1.0 );
     assertTrue( u.getOffset() == 0.0 );
+    String output = libsbml.writeSBMLToString(D);
+    assertEquals( true, equals(s,output) );
   }
 
   public void test_ReadSBML_annotation()
@@ -1323,12 +1427,12 @@ public class TestReadSBML {
   public void test_ReadSBML_annotation_sbml()
   {
     String s = wrapXML("<sbml level=\"1\" version=\"1\">" + 
-    "  <annotation xmlns:jd = \"http://www.sys-bio.org/sbml\">" + 
+    "  <annotation xmlns:jd=\"http://www.sys-bio.org/sbml\">" + 
     "    <jd:header>" + 
-    "      <VersionHeader SBMLVersion = \"1.0\"/>" + 
+    "      <VersionHeader SBMLVersion=\"1.0\"/>" + 
     "    </jd:header>" + 
     "    <jd:display>" + 
-    "      <SBMLGraphicsHeader BackGroundColor = \"15728639\"/>" + 
+    "      <SBMLGraphicsHeader BackGroundColor=\"15728639\"/>" + 
     "    </jd:display>" + 
     "  </annotation>" + 
     "</sbml>");
@@ -1351,6 +1455,102 @@ public class TestReadSBML {
     assertTrue( D.getNumErrors() == 0 );
   }
 
+  public void test_ReadSBML_bad_indents()
+  {
+    String valid = wrapXML("<sbml xmlns=\"http://www.sbml.org/sbml/level2/version4\" level=\"2\" version=\"4\">\n" + 
+    "  <model>\n" + 
+    "    <notes>\n" + 
+    "      <body xmlns=\"http://www.w3.org/1999/xhtml\">\n" + 
+    "        <div class=\"dc:publisher\">This file has been produced by\n" + 
+    "          <a href=\"https://livermetabolism.com/contact.html\" title=\"Matthias Koenig\" target=\"_blank\">Matthias Koenig</a>.\n" + 
+    "        </div>\n" + 
+    "        <div class=\"dc:license\">\n" + 
+    "          <p>Redistribution and use of any part of this model_COMMA_ with or without modification_COMMA_ are permitted provided that " + 
+    "the following conditions are met :\n" + 
+    "            <ol>\n" + 
+    "            <li>Redistributions of this SBML file must retain the above copyright notice_COMMA_ this list of conditions " + 
+    "and the following disclaimer.</li>\n" + 
+    "          </ol>\n" + 
+    "            This model is distributed in the hope that it will be useful_COMMA_ but WITHOUT ANY WARRANTY; without even " + 
+    "the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.</p>\n" + 
+    "        </div>\n" + 
+    "      </body>\n" + 
+    "    </notes>\n" + 
+    "    <listOfCompartments>\n" + 
+    "      <compartment id=\"compartmentOne\" size=\"1\"/>\n" + 
+    "    </listOfCompartments>\n" + 
+    "    <listOfSpecies>\n" + 
+    "      <species id=\"S1\" compartment=\"compartmentOne\" initialConcentration=\"1\"/>\n" + 
+    "      <species id=\"S2\" compartment=\"compartmentOne\" initialConcentration=\"0\"/>\n" + 
+    "    </listOfSpecies>\n" + 
+    "  </model>\n" + 
+    "</sbml>\n");
+    D = libsbml.readSBMLFromString(valid);
+    assertTrue( D.getNumErrors() == 0 );
+    String output = libsbml.writeSBMLToString(D);
+    assertEquals( true, equals(valid,output) );
+  }
+
+  public void test_ReadSBML_bad_indents_2()
+  {
+    String valid = wrapXML("<sbml xmlns=\"http://www.sbml.org/sbml/level2/version4\" level=\"2\" version=\"4\">\n" + 
+    "  <model>\n" + 
+    "    <notes>\n" + 
+    "      <p xmlns=\"http://www.w3.org/1999/xhtml\">Hello<a href=\"test\">link</a></p>\n" + 
+    "    </notes>\n" + 
+    "  </model>\n" + 
+    "</sbml>\n");
+    SBMLDocument d = new SBMLDocument(2,4);
+    Model m = d.createModel();
+    String newnotes =  "<p xmlns=\"http://www.w3.org/1999/xhtml\">Hello<a href=\"test\">link</a></p>";
+    m.setNotes(newnotes);
+    String output = libsbml.writeSBMLToString(d);
+    assertEquals( true, equals(valid,output) );
+    d = null;
+  }
+
+  public void test_ReadSBML_bad_indents_3()
+  {
+    String valid = wrapXML("<sbml xmlns=\"http://www.sbml.org/sbml/level2/version4\" level=\"2\" version=\"4\">\n" + 
+    "  <model>\n" + 
+    "    <notes>\n" + 
+    "      <p xmlns=\"http://www.w3.org/1999/xhtml\">Hello<a href=\"test\">link</a></p>\n" + 
+    "      <p xmlns=\"http://www.w3.org/1999/xhtml\">Hello</p>\n" + 
+    "      <p xmlns=\"http://www.w3.org/1999/xhtml\">Hello<a href=\"test\">link</a>\n" + 
+    "      <a href=\"foo\">foolink</a></p>\n" + 
+    "    </notes>\n" + 
+    "  </model>\n" + 
+    "</sbml>\n");
+    SBMLDocument d = new SBMLDocument(2,4);
+    Model m = d.createModel();
+    String newnotes =  "<p xmlns=\"http://www.w3.org/1999/xhtml\">Hello<a href=\"test\">link</a></p>";
+    m.setNotes(newnotes);
+    m.appendNotes("<p xmlns=\"http://www.w3.org/1999/xhtml\">Hello</p>");
+    m.appendNotes("<p xmlns=\"http://www.w3.org/1999/xhtml\">Hello<a href=\"test\">link</a><a href=\"foo\">foolink</a></p>");
+    String output = libsbml.writeSBMLToString(d);
+    assertEquals( true, equals(valid,output) );
+    d = null;
+  }
+
+  public void test_ReadSBML_bad_indents_4()
+  {
+    String valid = wrapXML("<sbml xmlns=\"http://www.sbml.org/sbml/level2/version4\" level=\"2\" version=\"4\">\n" + 
+    "  <model>\n" + 
+    "    <notes>\n" + 
+    "      <p xmlns=\"http://www.w3.org/1999/xhtml\">\n" + 
+    "        <a href=\"test\">link</a>\n" + 
+    "      </p>\n" + 
+    "    </notes>\n" + 
+    "  </model>\n" + 
+    "</sbml>\n");
+    SBMLDocument d = new SBMLDocument(2,4);
+    Model m = d.createModel();
+    m.setNotes("<p xmlns=\"http://www.w3.org/1999/xhtml\"><a href=\"test\">link</a></p>");
+    String output = libsbml.writeSBMLToString(d);
+    assertEquals( true, equals(valid,output) );
+    d = null;
+  }
+
   public void test_ReadSBML_invalid_default_namespace()
   {
     String valid = wrapXML("<sbml xmlns=\"http://www.sbml.org/sbml/level2/version4\" level=\"2\" version=\"4\"> " + 
@@ -1369,7 +1569,7 @@ public class TestReadSBML {
     "       <species id=\"S2\" initialConcentration=\"0\" compartment=\"compartmentOne\"/>" + 
     "     </listOfSpecies>" + 
     "     <listOfParameters>" + 
-    "       <parameter id=\"t\" value = \"1\" units=\"second\"/>" + 
+    "       <parameter id=\"t\" value=\"1\" units=\"second\"/>" + 
     "     </listOfParameters>" + 
     "     <listOfConstraints>" + 
     "       <constraint sboTerm=\"SBO:0000064\">" + 
@@ -1420,7 +1620,7 @@ public class TestReadSBML {
     "       <species id=\"S2\" initialConcentration=\"0\" compartment=\"compartmentOne\"/>" + 
     "     </listOfSpecies>" + 
     "     <listOfParameters>" + 
-    "       <parameter id=\"t\" value = \"1\" units=\"second\"/>" + 
+    "       <parameter id=\"t\" value=\"1\" units=\"second\"/>" + 
     "     </listOfParameters>" + 
     "     <listOfConstraints>" + 
     "       <constraint sboTerm=\"SBO:0000064\">" + 
@@ -1480,6 +1680,7 @@ public class TestReadSBML {
     sb = M;
     sb = M.getListOfReactions();
     sb = M.getReaction(0);
+    sb = null;
   }
 
   public void test_ReadSBML_metaid()
@@ -1678,6 +1879,16 @@ public class TestReadSBML {
     assertTrue(sb.getMetaId().equals( "u"));
   }
 
+  public void test_ReadSBML_no_sbml()
+  {
+    String invalid1 = wrapXML("<html/>"  
+    );
+    D = libsbml.readSBMLFromString(invalid1);
+    M = D.getModel();
+    assertTrue( M == null );
+    assertEquals( true, D.getErrorLog().contains(NotSchemaConformant) );
+  }
+
   public void test_ReadSBML_notes()
   {
     Reaction r;
@@ -1770,9 +1981,48 @@ public class TestReadSBML {
     assertTrue( M.getNotes() != null );
     XMLNamespaces ns = M.getNotes().getChild(0).getNamespaces();
     assertTrue( ns.getLength() == 1 );
-    assertTrue(ns.getURI(0).equals( "http://www.w3.org/1999/xhtml"));
+    String uri = ns.getURI(0);
+    assertTrue(uri.equals( "http://www.w3.org/1999/xhtml"));
     String notes = M.getNotes().getChild(0).getChild(0).getCharacters();
     assertTrue( !notes.equals( "Some text.") == false );
+  }
+
+  public void test_ReadSBML_prefix()
+  {
+    String unprefixed = "<?xml version='1.0' encoding='UTF-8'?>" + 
+    "<sbml xmlns='http://www.sbml.org/sbml/level2/version4' level='2' version='4'>" + 
+    "  <model id='Model1' name='New Model'>" + 
+    "    <listOfCompartments>" + 
+    "      <compartment id='compartment_2' name='compartment_2' size='1'/>" + 
+    "    </listOfCompartments>" + 
+    "    <listOfSpecies>" + 
+    "      <species id='species_2' name='species_2' compartment='compartment_2' initialConcentration='1'/>" + 
+    "    </listOfSpecies>" + 
+    "  </model>" + 
+    "</sbml>";
+    String prefixed = "<?xml version='1.0' encoding='UTF-8'?>" + 
+    "<sbml:sbml xmlns:sbml='http://www.sbml.org/sbml/level2/version4' sbml:level='2' sbml:version='4'>" + 
+    "  <sbml:model sbml:id='Model1' sbml:name='New Model'>" + 
+    "    <sbml:listOfCompartments>" + 
+    "      <sbml:compartment sbml:id='compartment_1' sbml:name='compartment_1' sbml:size='1'/>" + 
+    "    </sbml:listOfCompartments>" + 
+    "    <sbml:listOfSpecies>" + 
+    "      <sbml:species sbml:id='species_1' sbml:name='species_1' sbml:compartment='compartment_1' sbml:initialConcentration='1'/>" + 
+    "    </sbml:listOfSpecies>" + 
+    "  </sbml:model>" + 
+    "</sbml:sbml>";
+    SBMLDocument doc1 = libsbml.readSBMLFromString(unprefixed);
+    SBMLDocument doc2 = libsbml.readSBMLFromString(prefixed);
+    Model model1 = doc1.getModel();
+    Model model2 = doc2.getModel();
+    assertTrue( model1 != null );
+    assertTrue( model2 != null );
+    assertTrue( model1.addCompartment(model2.getCompartment(0)) == libsbml.LIBSBML_OPERATION_SUCCESS );
+    assertTrue( model1.addSpecies(model2.getSpecies(0)) == libsbml.LIBSBML_OPERATION_SUCCESS );
+    assertTrue( model2.addCompartment(model1.getCompartment(0)) == libsbml.LIBSBML_OPERATION_SUCCESS );
+    assertTrue( model2.addSpecies(model1.getSpecies(0)) == libsbml.LIBSBML_OPERATION_SUCCESS );
+    doc1 = null;
+    doc2 = null;
   }
 
   /**

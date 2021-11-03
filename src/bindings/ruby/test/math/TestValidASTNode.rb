@@ -35,18 +35,18 @@ class TestValidASTNode < Test::Unit::TestCase
   def test_ValidASTNode_Name
     n = LibSBML::parseFormula("c")
     assert_equal true, n.isWellFormedASTNode()
-    #d = LibSBML::parseFormula("d")
-    #i = n.addChild(d)
-    #assert( i == LibSBML::LIBSBML_INVALID_OBJECT )
+    d = LibSBML::parseFormula("d")
+    i = n.addChild(d)
+    assert_equal false, (n.isWellFormedASTNode())
     n = nil
   end
 
   def test_ValidASTNode_Number
     n = LibSBML::parseFormula("1.2")
     assert_equal true, n.isWellFormedASTNode()
-    #d = LibSBML::parseFormula("d")
-    #i = n.addChild(d)
-    #assert( i == LibSBML::LIBSBML_INVALID_OBJECT )
+    d = LibSBML::parseFormula("d")
+    i = n.addChild(d)
+    assert_equal false, (n.isWellFormedASTNode())
     n = nil
   end
 
@@ -135,6 +135,21 @@ class TestValidASTNode < Test::Unit::TestCase
     n = nil
   end
 
+  def test_ValidASTNode_log
+    n = LibSBML::ASTNode.new(LibSBML::AST_FUNCTION_LOG)
+    assert_equal false, (n.isWellFormedASTNode())
+    c = LibSBML::parseFormula("c")
+    n.addChild(c)
+    assert_equal false, (n.isWellFormedASTNode())
+    d = LibSBML::parseFormula("3")
+    n.addChild(d)
+    assert_equal true, n.isWellFormedASTNode()
+    e = LibSBML::parseFormula("3")
+    n.addChild(e)
+    assert_equal false, (n.isWellFormedASTNode())
+    n = nil
+  end
+
   def test_ValidASTNode_nary
     n = LibSBML::ASTNode.new(LibSBML::AST_DIVIDE)
     assert_equal false, (n.isWellFormedASTNode())
@@ -145,6 +160,7 @@ class TestValidASTNode < Test::Unit::TestCase
     assert_equal true, (n.isWellFormedASTNode())
     n.addChild(c.deepCopy())
     assert_equal false, (n.isWellFormedASTNode())
+    n = nil
     n = LibSBML::ASTNode.new(LibSBML::AST_TIMES)
     assert_equal true, (n.isWellFormedASTNode())
     n.addChild(c)

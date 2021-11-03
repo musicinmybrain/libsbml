@@ -40,7 +40,9 @@ class TestRequiredElements(unittest.TestCase):
   def test_AlgebraicRule(self):
     ar = libsbml.AlgebraicRule(2,4)
     self.assertEqual( False, (ar.hasRequiredElements()) )
-    ar.setMath(libsbml.parseFormula("ar"))
+    math = libsbml.parseFormula("ar")
+    ar.setMath(math)
+    _dummyList = [ math ]; _dummyList[:] = []; del _dummyList
     self.assertEqual( True, ar.hasRequiredElements() )
     ar = None
     pass  
@@ -48,7 +50,9 @@ class TestRequiredElements(unittest.TestCase):
   def test_AssignmentRule(self):
     r = libsbml.AssignmentRule(2,4)
     self.assertEqual( False, (r.hasRequiredElements()) )
-    r.setMath(libsbml.parseFormula("ar"))
+    math = libsbml.parseFormula("ar")
+    r.setMath(math)
+    _dummyList = [ math ]; _dummyList[:] = []; del _dummyList
     self.assertEqual( True, r.hasRequiredElements() )
     r = None
     pass  
@@ -68,15 +72,19 @@ class TestRequiredElements(unittest.TestCase):
   def test_Constraint(self):
     c = libsbml.Constraint(2,4)
     self.assertEqual( False, (c.hasRequiredElements()) )
-    c.setMath(libsbml.parseFormula("a+b"))
+    math = libsbml.parseFormula("a+b")
+    c.setMath(math)
     self.assertEqual( True, c.hasRequiredElements() )
     c = None
+    math = None
     pass  
 
   def test_Delay(self):
     d = libsbml.Delay(2,4)
     self.assertEqual( False, (d.hasRequiredElements()) )
-    d.setMath(libsbml.parseFormula("a+b"))
+    math = libsbml.parseFormula("a+b")
+    d.setMath(math)
+    _dummyList = [ math ]; _dummyList[:] = []; del _dummyList
     self.assertEqual( True, d.hasRequiredElements() )
     d = None
     pass  
@@ -85,18 +93,23 @@ class TestRequiredElements(unittest.TestCase):
     e = libsbml.Event(2,4)
     self.assertEqual( False, (e.hasRequiredElements()) )
     t = libsbml.Trigger(2,4)
-    t.setMath(libsbml.parseFormula("true"))
+    math = libsbml.parseFormula("true")
+    t.setMath(math)
+    _dummyList = [ math ]; _dummyList[:] = []; del _dummyList
     e.setTrigger(t)
     self.assertEqual( False, (e.hasRequiredElements()) )
     e.createEventAssignment()
     self.assertEqual( True, e.hasRequiredElements() )
     e = None
+    t = None
     pass  
 
   def test_EventAssignment(self):
     ea = libsbml.EventAssignment(2,4)
     self.assertEqual( False, (ea.hasRequiredElements()) )
-    ea.setMath(libsbml.parseFormula("fd"))
+    math = libsbml.parseFormula("fd")
+    ea.setMath(math)
+    _dummyList = [ math ]; _dummyList[:] = []; del _dummyList
     self.assertEqual( True, ea.hasRequiredElements() )
     ea = None
     pass  
@@ -104,7 +117,9 @@ class TestRequiredElements(unittest.TestCase):
   def test_FunctionDefinition(self):
     fd = libsbml.FunctionDefinition(2,4)
     self.assertEqual( False, (fd.hasRequiredElements()) )
-    fd.setMath(libsbml.parseFormula("fd"))
+    math = libsbml.parseFormula("fd")
+    fd.setMath(math)
+    _dummyList = [ math ]; _dummyList[:] = []; del _dummyList
     self.assertEqual( True, fd.hasRequiredElements() )
     fd = None
     pass  
@@ -112,7 +127,9 @@ class TestRequiredElements(unittest.TestCase):
   def test_InitialAssignment(self):
     ia = libsbml.InitialAssignment(2,4)
     self.assertEqual( False, (ia.hasRequiredElements()) )
-    ia.setMath(libsbml.parseFormula("ia"))
+    math = libsbml.parseFormula("ia")
+    ia.setMath(math)
+    _dummyList = [ math ]; _dummyList[:] = []; del _dummyList
     self.assertEqual( True, ia.hasRequiredElements() )
     ia = None
     pass  
@@ -120,7 +137,9 @@ class TestRequiredElements(unittest.TestCase):
   def test_KineticLaw(self):
     kl = libsbml.KineticLaw(2,4)
     self.assertEqual( False, (kl.hasRequiredElements()) )
-    kl.setMath(libsbml.parseFormula("kl"))
+    math = libsbml.parseFormula("kl")
+    kl.setMath(math)
+    _dummyList = [ math ]; _dummyList[:] = []; del _dummyList
     self.assertEqual( True, kl.hasRequiredElements() )
     kl = None
     pass  
@@ -166,7 +185,9 @@ class TestRequiredElements(unittest.TestCase):
   def test_RateRule(self):
     r = libsbml.RateRule(2,4)
     self.assertEqual( False, (r.hasRequiredElements()) )
-    r.setMath(libsbml.parseFormula("ar"))
+    math = libsbml.parseFormula("ar")
+    r.setMath(math)
+    _dummyList = [ math ]; _dummyList[:] = []; del _dummyList
     self.assertEqual( True, r.hasRequiredElements() )
     r = None
     pass  
@@ -198,7 +219,9 @@ class TestRequiredElements(unittest.TestCase):
   def test_StoichiometryMath(self):
     sm = libsbml.StoichiometryMath(2,4)
     self.assertEqual( False, (sm.hasRequiredElements()) )
-    sm.setMath(libsbml.parseFormula("ar"))
+    math = libsbml.parseFormula("ar")
+    sm.setMath(math)
+    _dummyList = [ math ]; _dummyList[:] = []; del _dummyList
     self.assertEqual( True, sm.hasRequiredElements() )
     sm = None
     pass  
@@ -206,7 +229,9 @@ class TestRequiredElements(unittest.TestCase):
   def test_Trigger(self):
     t = libsbml.Trigger(2,4)
     self.assertEqual( False, (t.hasRequiredElements()) )
-    t.setMath(libsbml.parseFormula("ar"))
+    math = libsbml.parseFormula("ar")
+    t.setMath(math)
+    _dummyList = [ math ]; _dummyList[:] = []; del _dummyList
     self.assertEqual( True, t.hasRequiredElements() )
     t = None
     pass  

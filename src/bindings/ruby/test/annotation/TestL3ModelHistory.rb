@@ -48,6 +48,7 @@ class TestL3ModelHistory < Test::Unit::TestCase
     @@d = LibSBML::readSBML(filename)
     @@m = @@d.getModel()
     @@c = @@m.getCompartment(0)
+    filename = nil
   end
 
   def teardown
@@ -62,6 +63,7 @@ class TestL3ModelHistory < Test::Unit::TestCase
     assert( n1.getName() ==  "annotation" )
     assert_equal true, equals(expected,n1.toXMLString())
     node = nil
+    n1 = nil
   end
 
   def test_L3ModelHistory_deleteWithOther
@@ -76,6 +78,7 @@ class TestL3ModelHistory < Test::Unit::TestCase
     "  </jd2:JDesignerLayout>\n" + 
     "</annotation>"
     assert_equal true, equals(expected,node.toXMLString())
+    node = nil
   end
 
   def test_L3ModelHistory_deleteWithOutOther
@@ -100,6 +103,7 @@ class TestL3ModelHistory < Test::Unit::TestCase
     assert( n1.getName() ==  "annotation" )
     assert_equal true, equals(expected,n1.toXMLString())
     node = nil
+    n1 = nil
   end
 
   def test_L3ModelHistory_getModelHistory
@@ -184,6 +188,7 @@ class TestL3ModelHistory < Test::Unit::TestCase
     creator = desc.getChild(0)
     assert ((  "creator" == creator.getName() ))
     assert ((  "dcterms" == creator.getPrefix() ))
+    assert ((  "http://purl.org/dc/terms/" == creator.getURI() ))
     assert( creator.getNumChildren() == 1 )
     bag = creator.getChild(0)
     assert ((  "Bag" == bag.getName() ))
@@ -264,6 +269,7 @@ class TestL3ModelHistory < Test::Unit::TestCase
     creator = desc.getChild(0)
     assert ((  "creator" == creator.getName() ))
     assert ((  "dcterms" == creator.getPrefix() ))
+    assert ((  "http://purl.org/dc/terms/" == creator.getURI() ))
     assert( creator.getNumChildren() == 1 )
     bag = creator.getChild(0)
     assert ((  "Bag" == bag.getName() ))
@@ -328,5 +334,22 @@ class TestL3ModelHistory < Test::Unit::TestCase
     node = nil
   end
 
+  def test_L3ModelHistory_recreateWithOutOther
+    @@c = @@m.getCompartment(2)
+    expected = "<compartment id=\"B\" constant=\"true\">\n" + 
+    "  <annotation>\n" + 
+    "    <jd2:JDesignerLayout version=\"2.0\" MajorVersion=\"2\" MinorVersion=\"0\" BuildVersion=\"41\">\n" + 
+    "      <jd2:header>\n" + 
+    "        <jd2:VersionHeader JDesignerVersion=\"2.0\"/>\n" + 
+    "        <jd2:ModelHeader Author=\"Mr Untitled\" ModelVersion=\"0.0\" ModelTitle=\"untitled\"/>\n" + 
+    "        <jd2:TimeCourseDetails timeStart=\"0\" timeEnd=\"10\" numberOfPoints=\"1000\"/>\n" + 
+    "      </jd2:header>\n" + 
+    "    </jd2:JDesignerLayout>\n" + 
+    "  </annotation>\n" + 
+    "</compartment>"
+    sbml = @@c.toSBML()
+    assert_equal true, equals(expected,sbml)
+    sbml = nil
+  end
 
 end

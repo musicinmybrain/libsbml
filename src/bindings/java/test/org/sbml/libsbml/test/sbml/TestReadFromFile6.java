@@ -18,11 +18,6 @@
  * This file is part of libSBML.  Please visit http://sbml.org for more
  * information about SBML, and the latest version of libSBML.
  *
- * Copyright (C) 2020 jointly by the following organizations:
- *     1. California Institute of Technology, Pasadena, CA, USA
- *     2. University of Heidelberg, Heidelberg, Germany
- *     3. University College London, London, UK
- *
  * Copyright 2005-2010 California Institute of Technology.
  * Copyright 2002-2005 California Institute of Technology and
  *                     Japan Science and Technology Corporation.
@@ -149,7 +144,7 @@ public class TestReadFromFile6 {
     ListOfSpeciesReferences losr;
     SpeciesReference sr1;
     ASTNode ast;
-    String filename = new String( "../../sbml/test/test-data/" );
+    String filename = new String( "../../sbml/sbml/test/test-data/" );
     filename += "l2v2-newComponents.xml";
     d = reader.readSBML(filename);
     if (d == null);
@@ -218,7 +213,8 @@ public class TestReadFromFile6 {
     assertTrue( con.getSBOTerm() == 64 );
     assertTrue( con.getSBOTermID().equals( "SBO:0000064") );
     ast = con.getMath();
-    assertTrue(libsbml.formulaToString(ast).equals( "lt(1, cell)"));
+    String math = libsbml.formulaToString(ast);
+    assertTrue(math.equals( "lt(1, cell)"));
     locon = m.getListOfConstraints();
     con1 = locon.get(0);
     assertTrue( con1.equals(con) );
@@ -229,7 +225,8 @@ public class TestReadFromFile6 {
     assertTrue( ia.getSBOTermID().equals( "SBO:0000064") );
     assertTrue( ia.getSymbol().equals( "X0") );
     ast = ia.getMath();
-    assertTrue(libsbml.formulaToString(ast).equals( "y * X1"));
+    math = libsbml.formulaToString(ast);
+    assertTrue(math.equals( "y * X1"));
     loia = m.getListOfInitialAssignments();
     ia1 = loia.get(0);
     assertTrue( ia1.equals(ia) );
@@ -253,7 +250,8 @@ public class TestReadFromFile6 {
     assertTrue( kl.getSBOTermID().equals( "SBO:0000001") );
     assertEquals( true, kl.isSetMath() );
     ast = kl.getMath();
-    assertTrue(libsbml.formulaToString(ast).equals( "v * X0 / t"));
+    math = libsbml.formulaToString(ast);
+    assertTrue(math.equals( "v * X0 / t"));
     assertTrue( kl.getNumParameters() == 2 );
     p = kl.getParameter(0);
     assertTrue( p != null );

@@ -96,6 +96,13 @@ class TestConstraint_newSetters < Test::Unit::TestCase
     assert_equal false, @@c.isSetMessage()
     if (@@c.getMessage() != nil)
     end
+    text = nil
+    triple = nil
+    att = nil
+    xmlns = nil
+    p = nil
+    triple1 = nil
+    att1 = nil
     node = nil
   end
 

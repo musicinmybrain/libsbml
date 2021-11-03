@@ -127,8 +127,8 @@ namespace LibSBMLCSTest.annotation {
     }
 
     private SBMLDocument d;
-    private Compartment c;
     private Model m;
+    private Compartment c;
 
 
   public bool equals(string s1, string s2)
@@ -142,6 +142,7 @@ namespace LibSBMLCSTest.annotation {
       d = libsbml.readSBML(filename);
       m = d.getModel();
       c = m.getCompartment(0);
+      filename = null;
     }
 
     public void tearDown()
@@ -157,6 +158,7 @@ namespace LibSBMLCSTest.annotation {
       assertTrue( n1.getName() ==  "annotation" );
       assertEquals( true, equals(expected,n1.toXMLString()) );
       node = null;
+      n1 = null;
     }
 
     public void test_L3ModelHistory_deleteWithOther()
@@ -172,6 +174,7 @@ namespace LibSBMLCSTest.annotation {
     "  </jd2:JDesignerLayout>\n" + 
     "</annotation>";
       assertEquals( true, equals(expected,node.toXMLString()) );
+      node = null;
     }
 
     public void test_L3ModelHistory_deleteWithOutOther()
@@ -198,6 +201,7 @@ namespace LibSBMLCSTest.annotation {
       assertTrue( n1.getName() ==  "annotation" );
       assertEquals( true, equals(expected,n1.toXMLString()) );
       node = null;
+      n1 = null;
     }
 
     public void test_L3ModelHistory_getModelHistory()
@@ -285,6 +289,7 @@ namespace LibSBMLCSTest.annotation {
       XMLNode creator = desc.getChild(0);
       assertTrue((  "creator" == creator.getName() ));
       assertTrue((  "dcterms" == creator.getPrefix() ));
+      assertTrue((  "http://purl.org/dc/terms/" == creator.getURI() ));
       assertTrue( creator.getNumChildren() == 1 );
       XMLNode Bag = creator.getChild(0);
       assertTrue((  "Bag" == Bag.getName() ));
@@ -366,6 +371,7 @@ namespace LibSBMLCSTest.annotation {
       XMLNode creator = desc.getChild(0);
       assertTrue((  "creator" == creator.getName() ));
       assertTrue((  "dcterms" == creator.getPrefix() ));
+      assertTrue((  "http://purl.org/dc/terms/" == creator.getURI() ));
       assertTrue( creator.getNumChildren() == 1 );
       XMLNode Bag = creator.getChild(0);
       assertTrue((  "Bag" == Bag.getName() ));
@@ -429,5 +435,25 @@ namespace LibSBMLCSTest.annotation {
       assertTrue( mo_date.getNumChildren() == 1 );
       node = null;
     }
+
+    public void test_L3ModelHistory_recreateWithOutOther()
+    {
+      Compartment c = m.getCompartment(2);
+      string expected = "<compartment id=\"B\" constant=\"true\">\n" + 
+    "  <annotation>\n" + 
+    "    <jd2:JDesignerLayout version=\"2.0\" MajorVersion=\"2\" MinorVersion=\"0\" BuildVersion=\"41\">\n" + 
+    "      <jd2:header>\n" + 
+    "        <jd2:VersionHeader JDesignerVersion=\"2.0\"/>\n" + 
+    "        <jd2:ModelHeader Author=\"Mr Untitled\" ModelVersion=\"0.0\" ModelTitle=\"untitled\"/>\n" + 
+    "        <jd2:TimeCourseDetails timeStart=\"0\" timeEnd=\"10\" numberOfPoints=\"1000\"/>\n" + 
+    "      </jd2:header>\n" + 
+    "    </jd2:JDesignerLayout>\n" + 
+    "  </annotation>\n" + 
+    "</compartment>";
+      string sbml = c.toSBML();
+      assertEquals( true, equals(expected,sbml) );
+      sbml = null;
+    }
+
   }
 }

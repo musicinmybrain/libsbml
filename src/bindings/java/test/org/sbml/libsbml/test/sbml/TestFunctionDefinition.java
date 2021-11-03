@@ -18,11 +18,6 @@
  * This file is part of libSBML.  Please visit http://sbml.org for more
  * information about SBML, and the latest version of libSBML.
  *
- * Copyright (C) 2020 jointly by the following organizations:
- *     1. California Institute of Technology, Pasadena, CA, USA
- *     2. University of Heidelberg, Heidelberg, Germany
- *     3. University College London, London, UK
- *
  * Copyright 2005-2010 California Institute of Technology.
  * Copyright 2002-2005 California Institute of Technology and
  *                     Japan Science and Technology Corporation.
@@ -190,6 +185,8 @@ public class TestFunctionDefinition {
     assertTrue( object.getNamespaces() != null );
     assertTrue( object.getNamespaces().getLength() == 2 );
     object = null;
+    xmlns = null;
+    sbmlns = null;
   }
 
   public void test_FunctionDefinition_free_NULL()
@@ -199,7 +196,9 @@ public class TestFunctionDefinition {
   public void test_FunctionDefinition_getArguments()
   {
     ASTNode math;
-    FD.setMath(libsbml.parseFormula("lambda(x, y, x^y)"));
+    ASTNode math1 = libsbml.parseFormula("lambda(x, y, x^y)");
+    FD.setMath(math1);
+    math1 = null;
     assertTrue( FD.getNumArguments() == 2 );
     math = FD.getArgument(0);
     assertTrue( math != null );
@@ -259,6 +258,7 @@ public class TestFunctionDefinition {
     assertTrue(formula.equals( "lambda(x, x^3)"));
     assertTrue( !FD.getMath().equals(math) );
     assertEquals( true, FD.isSetMath() );
+    assertEquals( true, FD.isSetBody() );
     FD.setMath(FD.getMath());
     math1 = FD.getMath();
     assertTrue( math1 != null );
@@ -268,9 +268,11 @@ public class TestFunctionDefinition {
     assertTrue( !FD.getMath().equals(math) );
     FD.setMath(null);
     assertEquals( false, FD.isSetMath() );
+    assertEquals( false, FD.isSetBody() );
     if (FD.getMath() != null);
     {
     }
+    math = null;
   }
 
   public void test_FunctionDefinition_setName()

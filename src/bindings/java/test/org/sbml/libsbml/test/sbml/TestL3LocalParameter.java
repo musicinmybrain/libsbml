@@ -18,11 +18,6 @@
  * This file is part of libSBML.  Please visit http://sbml.org for more
  * information about SBML, and the latest version of libSBML.
  *
- * Copyright (C) 2020 jointly by the following organizations:
- *     1. California Institute of Technology, Pasadena, CA, USA
- *     2. University of Heidelberg, Heidelberg, Germany
- *     3. University College London, London, UK
- *
  * Copyright 2005-2010 California Institute of Technology.
  * Copyright 2002-2005 California Institute of Technology and
  *                     Japan Science and Technology Corporation.
@@ -124,11 +119,6 @@ public class TestL3LocalParameter {
   }
   private LocalParameter P;
 
-  public boolean isnan(double x)
-  {
-    return (x != x);
-  }
-
   protected void setUp() throws Exception
   {
     P = new  LocalParameter(3,1);
@@ -146,7 +136,19 @@ public class TestL3LocalParameter {
   {
     assertTrue( P.getNamespaces() != null );
     assertTrue( P.getNamespaces().getLength() == 1 );
-    assertTrue(P.getNamespaces().getURI(0).equals(    "http://www.sbml.org/sbml/level3/version1/core"));
+    String uri = P.getNamespaces().getURI(0);
+    assertTrue(uri.equals( "http://www.sbml.org/sbml/level3/version1/core"));
+  }
+
+  public void test_L3_LocalParameter_constant()
+  {
+    assertTrue( P.getConstant() == true );
+    int i = P.setConstant(false);
+    assertTrue( i == libsbml.LIBSBML_UNEXPECTED_ATTRIBUTE );
+    assertTrue( P.getConstant() == true );
+    i = P.unsetConstant();
+    assertTrue( i == libsbml.LIBSBML_UNEXPECTED_ATTRIBUTE );
+    assertTrue( P.getConstant() == true );
   }
 
   public void test_L3_LocalParameter_create()
@@ -158,7 +160,7 @@ public class TestL3LocalParameter {
     assertTrue( P.getId().equals("") == true );
     assertTrue( P.getName().equals("") == true );
     assertTrue( P.getUnits().equals("") == true );
-    assertEquals( true, isnan(P.getValue()) );
+    assertEquals( true, util_isNaN );
     assertEquals( false, P.isSetId() );
     assertEquals( false, P.isSetName() );
     assertEquals( false, P.isSetValue() );
@@ -183,12 +185,14 @@ public class TestL3LocalParameter {
     assertTrue( p.getId().equals("") == true );
     assertTrue( p.getName().equals("") == true );
     assertTrue( p.getUnits().equals("") == true );
-    assertEquals( true, isnan(p.getValue()) );
+    assertEquals( true, util_isNaN );
     assertEquals( false, p.isSetId() );
     assertEquals( false, p.isSetName() );
     assertEquals( false, p.isSetValue() );
     assertEquals( false, p.isSetUnits() );
     p = null;
+    xmlns = null;
+    sbmlns = null;
   }
 
   public void test_L3_LocalParameter_free_NULL()
@@ -253,13 +257,13 @@ public class TestL3LocalParameter {
   public void test_L3_LocalParameter_value()
   {
     assertEquals( false, P.isSetValue() );
-    assertEquals( true, isnan(P.getValue()) );
+    assertEquals( true, util_isNaN );
     P.setValue(1.5);
     assertEquals( true, P.isSetValue() );
     assertTrue( P.getValue() == 1.5 );
     P.unsetValue();
     assertEquals( false, P.isSetValue() );
-    assertEquals( true, isnan(P.getValue()) );
+    assertEquals( true, util_isNaN );
   }
 
   /**
@@ -315,4 +319,3 @@ public class TestL3LocalParameter {
     }
   }
 }
-

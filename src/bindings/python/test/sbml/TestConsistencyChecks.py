@@ -39,42 +39,59 @@ class TestConsistencyChecks(unittest.TestCase):
 
   def test_consistency_checks(self):
     reader = libsbml.SBMLReader()
-    filename = "../../sbml/test/test-data/"
+    filename = "../../sbml/sbml/test/test-data/"
     filename += "inconsistent.xml"
     d = reader.readSBML(filename)
     if (d == None):
       pass    
     errors = d.checkConsistency()
-    self.assert_( errors == 1 )
-    self.assert_( d.getError(0).getErrorId() == 10301 )
+    self.assertTrue( errors == 1 )
+    self.assertTrue( d.getError(0).getErrorId() == 10301 )
     d.getErrorLog().clearLog()
     d.setConsistencyChecks(libsbml.LIBSBML_CAT_IDENTIFIER_CONSISTENCY,False)
     errors = d.checkConsistency()
-    self.assert_( errors == 2 )
-    self.assert_( d.getError(0).getErrorId() == 10214 )
-    self.assert_( d.getError(1).getErrorId() == 20612 )
+    self.assertTrue( errors == 2 )
+    self.assertTrue( d.getError(0).getErrorId() == 10214 )
+    self.assertTrue( d.getError(1).getErrorId() == 20612 )
     d.getErrorLog().clearLog()
     d.setConsistencyChecks(libsbml.LIBSBML_CAT_GENERAL_CONSISTENCY,False)
     errors = d.checkConsistency()
-    self.assert_( errors == 1 )
-    self.assert_( d.getError(0).getErrorId() == 10701 )
+    self.assertTrue( errors == 1 )
+    self.assertTrue( d.getError(0).getErrorId() == 10701 )
     d.getErrorLog().clearLog()
     d.setConsistencyChecks(libsbml.LIBSBML_CAT_SBO_CONSISTENCY,False)
     errors = d.checkConsistency()
-    self.assert_( errors == 1 )
-    self.assert_( d.getError(0).getErrorId() == 10214 )
+    self.assertTrue( errors == 1 )
+    self.assertTrue( d.getError(0).getErrorId() == 10214 )
     d.getErrorLog().clearLog()
     d.setConsistencyChecks(libsbml.LIBSBML_CAT_MATHML_CONSISTENCY,False)
     errors = d.checkConsistency()
-    self.assert_( errors == 4 )
-    self.assert_( d.getError(0).getErrorId() == 99505 )
-    self.assert_( d.getError(1).getErrorId() == 99505 )
-    self.assert_( d.getError(2).getErrorId() == 99505 )
-    self.assert_( d.getError(3).getErrorId() == 80701 )
+    self.assertTrue( errors == 4 )
+    self.assertTrue( d.getError(0).getErrorId() == 99505 )
+    self.assertTrue( d.getError(1).getErrorId() == 99505 )
+    self.assertTrue( d.getError(2).getErrorId() == 99505 )
+    self.assertTrue( d.getError(3).getErrorId() == 80701 )
     d.getErrorLog().clearLog()
     d.setConsistencyChecks(libsbml.LIBSBML_CAT_UNITS_CONSISTENCY,False)
     errors = d.checkConsistency()
-    self.assert_( errors == 0 )
+    self.assertTrue( errors == 0 )
+    d = None
+    pass  
+
+  def test_strict_unit_consistency_checks(self):
+    reader = libsbml.SBMLReader()
+    filename = "../../sbml/sbml/test/test-data/"
+    filename += "l3v1-units.xml"
+    d = reader.readSBML(filename)
+    if (d == None):
+      pass    
+    errors = d.checkConsistency()
+    self.assertTrue( errors == 0 )
+    d.getErrorLog().clearLog()
+    errors = d.checkConsistencyWithStrictUnits()
+    self.assertTrue( errors == 1 )
+    self.assertTrue( d.getError(0).getErrorId() == 10513 )
+    self.assertTrue( d.getError(0).getSeverity() == libsbml.LIBSBML_SEV_ERROR )
     d = None
     pass  
 

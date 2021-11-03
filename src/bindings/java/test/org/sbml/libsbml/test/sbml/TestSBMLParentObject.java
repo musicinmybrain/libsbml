@@ -18,11 +18,6 @@
  * This file is part of libSBML.  Please visit http://sbml.org for more
  * information about SBML, and the latest version of libSBML.
  *
- * Copyright (C) 2020 jointly by the following organizations:
- *     1. California Institute of Technology, Pasadena, CA, USA
- *     2. University of Heidelberg, Heidelberg, Germany
- *     3. University College London, London, UK
- *
  * Copyright 2005-2010 California Institute of Technology.
  * Copyright 2002-2005 California Institute of Technology and
  *                     Japan Science and Technology Corporation.
@@ -131,6 +126,7 @@ public class TestSBMLParentObject {
     assertTrue( lo.equals(m.getRule(0).getParentSBMLObject()) );
     assertTrue( lo.equals(r.getParentSBMLObject()) );
     assertTrue( m.equals(lo.getParentSBMLObject()) );
+    m = null;
   }
 
   public void test_AssignmentRule_parent_create()
@@ -141,6 +137,7 @@ public class TestSBMLParentObject {
     assertTrue( lo.equals(m.getRule(0).getParentSBMLObject()) );
     assertTrue( lo.equals(r.getParentSBMLObject()) );
     assertTrue( m.equals(lo.getParentSBMLObject()) );
+    m = null;
   }
 
   public void test_CompartmentType_parent_NULL()
@@ -166,6 +163,7 @@ public class TestSBMLParentObject {
     ListOf lo = m.getListOfCompartmentTypes();
     assertTrue( lo.equals(m.getCompartmentType(0).getParentSBMLObject()) );
     assertTrue( m.equals(lo.getParentSBMLObject()) );
+    m = null;
   }
 
   public void test_CompartmentType_parent_create()
@@ -176,6 +174,18 @@ public class TestSBMLParentObject {
     assertTrue( lo.equals(m.getCompartmentType(0).getParentSBMLObject()) );
     assertTrue( lo.equals(ct.getParentSBMLObject()) );
     assertTrue( m.equals(lo.getParentSBMLObject()) );
+    m = null;
+  }
+
+  public void test_CompartmentType_parent_mismatch()
+  {
+    CompartmentType ct = new CompartmentType(2,4);
+    Model m = new Model(3,1);
+    ct.setId("ct");
+    int success = m.addCompartmentType(ct);
+    assertTrue( success == libsbml.LIBSBML_LEVEL_MISMATCH );
+    ct = null;
+    m = null;
   }
 
   public void test_Compartment_parent_NULL()
@@ -201,6 +211,7 @@ public class TestSBMLParentObject {
     ListOf lo = m.getListOfCompartments();
     assertTrue( lo.equals(m.getCompartment(0).getParentSBMLObject()) );
     assertTrue( m.equals(lo.getParentSBMLObject()) );
+    m = null;
   }
 
   public void test_Compartment_parent_create()
@@ -211,6 +222,18 @@ public class TestSBMLParentObject {
     assertTrue( lo.equals(m.getCompartment(0).getParentSBMLObject()) );
     assertTrue( lo.equals(c.getParentSBMLObject()) );
     assertTrue( m.equals(lo.getParentSBMLObject()) );
+    m = null;
+  }
+
+  public void test_Compartment_parent_mismatch()
+  {
+    Compartment c = new Compartment(2,3);
+    c.setId("c");
+    Model m = new Model(2,4);
+    int success = m.addCompartment(c);
+    assertTrue( success == libsbml.LIBSBML_VERSION_MISMATCH );
+    c = null;
+    m = null;
   }
 
   public void test_Constraint_parent_NULL()
@@ -230,12 +253,15 @@ public class TestSBMLParentObject {
   {
     Constraint ct = new Constraint(2,4);
     Model m = new Model(2,4);
-    ct.setMath(libsbml.parseFormula("a-k"));
+    ASTNode math = libsbml.parseFormula("a-k");
+    ct.setMath(math);
+    math = null;
     m.addConstraint(ct);
     ct = null;
     ListOf lo = m.getListOfConstraints();
     assertTrue( lo.equals(m.getConstraint(0).getParentSBMLObject()) );
     assertTrue( m.equals(lo.getParentSBMLObject()) );
+    m = null;
   }
 
   public void test_Constraint_parent_create()
@@ -246,17 +272,40 @@ public class TestSBMLParentObject {
     assertTrue( lo.equals(m.getConstraint(0).getParentSBMLObject()) );
     assertTrue( lo.equals(ct.getParentSBMLObject()) );
     assertTrue( m.equals(lo.getParentSBMLObject()) );
+    m = null;
+  }
+
+  public void test_Constraint_parent_mismatch()
+  {
+    Constraint ct = null;
+    Model m = new Model(2,4);
+    int success = m.addConstraint(ct);
+    assertTrue( success == libsbml.LIBSBML_OPERATION_FAILED );
+    ct = null;
+    m = null;
   }
 
   public void test_Delay_parent_add()
   {
     Delay d = new Delay(2,4);
-      d.setMath(libsbml.parseFormula("1"));
     Event e = new Event(2,4);
+    ASTNode math = libsbml.parseFormula("1");
+    d.setMath(math);
+    math = null;
     e.setDelay(d);
     d = null;
     assertTrue( e.equals(e.getDelay().getParentSBMLObject()) );
     e = null;
+  }
+
+  public void test_Delay_parent_mismatch()
+  {
+    Event e = new Event(3,1);
+    Delay d = null;
+    int success = e.setDelay(d);
+    assertTrue( success == libsbml.LIBSBML_OPERATION_SUCCESS );
+    e = null;
+    d = null;
   }
 
   public void test_EventAssignment_parent_add()
@@ -264,12 +313,15 @@ public class TestSBMLParentObject {
     Event e = new Event(2,4);
     EventAssignment ea = new EventAssignment(2,4);
     ea.setVariable("c");
-    ea.setMath(libsbml.parseFormula("K+L"));
+    ASTNode math = libsbml.parseFormula("K+L");
+    ea.setMath(math);
+    math = null;
     e.addEventAssignment(ea);
     ea = null;
     ListOf lo = e.getListOfEventAssignments();
     assertTrue( lo.equals(e.getEventAssignment(0).getParentSBMLObject()) );
     assertTrue( e.equals(lo.getParentSBMLObject()) );
+    e = null;
   }
 
   public void test_EventAssignment_parent_create()
@@ -280,6 +332,7 @@ public class TestSBMLParentObject {
     assertTrue( lo.equals(e.getEventAssignment(0).getParentSBMLObject()) );
     assertTrue( lo.equals(ea.getParentSBMLObject()) );
     assertTrue( e.equals(lo.getParentSBMLObject()) );
+    e = null;
   }
 
   public void test_EventAssignment_parent_create_model()
@@ -291,6 +344,23 @@ public class TestSBMLParentObject {
     assertTrue( lo.equals(e.getEventAssignment(0).getParentSBMLObject()) );
     assertTrue( lo.equals(ea.getParentSBMLObject()) );
     assertTrue( e.equals(lo.getParentSBMLObject()) );
+    m = null;
+  }
+
+  public void test_EventAssignment_parent_mismatch()
+  {
+    SBMLNamespaces sbmlns = new SBMLNamespaces ( 3,1 );
+    Event e = new Event(sbmlns);
+    sbmlns.addNamespace("http://www.sbml.org/sbml/level3/version1/comp/version1", "comp");
+    EventAssignment ea = new EventAssignment(sbmlns);
+    ea.setVariable("c");
+    ASTNode math = libsbml.parseFormula("K+L");
+    ea.setMath(math);
+    math = null;
+    int success = e.addEventAssignment(ea);
+    assertTrue( success == libsbml.LIBSBML_NAMESPACES_MISMATCH );
+    e = null;
+    ea = null;
   }
 
   public void test_Event_parent_NULL()
@@ -300,9 +370,10 @@ public class TestSBMLParentObject {
     Event c = m.createEvent();
     EventAssignment ea = c.createEventAssignment();
     Trigger t = new Trigger(2,4);
-    t.setMath(new ASTNode());
+    ASTNode math = new ASTNode();
+    t.setMath(math);
     Delay dy = new Delay(2,4);
-    dy.setMath(new ASTNode());
+    dy.setMath(math);
     c.setTrigger(t);
     c.setDelay(dy);
     assertTrue( c.getAncestorOfType(libsbml.SBML_MODEL).equals(m) );
@@ -311,6 +382,8 @@ public class TestSBMLParentObject {
     assertTrue( ea.getAncestorOfType(libsbml.SBML_EVENT).equals(c) );
     Event c1 = c.cloneObject();
     d = null;
+    t = null;
+    dy = null;
     assertTrue( c1.getAncestorOfType(libsbml.SBML_MODEL) == null );
     assertTrue( c1.getParentSBMLObject() == null );
     assertEquals(c1.getSBMLDocument(),null);
@@ -333,15 +406,19 @@ public class TestSBMLParentObject {
   {
     Event e = new Event(2,4);
     Trigger t = new Trigger(2,4);
-      t.setMath(libsbml.parseFormula("true"));
+    ASTNode math = libsbml.parseFormula("true");
+    t.setMath(math);
+    math = null;
     e.setTrigger(t);
     e.createEventAssignment();
     Model m = new Model(2,4);
     m.addEvent(e);
-    e = null;
     ListOf lo = m.getListOfEvents();
     assertTrue( lo.equals(m.getEvent(0).getParentSBMLObject()) );
     assertTrue( m.equals(lo.getParentSBMLObject()) );
+    e = null;
+    t = null;
+    m = null;
   }
 
   public void test_Event_parent_create()
@@ -352,6 +429,17 @@ public class TestSBMLParentObject {
     assertTrue( lo.equals(m.getEvent(0).getParentSBMLObject()) );
     assertTrue( lo.equals(e.getParentSBMLObject()) );
     assertTrue( m.equals(lo.getParentSBMLObject()) );
+    m = null;
+  }
+
+  public void test_Event_parent_mismatch()
+  {
+    Event e = new Event(3,1);
+    Model m = new Model(3,1);
+    int success = m.addEvent(e);
+    assertTrue( success == libsbml.LIBSBML_INVALID_OBJECT );
+    e = null;
+    m = null;
   }
 
   public void test_FunctionDefinition_parent_NULL()
@@ -372,12 +460,15 @@ public class TestSBMLParentObject {
     FunctionDefinition fd = new FunctionDefinition(2,4);
     Model m = new Model(2,4);
     fd.setId("fd");
-    fd.setMath(libsbml.parseFormula("l"));
+    ASTNode math = libsbml.parseFormula("l");
+    fd.setMath(math);
+    math = null;
     m.addFunctionDefinition(fd);
     fd = null;
     ListOf lo = m.getListOfFunctionDefinitions();
     assertTrue( lo.equals(m.getFunctionDefinition(0).getParentSBMLObject()) );
     assertTrue( m.equals(lo.getParentSBMLObject()) );
+    m = null;
   }
 
   public void test_FunctionDefinition_parent_create()
@@ -388,6 +479,7 @@ public class TestSBMLParentObject {
     assertTrue( lo.equals(m.getFunctionDefinition(0).getParentSBMLObject()) );
     assertTrue( lo.equals(fd.getParentSBMLObject()) );
     assertTrue( m.equals(lo.getParentSBMLObject()) );
+    m = null;
   }
 
   public void test_InitialAssignment_parent_NULL()
@@ -408,12 +500,15 @@ public class TestSBMLParentObject {
     InitialAssignment ia = new InitialAssignment(2,4);
     Model m = new Model(2,4);
     ia.setSymbol("c");
-    ia.setMath(libsbml.parseFormula("9"));
+    ASTNode math = libsbml.parseFormula("9");
+    ia.setMath(math);
+    math = null;
     m.addInitialAssignment(ia);
     ia = null;
     ListOf lo = m.getListOfInitialAssignments();
     assertTrue( lo.equals(m.getInitialAssignment(0).getParentSBMLObject()) );
     assertTrue( m.equals(lo.getParentSBMLObject()) );
+    m = null;
   }
 
   public void test_InitialAssignment_parent_create()
@@ -424,6 +519,7 @@ public class TestSBMLParentObject {
     assertTrue( lo.equals(m.getInitialAssignment(0).getParentSBMLObject()) );
     assertTrue( lo.equals(ia.getParentSBMLObject()) );
     assertTrue( m.equals(lo.getParentSBMLObject()) );
+    m = null;
   }
 
   public void test_KineticLaw_Parameter_parent_add()
@@ -465,7 +561,7 @@ public class TestSBMLParentObject {
     assertTrue( kl.equals(lop.getParentSBMLObject()) );
     assertTrue( lop.equals(p.getParentSBMLObject()) );
     assertTrue( lop.equals(kl.getParameter(0).getParentSBMLObject()) );
-    kl = null;
+    m = null;
   }
 
   public void test_KineticLaw_parent_NULL()
@@ -481,16 +577,20 @@ public class TestSBMLParentObject {
     assertTrue( kl1.getParameter(0).getAncestorOfType(libsbml.SBML_REACTION) == null );
     assertTrue( kl1.equals(kl1.getParameter(0).getAncestorOfType(libsbml.SBML_KINETIC_LAW)) );
     r = null;
+    kl1 = null;
   }
 
   public void test_KineticLaw_parent_add()
   {
     KineticLaw kl = new KineticLaw(2,4);
-    kl.setMath(libsbml.parseFormula("1"));
+    ASTNode math = libsbml.parseFormula("a");
+    kl.setMath(math);
+    math = null;
     Reaction r = new Reaction(2,4);
     r.setKineticLaw(kl);
     assertTrue( r.equals(r.getKineticLaw().getParentSBMLObject()) );
     r = null;
+    kl = null;
   }
 
   public void test_KineticLaw_parent_create()
@@ -508,7 +608,20 @@ public class TestSBMLParentObject {
     KineticLaw kl = r.createKineticLaw();
     assertTrue( r.equals(kl.getParentSBMLObject()) );
     assertTrue( r.equals(r.getKineticLaw().getParentSBMLObject()) );
+    m = null;
+  }
+
+  public void test_KineticLaw_parent_mismatch()
+  {
+    KineticLaw kl = new KineticLaw(2,3);
+    ASTNode math = libsbml.parseFormula("true");
+    kl.setMath(math);
+    math = null;
+    Reaction r = new Reaction(2,4);
+    int success = r.setKineticLaw(kl);
+    assertTrue( success == libsbml.LIBSBML_VERSION_MISMATCH );
     r = null;
+    kl = null;
   }
 
   public void test_Model_parent_add()
@@ -518,6 +631,7 @@ public class TestSBMLParentObject {
     d.setModel(m);
     assertTrue( d.equals(d.getModel().getParentSBMLObject()) );
     d = null;
+    m = null;
   }
 
   public void test_Model_parent_create()
@@ -526,6 +640,18 @@ public class TestSBMLParentObject {
     Model m = d.createModel();
     assertTrue( d.equals(m.getParentSBMLObject()) );
     d = null;
+  }
+
+  public void test_Model_parent_mismatch()
+  {
+    SBMLNamespaces sbmlns = new SBMLNamespaces ( 3,1 );
+    SBMLDocument d = new SBMLDocument(sbmlns);
+    sbmlns.addNamespace("http://www.sbml.org/sbml/level3/version1/comp/version1", "comp");
+    Model m = new Model(sbmlns);
+    int success = d.setModel(m);
+    assertTrue( success == libsbml.LIBSBML_NAMESPACES_MISMATCH );
+    d = null;
+    m = null;
   }
 
   public void test_Parameter_parent_NULL()
@@ -551,6 +677,7 @@ public class TestSBMLParentObject {
     ListOf lo = m.getListOfParameters();
     assertTrue( lo.equals(m.getParameter(0).getParentSBMLObject()) );
     assertTrue( m.equals(lo.getParentSBMLObject()) );
+    m = null;
   }
 
   public void test_Parameter_parent_create()
@@ -561,6 +688,22 @@ public class TestSBMLParentObject {
     assertTrue( lo.equals(m.getParameter(0).getParentSBMLObject()) );
     assertTrue( lo.equals(p.getParentSBMLObject()) );
     assertTrue( m.equals(lo.getParentSBMLObject()) );
+    m = null;
+  }
+
+  public void test_Priority_parent_mismatch()
+  {
+    Event e = new Event(3,1);
+    Priority p = Priority(3,1);
+    ASTNode math = libsbml.parseFormula("K+L");
+    p.setMath(math);
+    math = null;
+    int success = e.setPriority(p);
+    assertTrue( success == libsbml.LIBSBML_OPERATION_SUCCESS );
+    success = e.setPriority(e.getPriority());
+    assertTrue( success == libsbml.LIBSBML_OPERATION_SUCCESS );
+    e = null;
+    p = null;
   }
 
   public void test_RateRule_parent_create()
@@ -571,6 +714,7 @@ public class TestSBMLParentObject {
     assertTrue( lo.equals(m.getRule(0).getParentSBMLObject()) );
     assertTrue( lo.equals(r.getParentSBMLObject()) );
     assertTrue( m.equals(lo.getParentSBMLObject()) );
+    m = null;
   }
 
   public void test_Reaction_parent_NULL()
@@ -609,6 +753,7 @@ public class TestSBMLParentObject {
     ListOf lo = m.getListOfReactions();
     assertTrue( lo.equals(m.getReaction(0).getParentSBMLObject()) );
     assertTrue( m.equals(lo.getParentSBMLObject()) );
+    m = null;
   }
 
   public void test_Reaction_parent_create()
@@ -619,19 +764,23 @@ public class TestSBMLParentObject {
     assertTrue( lo.equals(m.getReaction(0).getParentSBMLObject()) );
     assertTrue( lo.equals(r.getParentSBMLObject()) );
     assertTrue( m.equals(lo.getParentSBMLObject()) );
+    m = null;
   }
 
   public void test_Rule_parent_add()
   {
     Rule ia = new RateRule(2,4);
     ia.setVariable("a");
-    ia.setMath(libsbml.parseFormula("9"));
+    ASTNode math = libsbml.parseFormula("9");
+    ia.setMath(math);
+    math = null;
     Model m = new Model(2,4);
     m.addRule(ia);
     ia = null;
     ListOf lo = m.getListOfRules();
     assertTrue( lo.equals(m.getRule(0).getParentSBMLObject()) );
     assertTrue( m.equals(lo.getParentSBMLObject()) );
+    m = null;
   }
 
   public void test_SpeciesReference_Modifier_parent_add()
@@ -644,6 +793,7 @@ public class TestSBMLParentObject {
     ListOf lo = r.getListOfModifiers();
     assertTrue( lo.equals(r.getModifier(0).getParentSBMLObject()) );
     assertTrue( r.equals(lo.getParentSBMLObject()) );
+    r = null;
   }
 
   public void test_SpeciesReference_Modifier_parent_create()
@@ -654,6 +804,7 @@ public class TestSBMLParentObject {
     assertTrue( lo.equals(sr.getParentSBMLObject()) );
     assertTrue( lo.equals(r.getModifier(0).getParentSBMLObject()) );
     assertTrue( r.equals(lo.getParentSBMLObject()) );
+    r = null;
   }
 
   public void test_SpeciesReference_Modifier_parent_create_model()
@@ -665,6 +816,7 @@ public class TestSBMLParentObject {
     assertTrue( lo.equals(sr.getParentSBMLObject()) );
     assertTrue( lo.equals(r.getModifier(0).getParentSBMLObject()) );
     assertTrue( r.equals(lo.getParentSBMLObject()) );
+    m = null;
   }
 
   public void test_SpeciesReference_Product_parent_add()
@@ -677,6 +829,7 @@ public class TestSBMLParentObject {
     ListOf lo = r.getListOfProducts();
     assertTrue( lo.equals(r.getProduct(0).getParentSBMLObject()) );
     assertTrue( r.equals(lo.getParentSBMLObject()) );
+    r = null;
   }
 
   public void test_SpeciesReference_Product_parent_create()
@@ -687,6 +840,7 @@ public class TestSBMLParentObject {
     assertTrue( lo.equals(r.getProduct(0).getParentSBMLObject()) );
     assertTrue( lo.equals(sr.getParentSBMLObject()) );
     assertTrue( r.equals(lo.getParentSBMLObject()) );
+    r = null;
   }
 
   public void test_SpeciesReference_Product_parent_create_model()
@@ -698,6 +852,7 @@ public class TestSBMLParentObject {
     assertTrue( lo.equals(r.getProduct(0).getParentSBMLObject()) );
     assertTrue( lo.equals(sr.getParentSBMLObject()) );
     assertTrue( r.equals(lo.getParentSBMLObject()) );
+    m = null;
   }
 
   public void test_SpeciesReference_Reactant_parent_add()
@@ -710,6 +865,7 @@ public class TestSBMLParentObject {
     ListOf lo = r.getListOfReactants();
     assertTrue( lo.equals(r.getReactant(0).getParentSBMLObject()) );
     assertTrue( r.equals(lo.getParentSBMLObject()) );
+    r = null;
   }
 
   public void test_SpeciesReference_Reactant_parent_create()
@@ -720,6 +876,7 @@ public class TestSBMLParentObject {
     assertTrue( lo.equals(r.getReactant(0).getParentSBMLObject()) );
     assertTrue( lo.equals(sr.getParentSBMLObject()) );
     assertTrue( r.equals(lo.getParentSBMLObject()) );
+    r = null;
   }
 
   public void test_SpeciesReference_Reactant_parent_create_model()
@@ -731,6 +888,7 @@ public class TestSBMLParentObject {
     assertTrue( lo.equals(r.getReactant(0).getParentSBMLObject()) );
     assertTrue( lo.equals(sr.getParentSBMLObject()) );
     assertTrue( r.equals(lo.getParentSBMLObject()) );
+    m = null;
   }
 
   public void test_SpeciesType_parent_NULL()
@@ -756,6 +914,7 @@ public class TestSBMLParentObject {
     ListOf lo = m.getListOfSpeciesTypes();
     assertTrue( lo.equals(m.getSpeciesType(0).getParentSBMLObject()) );
     assertTrue( m.equals(lo.getParentSBMLObject()) );
+    m = null;
   }
 
   public void test_SpeciesType_parent_create()
@@ -766,6 +925,7 @@ public class TestSBMLParentObject {
     assertTrue( lo.equals(m.getSpeciesType(0).getParentSBMLObject()) );
     assertTrue( lo.equals(st.getParentSBMLObject()) );
     assertTrue( m.equals(lo.getParentSBMLObject()) );
+    m = null;
   }
 
   public void test_Species_parent_NULL()
@@ -792,6 +952,7 @@ public class TestSBMLParentObject {
     ListOf lo = m.getListOfSpecies();
     assertTrue( lo.equals(m.getSpecies(0).getParentSBMLObject()) );
     assertTrue( m.equals(lo.getParentSBMLObject()) );
+    m = null;
   }
 
   public void test_Species_parent_create()
@@ -802,12 +963,15 @@ public class TestSBMLParentObject {
     assertTrue( lo.equals(s.getParentSBMLObject()) );
     assertTrue( lo.equals(m.getSpecies(0).getParentSBMLObject()) );
     assertTrue( m.equals(lo.getParentSBMLObject()) );
+    m = null;
   }
 
   public void test_StoichiometryMath_parent_add()
   {
     StoichiometryMath m = new StoichiometryMath(2,4);
-    m.setMath(libsbml.parseFormula("1"));
+    ASTNode math = libsbml.parseFormula("1");
+    m.setMath(math);
+    math = null;
     SpeciesReference sr = new SpeciesReference(2,4);
     sr.setStoichiometryMath(m);
     m = null;
@@ -815,15 +979,40 @@ public class TestSBMLParentObject {
     sr = null;
   }
 
+  public void test_StoichiometryMath_parent_mismatch()
+  {
+    StoichiometryMath m = new StoichiometryMath(2,4);
+    SpeciesReference sr = new SpeciesReference(2,4);
+    int success = sr.setStoichiometryMath(m);
+    assertTrue( success == libsbml.LIBSBML_INVALID_OBJECT );
+    sr = null;
+    m = null;
+  }
+
   public void test_Trigger_parent_add()
   {
     Trigger d = new Trigger(2,4);
-    d.setMath(libsbml.parseFormula("true"));
+    ASTNode math = libsbml.parseFormula("false");
+    d.setMath(math);
+    math = null;
     Event e = new Event(2,4);
     e.setTrigger(d);
     d = null;
     assertTrue( e.equals(e.getTrigger().getParentSBMLObject()) );
     e = null;
+  }
+
+  public void test_Trigger_parent_mismatch()
+  {
+    Event e = new Event(3,1);
+    Trigger t = new Trigger(2,4);
+    ASTNode math = libsbml.parseFormula("true");
+    t.setMath(math);
+    math = null;
+    int success = e.setTrigger(t);
+    assertTrue( success == libsbml.LIBSBML_LEVEL_MISMATCH );
+    e = null;
+    t = null;
   }
 
   public void test_UnitDefinition_parent_NULL()
@@ -855,6 +1044,7 @@ public class TestSBMLParentObject {
     ListOf lo = m.getListOfUnitDefinitions();
     assertTrue( lo.equals(m.getUnitDefinition(0).getParentSBMLObject()) );
     assertTrue( m.equals(lo.getParentSBMLObject()) );
+    m = null;
   }
 
   public void test_UnitDefinition_parent_create()
@@ -865,6 +1055,7 @@ public class TestSBMLParentObject {
     assertTrue( lo.equals(m.getUnitDefinition(0).getParentSBMLObject()) );
     assertTrue( lo.equals(ud.getParentSBMLObject()) );
     assertTrue( m.equals(lo.getParentSBMLObject()) );
+    m = null;
   }
 
   public void test_Unit_parent_add()
@@ -903,7 +1094,7 @@ public class TestSBMLParentObject {
     assertTrue( lo.equals(ud.getUnit(0).getParentSBMLObject()) );
     assertTrue( lo.equals(u.getParentSBMLObject()) );
     assertTrue( ud.equals(lo.getParentSBMLObject()) );
-    ud = null;
+    m = null;
   }
 
   /**

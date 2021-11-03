@@ -18,11 +18,6 @@
  * This file is part of libSBML.  Please visit http://sbml.org for more
  * information about SBML, and the latest version of libSBML.
  *
- * Copyright (C) 2020 jointly by the following organizations:
- *     1. California Institute of Technology, Pasadena, CA, USA
- *     2. University of Heidelberg, Heidelberg, Germany
- *     3. University College London, London, UK
- *
  * Copyright 2005-2010 California Institute of Technology.
  * Copyright 2002-2005 California Institute of Technology and
  *                     Japan Science and Technology Corporation.
@@ -122,7 +117,7 @@ public class TestModifierSpeciesReference {
     }
     throw new AssertionError();
   }
-  private  SimpleSpeciesReference MSR;
+  private ModifierSpeciesReference MSR;
 
   protected void setUp() throws Exception
   {
@@ -145,7 +140,7 @@ public class TestModifierSpeciesReference {
     assertTrue( MSR.getAnnotation() == null );
     assertTrue( MSR.getSpecies().equals("") == true );
     assertEquals( false, MSR.isSetSpecies() );
-    assertEquals( true, MSR.isModifier() );
+    assertEquals( true, (MSR).isModifier() );
   }
 
   public void test_ModifierSpeciesReference_createWithNS()
@@ -154,7 +149,7 @@ public class TestModifierSpeciesReference {
     xmlns.add( "http://www.sbml.org", "testsbml");
     SBMLNamespaces sbmlns = new  SBMLNamespaces(2,1);
     sbmlns.addNamespaces(xmlns);
-    SBase object = new  ModifierSpeciesReference(sbmlns);
+    ModifierSpeciesReference object = new  ModifierSpeciesReference(sbmlns);
     assertTrue( object.getTypeCode() == libsbml.SBML_MODIFIER_SPECIES_REFERENCE );
     assertTrue( object.getMetaId().equals("") == true );
     assertTrue( object.getNotes() == null );
@@ -165,6 +160,8 @@ public class TestModifierSpeciesReference {
     XMLNamespaces n = object.getNamespaces();
     assertTrue( n.getLength() == 2 );
     object = null;
+    xmlns = null;
+    sbmlns = null;
   }
 
   public void test_ModifierSpeciesReference_free_NULL()
@@ -187,6 +184,24 @@ public class TestModifierSpeciesReference {
     s = MSR.getSpecies();
     assertTrue(s.equals(species));
     MSR.setSpecies("");
+    assertEquals( false, MSR.isSetSpecies() );
+    if (MSR.getSpecies() != null);
+    {
+    }
+  }
+
+  public void test_ModifierSpeciesReference_unsetSpecies()
+  {
+    String s;
+    String species =  "s1";
+    MSR.setSpecies(species);
+    s = MSR.getSpecies();
+    assertTrue(s.equals(species));
+    assertEquals( true, MSR.isSetSpecies() );
+    if (MSR.getSpecies() == species);
+    {
+    }
+    MSR.unsetSpecies();
     assertEquals( false, MSR.isSetSpecies() );
     if (MSR.getSpecies() != null);
     {

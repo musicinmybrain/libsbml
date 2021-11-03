@@ -18,11 +18,6 @@
  * This file is part of libSBML.  Please visit http://sbml.org for more
  * information about SBML, and the latest version of libSBML.
  *
- * Copyright (C) 2020 jointly by the following organizations:
- *     1. California Institute of Technology, Pasadena, CA, USA
- *     2. University of Heidelberg, Heidelberg, Germany
- *     3. University College London, London, UK
- *
  * Copyright 2005-2010 California Institute of Technology.
  * Copyright 2002-2005 California Institute of Technology and
  *                     Japan Science and Technology Corporation.
@@ -164,7 +159,7 @@ public class TestReadFromFile7 {
     ListOfUnits lou;
     Unit u1;
     ASTNode ast;
-    String filename = new String( "../../sbml/test/test-data/" );
+    String filename = new String( "../../sbml/sbml/test/test-data/" );
     filename += "l2v3-all.xml";
     d = reader.readSBML(filename);
     if (d == null);
@@ -205,7 +200,8 @@ public class TestReadFromFile7 {
     con = m.getConstraint(0);
     assertTrue( con != null );
     ast = con.getMath();
-    assertTrue(libsbml.formulaToString(ast).equals( "lt(x, 3)"));
+    String math = libsbml.formulaToString(ast);
+    assertTrue(math.equals( "lt(x, 3)"));
     assertTrue( m.getNumEvents() == 1 );
     e = m.getEvent(0);
     assertTrue( e != null );
@@ -218,14 +214,16 @@ public class TestReadFromFile7 {
     assertTrue( delay.getSBOTerm() == 64 );
     assertTrue( delay.getSBOTermID().equals( "SBO:0000064") );
     ast = delay.getMath();
-    assertTrue(libsbml.formulaToString(ast).equals( "p + 3"));
+    math = libsbml.formulaToString(ast);
+    assertTrue(math.equals( "p + 3"));
     assertEquals( true, e.isSetTrigger() );
     trigger = e.getTrigger();
     assertTrue( trigger != null );
     assertTrue( trigger.getSBOTerm() == 64 );
     assertTrue( trigger.getSBOTermID().equals( "SBO:0000064") );
     ast = trigger.getMath();
-    assertTrue(libsbml.formulaToString(ast).equals( "lt(x, 3)"));
+    math = libsbml.formulaToString(ast);
+    assertTrue(math.equals( "lt(x, 3)"));
     loe = m.getListOfEvents();
     e1 = loe.get(0);
     assertTrue( e1.equals(e) );
@@ -238,7 +236,8 @@ public class TestReadFromFile7 {
     assertTrue( ea.getSBOTerm() == 64 );
     assertTrue( ea.getSBOTermID().equals( "SBO:0000064") );
     ast = ea.getMath();
-    assertTrue(libsbml.formulaToString(ast).equals( "x * p3"));
+    math = libsbml.formulaToString(ast);
+    assertTrue(math.equals( "x * p3"));
     loea = e.getListOfEventAssignments();
     ea1 = loea.get(0);
     assertTrue( ea1.equals(ea) );
@@ -251,7 +250,8 @@ public class TestReadFromFile7 {
     assertTrue( fd.getSBOTerm() == 64 );
     assertTrue( fd.getSBOTermID().equals( "SBO:0000064") );
     ast = fd.getMath();
-    assertTrue(libsbml.formulaToString(ast).equals( "lambda(x, pow(x, 3))"));
+    math = libsbml.formulaToString(ast);
+    assertTrue(math.equals( "lambda(x, pow(x, 3))"));
     lofd = m.getListOfFunctionDefinitions();
     fd1 = lofd.get(0);
     assertTrue( fd1.equals(fd) );
@@ -262,28 +262,32 @@ public class TestReadFromFile7 {
     assertTrue( ia != null );
     assertTrue( ia.getSymbol().equals( "p1") );
     ast = ia.getMath();
-    assertTrue(libsbml.formulaToString(ast).equals( "x * p3"));
+    math = libsbml.formulaToString(ast);
+    assertTrue(math.equals( "x * p3"));
     assertTrue( m.getNumRules() == 3 );
     alg = (AlgebraicRule)  m.getRule(0);
     assertTrue( alg != null );
     assertTrue( alg.getSBOTerm() == 64 );
     assertTrue( alg.getSBOTermID().equals( "SBO:0000064") );
     ast = alg.getMath();
-    assertTrue(libsbml.formulaToString(ast).equals( "pow(x, 3)"));
+    math = libsbml.formulaToString(ast);
+    assertTrue(math.equals( "pow(x, 3)"));
     ar = (AssignmentRule) m.getRule(1);
     assertTrue( ar != null );
     assertTrue( ar.getVariable().equals( "p2") );
     assertTrue( ar.getSBOTerm() == 64 );
     assertTrue( ar.getSBOTermID().equals( "SBO:0000064") );
     ast = ar.getMath();
-    assertTrue(libsbml.formulaToString(ast).equals( "x * p3"));
+    math = libsbml.formulaToString(ast);
+    assertTrue(math.equals( "x * p3"));
     rr = (RateRule) m.getRule(2);
     assertTrue( rr != null );
     assertTrue( rr.getVariable().equals( "p3") );
     assertTrue( rr.getSBOTerm() == 64 );
     assertTrue( rr.getSBOTermID().equals( "SBO:0000064") );
     ast = rr.getMath();
-    assertTrue(libsbml.formulaToString(ast).equals( "p1 / p"));
+    math = libsbml.formulaToString(ast);
+    assertTrue(math.equals( "p1 / p"));
     assertTrue( m.getNumSpecies() == 1 );
     s = m.getSpecies(0);
     assertTrue( s != null );
@@ -306,7 +310,8 @@ public class TestReadFromFile7 {
     assertTrue( kl != null );
     assertEquals( true, kl.isSetMath() );
     ast = kl.getMath();
-    assertTrue(libsbml.formulaToString(ast).equals( "s * k / p"));
+    math = libsbml.formulaToString(ast);
+    assertTrue(math.equals( "s * k / p"));
     assertTrue( kl.getNumParameters() == 2 );
     p = kl.getParameter(0);
     assertTrue( p != null );
@@ -344,7 +349,8 @@ public class TestReadFromFile7 {
     assertTrue( stoich.getSBOTerm() == 64 );
     assertTrue( stoich.getSBOTermID().equals( "SBO:0000064") );
     ast = stoich.getMath();
-    assertTrue(libsbml.formulaToString(ast).equals( "s * p"));
+    math = libsbml.formulaToString(ast);
+    assertTrue(math.equals( "s * p"));
     assertTrue( m.getNumUnitDefinitions() == 1 );
     ud = m.getUnitDefinition(0);
     assertTrue( ud != null );
@@ -417,4 +423,3 @@ public class TestReadFromFile7 {
     }
   }
 }
-

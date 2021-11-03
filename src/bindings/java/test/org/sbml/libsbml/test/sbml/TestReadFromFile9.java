@@ -3,8 +3,7 @@
  * @brief   Reads tests/l3v1-new.xml into memory and tests it.
  *
  * @author  Akiya Jouraku (Java conversion)
- * @author  Sarah Keating
- 
+ * @author  Sarah Keating 
  * 
  * ====== WARNING ===== WARNING ===== WARNING ===== WARNING ===== WARNING ======
  *
@@ -18,11 +17,6 @@
  * -----------------------------------------------------------------------------
  * This file is part of libSBML.  Please visit http://sbml.org for more
  * information about SBML, and the latest version of libSBML.
- *
- * Copyright (C) 2020 jointly by the following organizations:
- *     1. California Institute of Technology, Pasadena, CA, USA
- *     2. University of Heidelberg, Heidelberg, Germany
- *     3. University College London, London, UK
  *
  * Copyright 2005-2010 California Institute of Technology.
  * Copyright 2002-2005 California Institute of Technology and
@@ -147,7 +141,7 @@ public class TestReadFromFile9 {
     Event e;
     Trigger t;
     Priority pr;
-    String filename = new String( "../../sbml/test/test-data/" );
+    String filename = new String( "../../sbml/sbml/test/test-data/" );
     filename += "l3v1-new-invalid.xml";
     d = reader.readSBML(filename);
     if (d == null);
@@ -178,9 +172,9 @@ public class TestReadFromFile9 {
     assertEquals( false, u.isSetExponent() );
     assertEquals( false, u.isSetScale() );
     assertEquals( false, u.isSetMultiplier() );
-    assertEquals( true, isnan(u.getExponentAsDouble()) );
+    assertEquals( true, util_isNaN );
     assertTrue( u.getScale() == SBML_INT_MAX );
-    assertEquals( true, isnan(u.getMultiplier()) );
+    assertEquals( true, util_isNaN );
     ud = m.getUnitDefinition(1);
     assertTrue( ud.getNumUnits() == 3 );
     u = ud.getUnit(0);
@@ -221,8 +215,8 @@ public class TestReadFromFile9 {
     assertEquals( false, c.isSetSpatialDimensions() );
     assertEquals( true, c.isSetConstant() );
     assertTrue( c.getId().equals( "comp1") );
-    assertEquals( true, isnan(c.getSize()) );
-    assertEquals( true, isnan(c.getSpatialDimensionsAsDouble()) );
+    assertEquals( true, util_isNaN );
+    assertEquals( true, util_isNaN );
     assertTrue( c.getConstant() == false );
     c = m.getCompartment(2);
     assertEquals( false, c.isSetSize() );
@@ -247,7 +241,7 @@ public class TestReadFromFile9 {
     assertEquals( true, s.isSetInitialAmount() );
     assertTrue( s.getInitialAmount() == 0 );
     assertEquals( false, s.isSetInitialConcentration() );
-    assertEquals( true, isnan(s.getInitialConcentration()) );
+    assertEquals( true, util_isNaN );
     s = m.getSpecies(1);
     assertTrue( s.getId().equals( "P") );
     assertTrue( s.getCompartment().equals( "comp") );
@@ -259,9 +253,9 @@ public class TestReadFromFile9 {
     assertTrue( s.getSubstanceUnits().equals( "") );
     assertEquals( false, s.isSetConstant() );
     assertEquals( false, s.isSetInitialAmount() );
-    assertEquals( true, isnan(s.getInitialAmount()) );
+    assertEquals( true, util_isNaN );
     assertEquals( false, s.isSetInitialConcentration() );
-    assertEquals( true, isnan(s.getInitialConcentration()) );
+    assertEquals( true, util_isNaN );
     assertTrue( m.getNumParameters() == 3 );
     p = m.getParameter(0);
     assertTrue( p.getId().equals( "Keq") );
@@ -274,7 +268,7 @@ public class TestReadFromFile9 {
     p = m.getParameter(1);
     assertTrue( p.getId().equals( "Keq1") );
     assertEquals( false, p.isSetValue() );
-    assertEquals( true, isnan(p.getValue()) );
+    assertEquals( true, util_isNaN );
     assertEquals( false, p.isSetUnits() );
     assertTrue( p.getUnits().equals( "") );
     assertEquals( true, p.isSetConstant() );
@@ -282,7 +276,7 @@ public class TestReadFromFile9 {
     p = m.getParameter(2);
     assertTrue( p.getId().equals( "Keq2") );
     assertEquals( false, p.isSetValue() );
-    assertEquals( true, isnan(p.getValue()) );
+    assertEquals( true, util_isNaN );
     assertEquals( false, p.isSetUnits() );
     assertTrue( p.getUnits().equals( "") );
     assertEquals( false, p.isSetConstant() );
@@ -303,7 +297,7 @@ public class TestReadFromFile9 {
     assertEquals( true, sr.isSetConstant() );
     assertTrue( sr.getConstant() == false );
     assertEquals( false, sr.isSetStoichiometry() );
-    assertEquals( true, isnan(sr.getStoichiometry()) );
+    assertEquals( true, util_isNaN );
     kl = r.getKineticLaw();
     assertTrue( kl.getNumLocalParameters() == 2 );
     assertTrue( kl.getNumParameters() == 2 );
@@ -321,7 +315,7 @@ public class TestReadFromFile9 {
     assertEquals( false, lp.isSetUnits() );
     assertTrue( lp.getUnits().equals( "") );
     assertEquals( false, lp.isSetValue() );
-    assertEquals( true, isnan(lp.getValue()) );
+    assertEquals( true, util_isNaN );
     r = m.getReaction(1);
     assertEquals( true, r.isSetFast() );
     assertTrue( r.getFast() == true );

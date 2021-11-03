@@ -18,11 +18,6 @@
  * This file is part of libSBML.  Please visit http://sbml.org for more
  * information about SBML, and the latest version of libSBML.
  *
- * Copyright (C) 2020 jointly by the following organizations:
- *     1. California Institute of Technology, Pasadena, CA, USA
- *     2. University of Heidelberg, Heidelberg, Germany
- *     3. University College London, London, UK
- *
  * Copyright 2005-2010 California Institute of Technology.
  * Copyright 2002-2005 California Institute of Technology and
  *                     Japan Science and Technology Corporation.
@@ -146,7 +141,8 @@ public class TestL3Parameter {
   {
     assertTrue( P.getNamespaces() != null );
     assertTrue( P.getNamespaces().getLength() == 1 );
-    assertTrue(P.getNamespaces().getURI(0).equals(    "http://www.sbml.org/sbml/level3/version1/core"));
+    String uri = P.getNamespaces().getURI(0);
+    assertTrue(uri.equals( "http://www.sbml.org/sbml/level3/version1/core"));
   }
 
   public void test_L3_Parameter_constant()
@@ -155,9 +151,17 @@ public class TestL3Parameter {
     P.setConstant(true);
     assertTrue( P.getConstant() == true );
     assertTrue( P.isSetConstant() == true );
+    int ret = P.unsetConstant();
+    assertTrue( ret == libsbml.LIBSBML_OPERATION_SUCCESS );
+    assertTrue( P.getConstant() == true );
+    assertTrue( P.isSetConstant() == false );
     P.setConstant(false);
     assertTrue( P.getConstant() == false );
     assertTrue( P.isSetConstant() == true );
+    ret = P.unsetConstant();
+    assertTrue( ret == libsbml.LIBSBML_OPERATION_SUCCESS );
+    assertTrue( P.getConstant() == false );
+    assertTrue( P.isSetConstant() == false );
   }
 
   public void test_L3_Parameter_create()
@@ -169,7 +173,7 @@ public class TestL3Parameter {
     assertTrue( P.getId().equals("") == true );
     assertTrue( P.getName().equals("") == true );
     assertTrue( P.getUnits().equals("") == true );
-    assertEquals( true, isnan(P.getValue()) );
+    assertEquals( true, util_isNaN );
     assertTrue( P.getConstant() == true );
     assertEquals( false, P.isSetId() );
     assertEquals( false, P.isSetName() );
@@ -196,7 +200,7 @@ public class TestL3Parameter {
     assertTrue( p.getId().equals("") == true );
     assertTrue( p.getName().equals("") == true );
     assertTrue( p.getUnits().equals("") == true );
-    assertEquals( true, isnan(p.getValue()) );
+    assertEquals( true, util_isNaN );
     assertTrue( p.getConstant() == true );
     assertEquals( false, p.isSetId() );
     assertEquals( false, p.isSetName() );
@@ -204,6 +208,8 @@ public class TestL3Parameter {
     assertEquals( false, p.isSetUnits() );
     assertEquals( false, p.isSetConstant() );
     p = null;
+    xmlns = null;
+    sbmlns = null;
   }
 
   public void test_L3_Parameter_free_NULL()
@@ -270,13 +276,13 @@ public class TestL3Parameter {
   public void test_L3_Parameter_value()
   {
     assertEquals( false, P.isSetValue() );
-    assertEquals( true, isnan(P.getValue()) );
+    assertEquals( true, util_isNaN );
     P.setValue(1.5);
     assertEquals( true, P.isSetValue() );
     assertTrue( P.getValue() == 1.5 );
     P.unsetValue();
     assertEquals( false, P.isSetValue() );
-    assertEquals( true, isnan(P.getValue()) );
+    assertEquals( true, util_isNaN );
   }
 
   /**

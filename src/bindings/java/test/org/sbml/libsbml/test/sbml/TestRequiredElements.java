@@ -18,11 +18,6 @@
  * This file is part of libSBML.  Please visit http://sbml.org for more
  * information about SBML, and the latest version of libSBML.
  *
- * Copyright (C) 2020 jointly by the following organizations:
- *     1. California Institute of Technology, Pasadena, CA, USA
- *     2. University of Heidelberg, Heidelberg, Germany
- *     3. University College London, London, UK
- *
  * Copyright 2005-2010 California Institute of Technology.
  * Copyright 2002-2005 California Institute of Technology and
  *                     Japan Science and Technology Corporation.
@@ -127,7 +122,9 @@ public class TestRequiredElements {
   {
     AlgebraicRule ar = new AlgebraicRule(2,4);
     assertEquals( false, (ar.hasRequiredElements()) );
-    ar.setMath(libsbml.parseFormula("ar"));
+    ASTNode math = libsbml.parseFormula("ar");
+    ar.setMath(math);
+    math = null;
     assertEquals( true, ar.hasRequiredElements() );
     ar = null;
   }
@@ -136,7 +133,9 @@ public class TestRequiredElements {
   {
     AssignmentRule r = new AssignmentRule(2,4);
     assertEquals( false, (r.hasRequiredElements()) );
-    r.setMath(libsbml.parseFormula("ar"));
+    ASTNode math = libsbml.parseFormula("ar");
+    r.setMath(math);
+    math = null;
     assertEquals( true, r.hasRequiredElements() );
     r = null;
   }
@@ -159,16 +158,20 @@ public class TestRequiredElements {
   {
     Constraint c = new Constraint(2,4);
     assertEquals( false, (c.hasRequiredElements()) );
-    c.setMath(libsbml.parseFormula("a+b"));
+    ASTNode math = libsbml.parseFormula("a+b");
+    c.setMath(math);
     assertEquals( true, c.hasRequiredElements() );
     c = null;
+    math = null;
   }
 
   public void test_Delay()
   {
     Delay d = new Delay(2,4);
     assertEquals( false, (d.hasRequiredElements()) );
-    d.setMath(libsbml.parseFormula("a+b"));
+    ASTNode math = libsbml.parseFormula("a+b");
+    d.setMath(math);
+    math = null;
     assertEquals( true, d.hasRequiredElements() );
     d = null;
   }
@@ -178,19 +181,24 @@ public class TestRequiredElements {
     Event e = new Event(2,4);
     assertEquals( false, (e.hasRequiredElements()) );
     Trigger t = new Trigger(2,4);
-    t.setMath(libsbml.parseFormula("true"));
+    ASTNode math = libsbml.parseFormula("true");
+    t.setMath(math);
+    math = null;
     e.setTrigger(t);
     assertEquals( false, (e.hasRequiredElements()) );
     e.createEventAssignment();
     assertEquals( true, e.hasRequiredElements() );
     e = null;
+    t = null;
   }
 
   public void test_EventAssignment()
   {
     EventAssignment ea = new EventAssignment(2,4);
     assertEquals( false, (ea.hasRequiredElements()) );
-    ea.setMath(libsbml.parseFormula("fd"));
+    ASTNode math = libsbml.parseFormula("fd");
+    ea.setMath(math);
+    math = null;
     assertEquals( true, ea.hasRequiredElements() );
     ea = null;
   }
@@ -199,7 +207,9 @@ public class TestRequiredElements {
   {
     FunctionDefinition fd = new FunctionDefinition(2,4);
     assertEquals( false, (fd.hasRequiredElements()) );
-    fd.setMath(libsbml.parseFormula("fd"));
+    ASTNode math = libsbml.parseFormula("fd");
+    fd.setMath(math);
+    math = null;
     assertEquals( true, fd.hasRequiredElements() );
     fd = null;
   }
@@ -208,7 +218,9 @@ public class TestRequiredElements {
   {
     InitialAssignment ia = new InitialAssignment(2,4);
     assertEquals( false, (ia.hasRequiredElements()) );
-    ia.setMath(libsbml.parseFormula("ia"));
+    ASTNode math = libsbml.parseFormula("ia");
+    ia.setMath(math);
+    math = null;
     assertEquals( true, ia.hasRequiredElements() );
     ia = null;
   }
@@ -217,7 +229,9 @@ public class TestRequiredElements {
   {
     KineticLaw kl = new KineticLaw(2,4);
     assertEquals( false, (kl.hasRequiredElements()) );
-    kl.setMath(libsbml.parseFormula("kl"));
+    ASTNode math = libsbml.parseFormula("kl");
+    kl.setMath(math);
+    math = null;
     assertEquals( true, kl.hasRequiredElements() );
     kl = null;
   }
@@ -269,7 +283,9 @@ public class TestRequiredElements {
   {
     RateRule r = new RateRule(2,4);
     assertEquals( false, (r.hasRequiredElements()) );
-    r.setMath(libsbml.parseFormula("ar"));
+    ASTNode math = libsbml.parseFormula("ar");
+    r.setMath(math);
+    math = null;
     assertEquals( true, r.hasRequiredElements() );
     r = null;
   }
@@ -306,7 +322,9 @@ public class TestRequiredElements {
   {
     StoichiometryMath sm = new StoichiometryMath(2,4);
     assertEquals( false, (sm.hasRequiredElements()) );
-    sm.setMath(libsbml.parseFormula("ar"));
+    ASTNode math = libsbml.parseFormula("ar");
+    sm.setMath(math);
+    math = null;
     assertEquals( true, sm.hasRequiredElements() );
     sm = null;
   }
@@ -315,7 +333,9 @@ public class TestRequiredElements {
   {
     Trigger t = new Trigger(2,4);
     assertEquals( false, (t.hasRequiredElements()) );
-    t.setMath(libsbml.parseFormula("ar"));
+    ASTNode math = libsbml.parseFormula("ar");
+    t.setMath(math);
+    math = null;
     assertEquals( true, t.hasRequiredElements() );
     t = null;
   }
@@ -396,4 +416,3 @@ public class TestRequiredElements {
     }
   }
 }
-

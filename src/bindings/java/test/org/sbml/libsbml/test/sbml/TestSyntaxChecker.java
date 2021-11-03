@@ -18,11 +18,6 @@
  * This file is part of libSBML.  Please visit http://sbml.org for more
  * information about SBML, and the latest version of libSBML.
  *
- * Copyright (C) 2020 jointly by the following organizations:
- *     1. California Institute of Technology, Pasadena, CA, USA
- *     2. University of Heidelberg, Heidelberg, Germany
- *     3. University College London, London, UK
- *
  * Copyright 2005-2010 California Institute of Technology.
  * Copyright 2002-2005 California Institute of Technology and
  *                     Japan Science and Technology Corporation.
@@ -123,6 +118,14 @@ public class TestSyntaxChecker {
     throw new AssertionError();
   }
 
+  public void test_SyntaxChecker_accessWithNULL()
+  {
+    assertTrue( SyntaxChecker.hasExpectedXHTMLSyntax(null,null) == false );
+    assertTrue( SyntaxChecker.isValidSBMLSId(null) == false );
+    assertTrue( SyntaxChecker.isValidUnitSId(null) == false );
+    assertTrue( SyntaxChecker.isValidXMLID(null) == false );
+  }
+
   public void test_SyntaxChecker_validID()
   {
     assertTrue( SyntaxChecker.isValidXMLID("cell") == true );
@@ -147,45 +150,59 @@ public class TestSyntaxChecker {
   {
     SBMLNamespaces NS24 = new  SBMLNamespaces(2,4);
     SBMLNamespaces NS31 = new  SBMLNamespaces(3,1);
-    XMLToken toptoken;
-    XMLNode topnode;
     XMLTriple toptriple = new  XMLTriple("notes", "", "");
-    XMLToken token;
-    XMLNode node;
     XMLTriple triple = new  XMLTriple("p", "", "");
     XMLAttributes att = new  XMLAttributes();
     XMLNamespaces ns = new  XMLNamespaces();
     ns.add( "http://www.w3.org/1999/xhtml", "");
     XMLToken tt = new  XMLToken("This is my text");
     XMLNode n1 = new XMLNode(tt);
-    toptoken = new  XMLToken(toptriple,att);
-    topnode = new XMLNode(toptoken);
-    token = new  XMLToken(triple,att,ns);
-    node = new XMLNode(token);
+    XMLToken toptoken = new  XMLToken(toptriple,att);
+    XMLNode topnode = new XMLNode(toptoken);
+    XMLToken token = new  XMLToken(triple,att,ns);
+    XMLNode node = new XMLNode(token);
     node.addChild(n1);
     topnode.addChild(node);
     assertTrue( SyntaxChecker.hasExpectedXHTMLSyntax(topnode,null) == true );
     assertTrue( SyntaxChecker.hasExpectedXHTMLSyntax(topnode,NS24) == true );
     assertTrue( SyntaxChecker.hasExpectedXHTMLSyntax(topnode,NS31) == true );
+    triple = null;
+    token = null;
+    node = null;
     triple = new  XMLTriple("html", "", "");
     token = new  XMLToken(triple,att,ns);
     node = new XMLNode(token);
     node.addChild(n1);
-    topnode.removeChild(0);
+    topnode.removeChild(0) = null;
     topnode.addChild(node);
     assertTrue( SyntaxChecker.hasExpectedXHTMLSyntax(topnode,null) == true );
     assertTrue( SyntaxChecker.hasExpectedXHTMLSyntax(topnode,NS24) == false );
     assertTrue( SyntaxChecker.hasExpectedXHTMLSyntax(topnode,NS31) == true );
+    triple = null;
     triple = new  XMLTriple("html", "", "");
     ns.clear();
+    token = null;
+    node = null;
     token = new  XMLToken(triple,att,ns);
     node = new XMLNode(token);
     node.addChild(n1);
-    topnode.removeChild(0);
+    topnode.removeChild(0) = null;
     topnode.addChild(node);
     assertTrue( SyntaxChecker.hasExpectedXHTMLSyntax(topnode,null) == false );
     assertTrue( SyntaxChecker.hasExpectedXHTMLSyntax(topnode,NS24) == false );
     assertTrue( SyntaxChecker.hasExpectedXHTMLSyntax(topnode,NS31) == false );
+    NS24 = null;
+    NS31 = null;
+    toptriple = null;
+    triple = null;
+    att = null;
+    ns = null;
+    tt = null;
+    n1 = null;
+    toptoken = null;
+    topnode = null;
+    token = null;
+    node = null;
   }
 
   /**
@@ -241,4 +258,3 @@ public class TestSyntaxChecker {
     }
   }
 }
-

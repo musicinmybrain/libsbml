@@ -2,8 +2,7 @@
 # @brief   GetMultipleObjects unit tests
 #
 # @author  Akiya Jouraku (Ruby conversion)
-# @author  Sarah Keating
- 
+# @author  Sarah Keating 
 # 
 # ====== WARNING ===== WARNING ===== WARNING ===== WARNING ===== WARNING ======
 #
@@ -35,54 +34,83 @@ class TestGetMultipleObjects < Test::Unit::TestCase
 
   def test_GetMultipleObjects_allElements
     reader = LibSBML::SBMLReader.new()
-    filename = "../../sbml/test/test-data/"
+    filename = "../../sbml/sbml/test/test-data/"
     filename += "multiple-ids.xml"
     d = reader.readSBML(filename)
-    if (d == nil)
+    if (d.getModel() == nil)
     end
-    list = d.getListOfAllElements()
+    list = d.getAllElements()
     assert( list.getSize() == 37 )
+    list = nil
     d = nil
   end
 
   def test_GetMultipleObjects_getId
     reader = LibSBML::SBMLReader.new()
-    filename = "../../sbml/test/test-data/"
+    filename = "../../sbml/sbml/test/test-data/"
     filename += "multiple-ids.xml"
     d = reader.readSBML(filename)
     if (d == nil)
     end
-    obj = d.getElementBySId("no_id")
-    assert( obj == nil )
-    obj = d.getElementBySId("")
-    assert( obj == nil )
-    obj = d.getElementBySId("find_id")
-    assert( obj != nil )
-    assert( obj.getTypeCode() == LibSBML::SBML_MODEL )
-    obj = d.getElementBySId("func1")
-    assert( obj != nil )
-    assert( obj.getTypeCode() == LibSBML::SBML_FUNCTION_DEFINITION )
-    obj = d.getElementBySId("comp")
-    assert( obj != nil )
-    assert( obj.getTypeCode() == LibSBML::SBML_COMPARTMENT )
-    obj = d.getElementBySId("b")
-    assert( obj != nil )
-    assert( obj.getTypeCode() == LibSBML::SBML_SPECIES )
-    obj = d.getElementBySId("x")
-    assert( obj != nil )
-    assert( obj.getTypeCode() == LibSBML::SBML_PARAMETER )
-    obj = d.getElementBySId("J0")
-    assert( obj != nil )
-    assert( obj.getTypeCode() == LibSBML::SBML_REACTION )
-    obj = d.getElementBySId("E0")
-    assert( obj != nil )
-    assert( obj.getTypeCode() == LibSBML::SBML_EVENT )
+      obj = d.getElementBySId("no_id")
+      assert( obj == nil )
+      obj = d.getElementBySId("")
+      assert( obj == nil )
+      obj = d.getElementBySId("find_id")
+      assert( obj != nil )
+      assert( obj.getTypeCode() == LibSBML::SBML_MODEL )
+      obj = d.getElementBySId("func1")
+      assert( obj != nil )
+      assert( obj.getTypeCode() == LibSBML::SBML_FUNCTION_DEFINITION )
+      obj = d.getElementBySId("comp")
+      assert( obj != nil )
+      assert( obj.getTypeCode() == LibSBML::SBML_COMPARTMENT )
+      obj = d.getElementBySId("b")
+      assert( obj != nil )
+      assert( obj.getTypeCode() == LibSBML::SBML_SPECIES )
+      obj = d.getElementBySId("x")
+      assert( obj != nil )
+      assert( obj.getTypeCode() == LibSBML::SBML_PARAMETER )
+      obj = d.getElementBySId("J0")
+      assert( obj != nil )
+      assert( obj.getTypeCode() == LibSBML::SBML_REACTION )
+      obj = d.getElementBySId("E0")
+      assert( obj != nil )
+      assert( obj.getTypeCode() == LibSBML::SBML_EVENT )
+    end
+    constDoc = d
+      obj = constdoc.getElementBySId("no_id")
+      assert( obj == nil )
+      obj = constdoc.getElementBySId("")
+      assert( obj == nil )
+      obj = constdoc.getElementBySId("find_id")
+      assert( obj != nil )
+      assert( obj.getTypeCode() == LibSBML::SBML_MODEL )
+      obj = constdoc.getElementBySId("func1")
+      assert( obj != nil )
+      assert( obj.getTypeCode() == LibSBML::SBML_FUNCTION_DEFINITION )
+      obj = constdoc.getElementBySId("comp")
+      assert( obj != nil )
+      assert( obj.getTypeCode() == LibSBML::SBML_COMPARTMENT )
+      obj = constdoc.getElementBySId("b")
+      assert( obj != nil )
+      assert( obj.getTypeCode() == LibSBML::SBML_SPECIES )
+      obj = constdoc.getElementBySId("x")
+      assert( obj != nil )
+      assert( obj.getTypeCode() == LibSBML::SBML_PARAMETER )
+      obj = constdoc.getElementBySId("J0")
+      assert( obj != nil )
+      assert( obj.getTypeCode() == LibSBML::SBML_REACTION )
+      obj = constdoc.getElementBySId("E0")
+      assert( obj != nil )
+      assert( obj.getTypeCode() == LibSBML::SBML_EVENT )
+    end
     d = nil
   end
 
   def test_GetMultipleObjects_getMetaId
     reader = LibSBML::SBMLReader.new()
-    filename = "../../sbml/test/test-data/"
+    filename = "../../sbml/sbml/test/test-data/"
     filename += "multiple-ids.xml"
     d = reader.readSBML(filename)
     if (d == nil)
@@ -215,7 +243,7 @@ class TestGetMultipleObjects < Test::Unit::TestCase
 
   def test_GetMultipleObjects_noAssignments
     reader = LibSBML::SBMLReader.new()
-    filename = "../../sbml/test/test-data/"
+    filename = "../../sbml/sbml/test/test-data/"
     filename += "assignments-invalid.xml"
     d = reader.readSBML(filename)
     if (d.getModel() == nil)
@@ -245,7 +273,7 @@ class TestGetMultipleObjects < Test::Unit::TestCase
 
   def test_GetMultipleObjects_noLocalParameters
     reader = LibSBML::SBMLReader.new()
-    filename = "../../sbml/test/test-data/"
+    filename = "../../sbml/sbml/test/test-data/"
     filename += "multiple-ids.xml"
     d = reader.readSBML(filename)
     if (d == nil)
@@ -262,7 +290,7 @@ class TestGetMultipleObjects < Test::Unit::TestCase
 
   def test_GetMultipleObjects_noUnits
     reader = LibSBML::SBMLReader.new()
-    filename = "../../sbml/test/test-data/"
+    filename = "../../sbml/sbml/test/test-data/"
     filename += "multiple-ids.xml"
     d = reader.readSBML(filename)
     if (d == nil)
@@ -272,6 +300,20 @@ class TestGetMultipleObjects < Test::Unit::TestCase
     obj = d.getElementByMetaId("meta30")
     assert( obj != nil )
     assert( obj.getTypeCode() == LibSBML::SBML_UNIT_DEFINITION )
+    d = nil
+  end
+
+  def test_GetMultipleObjects_withFilter
+    reader = LibSBML::SBMLReader.new()
+    filename = "../../sbml/sbml/test/test-data/"
+    filename += "multiple-ids.xml"
+    d = reader.readSBML(filename)
+    if (d.getModel() == nil)
+    end
+    list = d.getAllElements(test)
+    assert( list.getSize() == 1 )
+    assert( list.get(0).getId() ==  "conv" )
+    list = nil
     d = nil
   end
 

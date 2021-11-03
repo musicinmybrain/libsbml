@@ -61,7 +61,7 @@ def wrapString(s):
   pass
 
 def SBML_FOOTER():
-  return "</model> </sbml>"
+  return "  </model>\n</sbml>\n"
   pass
 
 def SBML_HEADER_L1v1():
@@ -69,11 +69,11 @@ def SBML_HEADER_L1v1():
   pass
 
 def SBML_HEADER_L1v2():
-  return "<sbml xmlns='http://www.sbml.org/sbml/level1' level='1' version='2'> <model name='m'>\n"
+  return "<sbml xmlns=\"http://www.sbml.org/sbml/level1\" level=\"1\" version=\"2\">\n  <model name=\"m\">\n"
   pass
 
 def SBML_HEADER_L2v1():
-  return "<sbml xmlns='http://www.sbml.org/sbml/level2' level='2' version='1'> <model name='m'>\n"
+  return "<sbml xmlns='http://www.sbml.org/sbml/level2' level='2' version='1'>\n  <model name='m'>\n"
   pass
 
 def SBML_HEADER_L2v2():
@@ -85,7 +85,7 @@ def SBML_HEADER_L2v3():
   pass
 
 def XML_HEADER():
-  return "<?xml version='1.0' encoding='UTF-8'?>\n"
+  return "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n"
   pass
 
 def wrapSBML_L1v1(s):
@@ -156,9 +156,9 @@ class TestReadSBML(unittest.TestCase):
     "</listOfRules>")
     self.D = libsbml.readSBMLFromString(s)
     self.M = self.D.getModel()
-    self.assert_( self.M.getNumRules() == 1 )
+    self.assertTrue( self.M.getNumRules() == 1 )
     ar = self.M.getRule(0)
-    self.assert_((  "x + 1" == ar.getFormula() ))
+    self.assertTrue((  "x + 1" == ar.getFormula() ))
     pass  
 
   def test_ReadSBML_AlgebraicRule_L2(self):
@@ -179,14 +179,15 @@ class TestReadSBML(unittest.TestCase):
     "</listOfRules>")
     self.D = libsbml.readSBMLFromString(s)
     self.M = self.D.getModel()
-    self.assert_( self.M.getNumRules() == 1 )
+    self.assertTrue( self.M.getNumRules() == 1 )
     ar = self.M.getRule(0)
-    self.assert_( ar != None )
+    self.assertTrue( ar != None )
     self.assertEqual( True, ar.isSetMath() )
     math = ar.getMath()
+    self.assertTrue( math != None )
     formula = ar.getFormula()
-    self.assert_( formula != None )
-    self.assert_((  "S1 + S2 - T" == formula ))
+    self.assertTrue( formula != None )
+    self.assertTrue((  "S1 + S2 - T" == formula ))
     pass  
 
   def test_ReadSBML_AssignmentRule(self):
@@ -203,14 +204,15 @@ class TestReadSBML(unittest.TestCase):
     "</listOfRules>")
     self.D = libsbml.readSBMLFromString(s)
     self.M = self.D.getModel()
-    self.assert_( self.M.getNumRules() == 1 )
+    self.assertTrue( self.M.getNumRules() == 1 )
     ar = self.M.getRule(0)
-    self.assert_( ar != None )
+    self.assertTrue( ar != None )
     self.assertEqual( True, ar.isSetMath() )
     math = ar.getMath()
+    self.assertTrue( math != None )
     formula = ar.getFormula()
-    self.assert_( formula != None )
-    self.assert_((  "k3 / k2" == formula ))
+    self.assertTrue( formula != None )
+    self.assertTrue((  "k3 / k2" == formula ))
     pass  
 
   def test_ReadSBML_Compartment(self):
@@ -220,12 +222,12 @@ class TestReadSBML(unittest.TestCase):
     "</listOfCompartments>")
     self.D = libsbml.readSBMLFromString(s)
     self.M = self.D.getModel()
-    self.assert_( self.M.getNumCompartments() == 1 )
+    self.assertTrue( self.M.getNumCompartments() == 1 )
     c = self.M.getCompartment(0)
-    self.assert_((  "mitochondria"  == c.getId() ))
-    self.assert_((  "milliliters"   == c.getUnits() ))
-    self.assert_((  "cell"          == c.getOutside() ))
-    self.assert_( c.getVolume() == .0001 )
+    self.assertTrue((  "mitochondria"  == c.getId() ))
+    self.assertTrue((  "milliliters"   == c.getUnits() ))
+    self.assertTrue((  "cell"          == c.getOutside() ))
+    self.assertTrue( c.getVolume() == .0001 )
     self.assertEqual( True, c.isSetVolume() )
     self.assertEqual( True, c.isSetSize() )
     pass  
@@ -236,12 +238,12 @@ class TestReadSBML(unittest.TestCase):
     "</listOfRules>")
     self.D = libsbml.readSBMLFromString(s)
     self.M = self.D.getModel()
-    self.assert_( self.M.getNumRules() == 1 )
+    self.assertTrue( self.M.getNumRules() == 1 )
     cvr = self.M.getRule(0)
     self.assertEqual( True, cvr.isCompartmentVolume() )
-    self.assert_((  "A" == cvr.getVariable() ))
-    self.assert_((  "0.10 * t"  == cvr.getFormula() ))
-    self.assert_( cvr.getType() == libsbml.RULE_TYPE_SCALAR )
+    self.assertTrue((  "A" == cvr.getVariable() ))
+    self.assertTrue((  "0.10 * t"  == cvr.getFormula() ))
+    self.assertTrue( cvr.getType() == libsbml.RULE_TYPE_SCALAR )
     pass  
 
   def test_ReadSBML_Compartment_L2(self):
@@ -251,7 +253,7 @@ class TestReadSBML(unittest.TestCase):
     "</listOfCompartments>")
     self.D = libsbml.readSBMLFromString(s)
     self.M = self.D.getModel()
-    self.assert_( self.M.getNumCompartments() == 1 )
+    self.assertTrue( self.M.getNumCompartments() == 1 )
     c = self.M.getCompartment(0)
     self.assertEqual( True, c.isSetId() )
     self.assertEqual( False, c.isSetName() )
@@ -259,11 +261,11 @@ class TestReadSBML(unittest.TestCase):
     self.assertEqual( True, c.isSetSize() )
     self.assertEqual( True, c.isSetUnits() )
     self.assertEqual( True, c.isSetOutside() )
-    self.assert_((  "membrane"  == c.getId() ))
-    self.assert_((  "area"      == c.getUnits() ))
-    self.assert_((  "tissue"    == c.getOutside() ))
-    self.assert_( c.getSpatialDimensions() == 2 )
-    self.assert_( c.getSize() == .3 )
+    self.assertTrue((  "membrane"  == c.getId() ))
+    self.assertTrue((  "area"      == c.getUnits() ))
+    self.assertTrue((  "tissue"    == c.getOutside() ))
+    self.assertTrue( c.getSpatialDimensions() == 2 )
+    self.assertTrue( c.getSize() == .3 )
     pass  
 
   def test_ReadSBML_Compartment_defaults(self):
@@ -271,15 +273,15 @@ class TestReadSBML(unittest.TestCase):
     )
     self.D = libsbml.readSBMLFromString(s)
     self.M = self.D.getModel()
-    self.assert_( self.M.getNumCompartments() == 1 )
+    self.assertTrue( self.M.getNumCompartments() == 1 )
     c = self.M.getCompartment(0)
     self.assertEqual( True, c.isSetId() )
     self.assertEqual( True, c.isSetVolume() )
     self.assertEqual( False, c.isSetSize() )
     self.assertEqual( False, c.isSetUnits() )
     self.assertEqual( False, c.isSetOutside() )
-    self.assert_((  "cell"  == c.getId() ))
-    self.assert_( c.getVolume() == 1.0 )
+    self.assertTrue((  "cell"  == c.getId() ))
+    self.assertTrue( c.getVolume() == 1.0 )
     pass  
 
   def test_ReadSBML_Compartment_defaults_L2(self):
@@ -287,16 +289,16 @@ class TestReadSBML(unittest.TestCase):
     )
     self.D = libsbml.readSBMLFromString(s)
     self.M = self.D.getModel()
-    self.assert_( self.M.getNumCompartments() == 1 )
+    self.assertTrue( self.M.getNumCompartments() == 1 )
     c = self.M.getCompartment(0)
     self.assertEqual( True, c.isSetId() )
     self.assertEqual( False, c.isSetName() )
     self.assertEqual( False, c.isSetSize() )
     self.assertEqual( False, c.isSetUnits() )
     self.assertEqual( False, c.isSetOutside() )
-    self.assert_((  "cell"  == c.getId() ))
-    self.assert_( c.getSpatialDimensions() == 3 )
-    self.assert_( c.getConstant() == True )
+    self.assertTrue((  "cell"  == c.getId() ))
+    self.assertTrue( c.getSpatialDimensions() == 3 )
+    self.assertTrue( c.getConstant() == True )
     pass  
 
   def test_ReadSBML_Event(self):
@@ -305,17 +307,17 @@ class TestReadSBML(unittest.TestCase):
     "</listOfEvents>")
     self.D = libsbml.readSBMLFromString(s)
     self.M = self.D.getModel()
-    self.assert_( self.M.getNumEvents() == 1 )
+    self.assertTrue( self.M.getNumEvents() == 1 )
     e = self.M.getEvent(0)
-    self.assert_( e != None )
+    self.assertTrue( e != None )
     self.assertEqual( True, e.isSetId() )
     self.assertEqual( True, e.isSetName() )
     self.assertEqual( True, e.isSetTimeUnits() )
     self.assertEqual( False, e.isSetTrigger() )
     self.assertEqual( False, e.isSetDelay() )
-    self.assert_((  "e1"       == e.getId() ))
-    self.assert_((  "MyEvent"  == e.getName() ))
-    self.assert_((  "time"     == e.getTimeUnits() ))
+    self.assertTrue((  "e1"       == e.getId() ))
+    self.assertTrue((  "MyEvent"  == e.getName() ))
+    self.assertTrue((  "time"     == e.getTimeUnits() ))
     pass  
 
   def test_ReadSBML_EventAssignment(self):
@@ -330,19 +332,19 @@ class TestReadSBML(unittest.TestCase):
     "</listOfEvents>")
     self.D = libsbml.readSBMLFromString(s)
     self.M = self.D.getModel()
-    self.assert_( self.M.getNumEvents() == 1 )
+    self.assertTrue( self.M.getNumEvents() == 1 )
     e = self.M.getEvent(0)
-    self.assert_( e != None )
-    self.assert_( e.getNumEventAssignments() == 1 )
+    self.assertTrue( e != None )
+    self.assertTrue( e.getNumEventAssignments() == 1 )
     ea = e.getEventAssignment(0)
-    self.assert_( ea != None )
+    self.assertTrue( ea != None )
     self.assertEqual( True, ea.isSetVariable() )
-    self.assert_((  "k2" == ea.getVariable() ))
+    self.assertTrue((  "k2" == ea.getVariable() ))
     self.assertEqual( True, ea.isSetMath() )
     math = ea.getMath()
     formula = libsbml.formulaToString(math)
-    self.assert_( formula != None )
-    self.assert_((  "0" == formula ))
+    self.assertTrue( formula != None )
+    self.assertTrue((  "0" == formula ))
     pass  
 
   def test_ReadSBML_Event_delay(self):
@@ -351,15 +353,15 @@ class TestReadSBML(unittest.TestCase):
     "</listOfEvents>")
     self.D = libsbml.readSBMLFromString(s)
     self.M = self.D.getModel()
-    self.assert_( self.M.getNumEvents() == 1 )
+    self.assertTrue( self.M.getNumEvents() == 1 )
     e = self.M.getEvent(0)
-    self.assert_( e != None )
+    self.assertTrue( e != None )
     self.assertEqual( True, e.isSetDelay() )
     self.assertEqual( False, e.isSetTrigger() )
     delay = e.getDelay()
     formula = libsbml.formulaToString(delay.getMath())
-    self.assert_( formula != None )
-    self.assert_((  "5" == formula ))
+    self.assertTrue( formula != None )
+    self.assertTrue((  "5" == formula ))
     pass  
 
   def test_ReadSBML_Event_trigger(self):
@@ -378,15 +380,15 @@ class TestReadSBML(unittest.TestCase):
     "</listOfEvents>")
     self.D = libsbml.readSBMLFromString(s)
     self.M = self.D.getModel()
-    self.assert_( self.M.getNumEvents() == 1 )
+    self.assertTrue( self.M.getNumEvents() == 1 )
     e = self.M.getEvent(0)
-    self.assert_( e != None )
+    self.assertTrue( e != None )
     self.assertEqual( False, e.isSetDelay() )
     self.assertEqual( True, e.isSetTrigger() )
     trigger = e.getTrigger()
     formula = libsbml.formulaToString(trigger.getMath())
-    self.assert_( formula != None )
-    self.assert_((  "leq(P1, t)" == formula ))
+    self.assertTrue( formula != None )
+    self.assertTrue((  "leq(P1, t)" == formula ))
     pass  
 
   def test_ReadSBML_FunctionDefinition(self):
@@ -406,18 +408,78 @@ class TestReadSBML(unittest.TestCase):
     "</listOfFunctionDefinitions>")
     self.D = libsbml.readSBMLFromString(s)
     self.M = self.D.getModel()
-    self.assert_( self.M.getNumFunctionDefinitions() == 1 )
+    self.assertTrue( self.M.getNumFunctionDefinitions() == 1 )
     fd = self.M.getFunctionDefinition(0)
-    self.assert_( fd != None )
+    self.assertTrue( fd != None )
     self.assertEqual( True, fd.isSetId() )
     self.assertEqual( True, fd.isSetName() )
-    self.assert_((  "pow3"   == fd.getId() ))
-    self.assert_((  "cubed"  == fd.getName() ))
+    self.assertTrue((  "pow3"   == fd.getId() ))
+    self.assertTrue((  "cubed"  == fd.getName() ))
     self.assertEqual( True, fd.isSetMath() )
     math = fd.getMath()
     formula = libsbml.formulaToString(math)
-    self.assert_( formula != None )
-    self.assert_((  "lambda(x, pow(x, 3))" == formula ))
+    self.assertTrue( formula != None )
+    self.assertTrue((  "lambda(x, pow(x, 3))" == formula ))
+    pass  
+
+  def test_ReadSBML_FunctionDefinition_MathReturnsCN(self):
+    s = wrapSBML_L2v1("<listOfFunctionDefinitions>" + 
+    "  <functionDefinition id='getNumber'>" + 
+    "    <math>" + 
+    "      <lambda>" + 
+    "        <bvar><ci> x </ci></bvar>" + 
+    "        <cn> 42 </cn>" + 
+    "      </lambda>" + 
+    "    </math>" + 
+    "  </functionDefinition>" + 
+    "</listOfFunctionDefinitions>")
+    self.D = libsbml.readSBMLFromString(s)
+    self.M = self.D.getModel()
+    self.assertTrue( self.M.getNumFunctionDefinitions() == 1 )
+    fd = self.M.getFunctionDefinition(0)
+    self.assertTrue( fd != None )
+    self.assertEqual( True, fd.isSetId() )
+    self.assertEqual( False, fd.isSetName() )
+    self.assertTrue((  "getNumber"   == fd.getId() ))
+    self.assertEqual( True, fd.isSetMath() )
+    math = fd.getMath()
+    formula = libsbml.formulaToString(math)
+    self.assertTrue( formula != None )
+    self.assertTrue((  "lambda(x, 42)" == formula ))
+    pass  
+
+  def test_ReadSBML_FunctionDefinition_OnlyBVars(self):
+    s = wrapSBML_L2v1("<listOfFunctionDefinitions>" + 
+    "  <functionDefinition id='invalid'>" + 
+    "    <math xmlns='http://www.w3.org/1998/Math/MathML'>" + 
+    "      <lambda>" + 
+    "        <bvar><ci> x </ci></bvar>" + 
+    "        <bvar><ci> y </ci></bvar>" + 
+    "        <bvar><ci> z </ci></bvar>" + 
+    "      </lambda>" + 
+    "    </math>" + 
+    "  </functionDefinition>" + 
+    "</listOfFunctionDefinitions>")
+    self.D = libsbml.readSBMLFromString(s)
+    self.M = self.D.getModel()
+    self.D.checkInternalConsistency()
+    self.D.checkConsistency()
+    numErrors = self.D.getNumErrors()
+    self.assertTrue( numErrors == 1 )
+    error = self.D.getError(0)
+    self.assertTrue( error.getErrorId() == NoBodyInFunctionDef )
+    self.assertTrue( self.M.getNumFunctionDefinitions() == 1 )
+    fd = self.M.getFunctionDefinition(0)
+    self.assertTrue( fd != None )
+    self.assertEqual( True, fd.isSetId() )
+    self.assertEqual( False, fd.isSetName() )
+    self.assertTrue((  "invalid"   == fd.getId() ))
+    self.assertTrue( fd.getBody() == None )
+    self.assertEqual( True, fd.isSetMath() )
+    math = fd.getMath()
+    formula = libsbml.formulaToString(math)
+    self.assertTrue( formula != None )
+    self.assertTrue((  "lambda(x, y, z)" == formula ))
     pass  
 
   def test_ReadSBML_KineticLaw(self):
@@ -428,10 +490,10 @@ class TestReadSBML(unittest.TestCase):
     "</listOfReactions>")
     self.D = libsbml.readSBMLFromString(s)
     self.M = self.D.getModel()
-    self.assert_( self.M.getNumReactions() == 1 )
+    self.assertTrue( self.M.getNumReactions() == 1 )
     r = self.M.getReaction(0)
     kl = r.getKineticLaw()
-    self.assert_((  "k1*X0" == kl.getFormula() ))
+    self.assertTrue((  "k1*X0" == kl.getFormula() ))
     pass  
 
   def test_ReadSBML_KineticLaw_L2(self):
@@ -451,16 +513,17 @@ class TestReadSBML(unittest.TestCase):
     "</listOfReactions>")
     self.D = libsbml.readSBMLFromString(s)
     self.M = self.D.getModel()
-    self.assert_( self.M.getNumReactions() == 1 )
+    self.assertTrue( self.M.getNumReactions() == 1 )
     r = self.M.getReaction(0)
-    self.assert_( r != None )
+    self.assertTrue( r != None )
     kl = r.getKineticLaw()
-    self.assert_( kl != None )
+    self.assertTrue( kl != None )
     self.assertEqual( True, kl.isSetMath() )
     math = kl.getMath()
+    self.assertTrue( math != None )
     formula = kl.getFormula()
-    self.assert_( formula != None )
-    self.assert_((  "k * S2 * X0" == formula ))
+    self.assertTrue( formula != None )
+    self.assertTrue((  "k * S2 * X0" == formula ))
     pass  
 
   def test_ReadSBML_KineticLaw_Parameter(self):
@@ -475,14 +538,14 @@ class TestReadSBML(unittest.TestCase):
     "</listOfReactions>")
     self.D = libsbml.readSBMLFromString(s)
     self.M = self.D.getModel()
-    self.assert_( self.M.getNumReactions() == 1 )
+    self.assertTrue( self.M.getNumReactions() == 1 )
     r = self.M.getReaction(0)
     kl = r.getKineticLaw()
-    self.assert_((  "k1*X0" == kl.getFormula() ))
-    self.assert_( kl.getNumParameters() == 1 )
+    self.assertTrue((  "k1*X0" == kl.getFormula() ))
+    self.assertTrue( kl.getNumParameters() == 1 )
     p = kl.getParameter(0)
-    self.assert_((  "k1" == p.getId() ))
-    self.assert_( p.getValue() == 0 )
+    self.assertTrue((  "k1" == p.getId() ))
+    self.assertTrue( p.getValue() == 0 )
     pass  
 
   def test_ReadSBML_Model(self):
@@ -491,7 +554,7 @@ class TestReadSBML(unittest.TestCase):
     "</sbml>")
     self.D = libsbml.readSBMLFromString(s)
     self.M = self.D.getModel()
-    self.assert_((  "testModel" == self.M.getId() ))
+    self.assertTrue((  "testModel" == self.M.getId() ))
     pass  
 
   def test_ReadSBML_Model_L2(self):
@@ -502,7 +565,22 @@ class TestReadSBML(unittest.TestCase):
     self.M = self.D.getModel()
     self.assertEqual( True, self.M.isSetId() )
     self.assertEqual( False, self.M.isSetName() )
-    self.assert_((  "testModel" == self.M.getId() ))
+    self.assertTrue((  "testModel" == self.M.getId() ))
+    pass  
+
+  def test_ReadSBML_Model_withoutEncoding(self):
+    s = wrapString("<sbml level='2' version='1' xmlns='http://www.sbml.org/sbml/level2'>" + 
+    "  <model id='testModel'></model>" + 
+    "</sbml>")
+    self.D = libsbml.readSBMLFromString(s)
+    self.M = self.D.getModel()
+    self.assertTrue((  "testModel" == self.M.getId() ))
+    self.assertTrue( self.D.getNumErrors() == 0 )
+    self.D = None
+    self.D = libsbml.readSBMLFromString(s)
+    self.M = self.D.getModel()
+    self.assertTrue((  "testModel" == self.M.getId() ))
+    self.assertTrue( self.D.getNumErrors() == 0 )
     pass  
 
   def test_ReadSBML_Parameter(self):
@@ -511,12 +589,12 @@ class TestReadSBML(unittest.TestCase):
     "</listOfParameters>")
     self.D = libsbml.readSBMLFromString(s)
     self.M = self.D.getModel()
-    self.assert_( self.M.getNumParameters() == 1 )
+    self.assertTrue( self.M.getNumParameters() == 1 )
     p = self.M.getParameter(0)
-    self.assert_((  "Km1"     == p.getId() ))
-    self.assert_((  "second"  == p.getUnits() ))
-    self.assert_( p.getValue() == 2.3 )
-    self.assert_( p.isSetValue() == True )
+    self.assertTrue((  "Km1"     == p.getId() ))
+    self.assertTrue((  "second"  == p.getUnits() ))
+    self.assertTrue( p.getValue() == 2.3 )
+    self.assertTrue( p.isSetValue() == True )
     pass  
 
   def test_ReadSBML_ParameterRule(self):
@@ -525,12 +603,12 @@ class TestReadSBML(unittest.TestCase):
     "</listOfRules>")
     self.D = libsbml.readSBMLFromString(s)
     self.M = self.D.getModel()
-    self.assert_( self.M.getNumRules() == 1 )
+    self.assertTrue( self.M.getNumRules() == 1 )
     pr = self.M.getRule(0)
     self.assertEqual( True, pr.isParameter() )
-    self.assert_((  "k" == pr.getVariable() ))
-    self.assert_((  "k3/k2"  == pr.getFormula() ))
-    self.assert_( pr.getType() == libsbml.RULE_TYPE_SCALAR )
+    self.assertTrue((  "k" == pr.getVariable() ))
+    self.assertTrue((  "k3/k2"  == pr.getFormula() ))
+    self.assertTrue( pr.getType() == libsbml.RULE_TYPE_SCALAR )
     pass  
 
   def test_ReadSBML_Parameter_L2(self):
@@ -539,16 +617,16 @@ class TestReadSBML(unittest.TestCase):
     "</listOfParameters>")
     self.D = libsbml.readSBMLFromString(s)
     self.M = self.D.getModel()
-    self.assert_( self.M.getNumParameters() == 1 )
+    self.assertTrue( self.M.getNumParameters() == 1 )
     p = self.M.getParameter(0)
     self.assertEqual( True, p.isSetId() )
     self.assertEqual( False, p.isSetName() )
     self.assertEqual( True, p.isSetValue() )
     self.assertEqual( True, p.isSetUnits() )
-    self.assert_((  "T"        == p.getId() ))
-    self.assert_((  "Celsius"  == p.getUnits() ))
-    self.assert_( p.getValue() == 4.6 )
-    self.assert_( p.getConstant() == False )
+    self.assertTrue((  "T"        == p.getId() ))
+    self.assertTrue((  "Celsius"  == p.getUnits() ))
+    self.assertTrue( p.getValue() == 4.6 )
+    self.assertTrue( p.getConstant() == False )
     pass  
 
   def test_ReadSBML_Parameter_L2_defaults(self):
@@ -556,14 +634,14 @@ class TestReadSBML(unittest.TestCase):
     )
     self.D = libsbml.readSBMLFromString(s)
     self.M = self.D.getModel()
-    self.assert_( self.M.getNumParameters() == 1 )
+    self.assertTrue( self.M.getNumParameters() == 1 )
     p = self.M.getParameter(0)
     self.assertEqual( True, p.isSetId() )
     self.assertEqual( False, p.isSetName() )
     self.assertEqual( False, p.isSetValue() )
     self.assertEqual( False, p.isSetUnits() )
-    self.assert_((  "x" == p.getId() ))
-    self.assert_( p.getConstant() == True )
+    self.assertTrue((  "x" == p.getId() ))
+    self.assertTrue( p.getConstant() == True )
     pass  
 
   def test_ReadSBML_RateRule(self):
@@ -587,14 +665,15 @@ class TestReadSBML(unittest.TestCase):
     "</listOfRules>")
     self.D = libsbml.readSBMLFromString(s)
     self.M = self.D.getModel()
-    self.assert_( self.M.getNumRules() == 1 )
+    self.assertTrue( self.M.getNumRules() == 1 )
     rr = self.M.getRule(0)
-    self.assert_( rr != None )
+    self.assertTrue( rr != None )
     self.assertEqual( True, rr.isSetMath() )
     math = rr.getMath()
+    self.assertTrue( math != None )
     formula = rr.getFormula()
-    self.assert_( formula != None )
-    self.assert_((  "(1 - x) * log(x)" == formula ))
+    self.assertTrue( formula != None )
+    self.assertTrue((  "(1 - x) * log(x)" == formula ))
     pass  
 
   def test_ReadSBML_Reaction(self):
@@ -603,11 +682,11 @@ class TestReadSBML(unittest.TestCase):
     "</listOfReactions>")
     self.D = libsbml.readSBMLFromString(s)
     self.M = self.D.getModel()
-    self.assert_( self.M.getNumReactions() == 1 )
+    self.assertTrue( self.M.getNumReactions() == 1 )
     r = self.M.getReaction(0)
-    self.assert_((  "reaction_1" == r.getId() ))
-    self.assert_( r.getReversible() == False )
-    self.assert_( r.getFast() == False )
+    self.assertTrue((  "reaction_1" == r.getId() ))
+    self.assertTrue( r.getReversible() == False )
+    self.assertTrue( r.getFast() == False )
     pass  
 
   def test_ReadSBML_Reaction_L2(self):
@@ -616,14 +695,14 @@ class TestReadSBML(unittest.TestCase):
     "</listOfReactions>")
     self.D = libsbml.readSBMLFromString(s)
     self.M = self.D.getModel()
-    self.assert_( self.M.getNumReactions() == 1 )
+    self.assertTrue( self.M.getNumReactions() == 1 )
     r = self.M.getReaction(0)
     self.assertEqual( True, r.isSetId() )
     self.assertEqual( False, r.isSetName() )
     self.assertEqual( True, r.isSetFast() )
-    self.assert_((  "r1" == r.getId() ))
-    self.assert_( r.getReversible() == False )
-    self.assert_( r.getFast() == False )
+    self.assertTrue((  "r1" == r.getId() ))
+    self.assertTrue( r.getReversible() == False )
+    self.assertTrue( r.getFast() == False )
     pass  
 
   def test_ReadSBML_Reaction_L2_defaults(self):
@@ -631,13 +710,13 @@ class TestReadSBML(unittest.TestCase):
     )
     self.D = libsbml.readSBMLFromString(s)
     self.M = self.D.getModel()
-    self.assert_( self.M.getNumReactions() == 1 )
+    self.assertTrue( self.M.getNumReactions() == 1 )
     r = self.M.getReaction(0)
     self.assertEqual( True, r.isSetId() )
     self.assertEqual( False, r.isSetName() )
     self.assertEqual( False, r.isSetFast() )
-    self.assert_((  "r1" == r.getId() ))
-    self.assert_( r.getReversible() == True )
+    self.assertTrue((  "r1" == r.getId() ))
+    self.assertTrue( r.getReversible() == True )
     pass  
 
   def test_ReadSBML_Reaction_defaults(self):
@@ -646,18 +725,31 @@ class TestReadSBML(unittest.TestCase):
     "</listOfReactions>")
     self.D = libsbml.readSBMLFromString(s)
     self.M = self.D.getModel()
-    self.assert_( self.M.getNumReactions() == 1 )
+    self.assertTrue( self.M.getNumReactions() == 1 )
     r = self.M.getReaction(0)
-    self.assert_((  "reaction_1" == r.getId() ))
-    self.assert_( r.getReversible() != False )
-    self.assert_( r.getFast() == False )
+    self.assertTrue((  "reaction_1" == r.getId() ))
+    self.assertTrue( r.getReversible() != False )
+    self.assertTrue( r.getFast() == False )
     pass  
 
   def test_ReadSBML_SBML(self):
     s = wrapXML("<sbml level='1' version='1'> </sbml>")
     self.D = libsbml.readSBMLFromString(s)
-    self.assert_( self.D.getLevel() == 1 )
-    self.assert_( self.D.getVersion() == 1 )
+    self.assertTrue( self.D.getLevel() == 1 )
+    self.assertTrue( self.D.getVersion() == 1 )
+    pass  
+
+  def test_ReadSBML_SBML_ONLY(self):
+    s = wrapXML("<sbml/>")
+    self.D = libsbml.readSBMLFromString(s)
+    sSBML = self.D.toSBML()
+    self.assertTrue( sSBML != None )
+    sSBML = None
+    if (self.D.getLevel() == 3 && SBMLDocument_getVersion(D) == 2):
+      self.assertTrue( self.D.getNumErrors() == 1 )
+      pass    
+      self.assertTrue( self.D.getNumErrors() == 2 )
+      pass    
     pass  
 
   def test_ReadSBML_Specie(self):
@@ -667,16 +759,16 @@ class TestReadSBML(unittest.TestCase):
     "</listOfSpecie>")
     self.D = libsbml.readSBMLFromString(s)
     self.M = self.D.getModel()
-    self.assert_( self.M.getNumSpecies() == 1 )
+    self.assertTrue( self.M.getNumSpecies() == 1 )
     sp = self.M.getSpecies(0)
-    self.assert_((  "Glucose"  == sp.getId() ))
-    self.assert_((  "cell"     == sp.getCompartment() ))
-    self.assert_((  "volume"   == sp.getUnits() ))
-    self.assert_( sp.getInitialAmount() == 4.1 )
-    self.assert_( sp.getBoundaryCondition() == False )
-    self.assert_( sp.getCharge() == 6 )
-    self.assert_( sp.isSetInitialAmount() == True )
-    self.assert_( sp.isSetCharge() == True )
+    self.assertTrue((  "Glucose"  == sp.getId() ))
+    self.assertTrue((  "cell"     == sp.getCompartment() ))
+    self.assertTrue((  "volume"   == sp.getUnits() ))
+    self.assertTrue( sp.getInitialAmount() == 4.1 )
+    self.assertTrue( sp.getBoundaryCondition() == False )
+    self.assertTrue( sp.getCharge() == 6 )
+    self.assertTrue( sp.isSetInitialAmount() == True )
+    self.assertTrue( sp.isSetCharge() == True )
     pass  
 
   def test_ReadSBML_SpecieConcentrationRule(self):
@@ -685,12 +777,12 @@ class TestReadSBML(unittest.TestCase):
     "</listOfRules>")
     self.D = libsbml.readSBMLFromString(s)
     self.M = self.D.getModel()
-    self.assert_( self.M.getNumRules() == 1 )
+    self.assertTrue( self.M.getNumRules() == 1 )
     scr = self.M.getRule(0)
     self.assertEqual( True, scr.isSpeciesConcentration() )
-    self.assert_((  "s2" == scr.getVariable() ))
-    self.assert_((  "k * t/(1 + k)"  == scr.getFormula() ))
-    self.assert_( scr.getType() == libsbml.RULE_TYPE_SCALAR )
+    self.assertTrue((  "s2" == scr.getVariable() ))
+    self.assertTrue((  "k * t/(1 + k)"  == scr.getFormula() ))
+    self.assertTrue( scr.getType() == libsbml.RULE_TYPE_SCALAR )
     pass  
 
   def test_ReadSBML_SpecieConcentrationRule_rate(self):
@@ -700,12 +792,12 @@ class TestReadSBML(unittest.TestCase):
     "</listOfRules>")
     self.D = libsbml.readSBMLFromString(s)
     self.M = self.D.getModel()
-    self.assert_( self.M.getNumRules() == 1 )
+    self.assertTrue( self.M.getNumRules() == 1 )
     scr = self.M.getRule(0)
     self.assertEqual( True, scr.isSpeciesConcentration() )
-    self.assert_((  "s2" == scr.getVariable() ))
-    self.assert_((  "k * t/(1 + k)"  == scr.getFormula() ))
-    self.assert_( scr.getType() == libsbml.RULE_TYPE_RATE )
+    self.assertTrue((  "s2" == scr.getVariable() ))
+    self.assertTrue((  "k * t/(1 + k)"  == scr.getFormula() ))
+    self.assertTrue( scr.getType() == libsbml.RULE_TYPE_RATE )
     pass  
 
   def test_ReadSBML_SpecieReference_Product(self):
@@ -718,15 +810,15 @@ class TestReadSBML(unittest.TestCase):
     "</listOfReactions>")
     self.D = libsbml.readSBMLFromString(s)
     self.M = self.D.getModel()
-    self.assert_( self.M.getNumReactions() == 1 )
+    self.assertTrue( self.M.getNumReactions() == 1 )
     r = self.M.getReaction(0)
-    self.assert_((  "reaction_1" == r.getId() ))
-    self.assert_( r.getReversible() == False )
-    self.assert_( r.getNumProducts() == 1 )
+    self.assertTrue((  "reaction_1" == r.getId() ))
+    self.assertTrue( r.getReversible() == False )
+    self.assertTrue( r.getNumProducts() == 1 )
     sr = r.getProduct(0)
-    self.assert_((  "S1" == sr.getSpecies() ))
-    self.assert_( sr.getStoichiometry() == 1 )
-    self.assert_( sr.getDenominator() == 1 )
+    self.assertTrue((  "S1" == sr.getSpecies() ))
+    self.assertTrue( sr.getStoichiometry() == 1 )
+    self.assertTrue( sr.getDenominator() == 1 )
     pass  
 
   def test_ReadSBML_SpecieReference_Reactant(self):
@@ -739,15 +831,15 @@ class TestReadSBML(unittest.TestCase):
     "</listOfReactions>")
     self.D = libsbml.readSBMLFromString(s)
     self.M = self.D.getModel()
-    self.assert_( self.M.getNumReactions() == 1 )
+    self.assertTrue( self.M.getNumReactions() == 1 )
     r = self.M.getReaction(0)
-    self.assert_((  "reaction_1" == r.getId() ))
-    self.assert_( r.getReversible() == False )
-    self.assert_( r.getNumReactants() == 1 )
+    self.assertTrue((  "reaction_1" == r.getId() ))
+    self.assertTrue( r.getReversible() == False )
+    self.assertTrue( r.getNumReactants() == 1 )
     sr = r.getReactant(0)
-    self.assert_((  "X0" == sr.getSpecies() ))
-    self.assert_( sr.getStoichiometry() == 1 )
-    self.assert_( sr.getDenominator() == 1 )
+    self.assertTrue((  "X0" == sr.getSpecies() ))
+    self.assertTrue( sr.getStoichiometry() == 1 )
+    self.assertTrue( sr.getDenominator() == 1 )
     pass  
 
   def test_ReadSBML_SpecieReference_defaults(self):
@@ -760,15 +852,15 @@ class TestReadSBML(unittest.TestCase):
     "</listOfReactions>")
     self.D = libsbml.readSBMLFromString(s)
     self.M = self.D.getModel()
-    self.assert_( self.M.getNumReactions() == 1 )
+    self.assertTrue( self.M.getNumReactions() == 1 )
     r = self.M.getReaction(0)
-    self.assert_((  "reaction_1" == r.getId() ))
-    self.assert_( r.getReversible() == False )
-    self.assert_( r.getNumReactants() == 1 )
+    self.assertTrue((  "reaction_1" == r.getId() ))
+    self.assertTrue( r.getReversible() == False )
+    self.assertTrue( r.getNumReactants() == 1 )
     sr = r.getReactant(0)
-    self.assert_((  "X0" == sr.getSpecies() ))
-    self.assert_( sr.getStoichiometry() == 1 )
-    self.assert_( sr.getDenominator() == 1 )
+    self.assertTrue((  "X0" == sr.getSpecies() ))
+    self.assertTrue( sr.getStoichiometry() == 1 )
+    self.assertTrue( sr.getDenominator() == 1 )
     pass  
 
   def test_ReadSBML_Specie_defaults(self):
@@ -777,14 +869,14 @@ class TestReadSBML(unittest.TestCase):
     "</listOfSpecie>")
     self.D = libsbml.readSBMLFromString(s)
     self.M = self.D.getModel()
-    self.assert_( self.M.getNumSpecies() == 1 )
+    self.assertTrue( self.M.getNumSpecies() == 1 )
     sp = self.M.getSpecies(0)
-    self.assert_((  "Glucose"  == sp.getId() ))
-    self.assert_((  "cell"     == sp.getCompartment() ))
-    self.assert_( sp.getInitialAmount() == 1.0 )
-    self.assert_( sp.getBoundaryCondition() == False )
-    self.assert_( sp.isSetInitialAmount() == True )
-    self.assert_( sp.isSetCharge() == False )
+    self.assertTrue((  "Glucose"  == sp.getId() ))
+    self.assertTrue((  "cell"     == sp.getCompartment() ))
+    self.assertTrue( sp.getInitialAmount() == 1.0 )
+    self.assertTrue( sp.getBoundaryCondition() == False )
+    self.assertTrue( sp.isSetInitialAmount() == True )
+    self.assertTrue( sp.isSetCharge() == False )
     pass  
 
   def test_ReadSBML_Species(self):
@@ -794,16 +886,16 @@ class TestReadSBML(unittest.TestCase):
     "</listOfSpecies>")
     self.D = libsbml.readSBMLFromString(s)
     self.M = self.D.getModel()
-    self.assert_( self.M.getNumSpecies() == 1 )
+    self.assertTrue( self.M.getNumSpecies() == 1 )
     sp = self.M.getSpecies(0)
-    self.assert_((  "Glucose"  == sp.getId() ))
-    self.assert_((  "cell"     == sp.getCompartment() ))
-    self.assert_((  "volume"   == sp.getUnits() ))
-    self.assert_( sp.getInitialAmount() == 4.1 )
-    self.assert_( sp.getBoundaryCondition() == False )
-    self.assert_( sp.getCharge() == 6 )
-    self.assert_( sp.isSetInitialAmount() == True )
-    self.assert_( sp.isSetCharge() == True )
+    self.assertTrue((  "Glucose"  == sp.getId() ))
+    self.assertTrue((  "cell"     == sp.getCompartment() ))
+    self.assertTrue((  "volume"   == sp.getUnits() ))
+    self.assertTrue( sp.getInitialAmount() == 4.1 )
+    self.assertTrue( sp.getBoundaryCondition() == False )
+    self.assertTrue( sp.getCharge() == 6 )
+    self.assertTrue( sp.isSetInitialAmount() == True )
+    self.assertTrue( sp.isSetCharge() == True )
     pass  
 
   def test_ReadSBML_SpeciesConcentrationRule(self):
@@ -812,12 +904,12 @@ class TestReadSBML(unittest.TestCase):
     "</listOfRules>")
     self.D = libsbml.readSBMLFromString(s)
     self.M = self.D.getModel()
-    self.assert_( self.M.getNumRules() == 1 )
+    self.assertTrue( self.M.getNumRules() == 1 )
     scr = self.M.getRule(0)
     self.assertEqual( True, scr.isSpeciesConcentration() )
-    self.assert_((  "s2" == scr.getVariable() ))
-    self.assert_((  "k * t/(1 + k)"  == scr.getFormula() ))
-    self.assert_( scr.getType() == libsbml.RULE_TYPE_SCALAR )
+    self.assertTrue((  "s2" == scr.getVariable() ))
+    self.assertTrue((  "k * t/(1 + k)"  == scr.getFormula() ))
+    self.assertTrue( scr.getType() == libsbml.RULE_TYPE_SCALAR )
     pass  
 
   def test_ReadSBML_SpeciesReference_StoichiometryMath_1(self):
@@ -834,17 +926,17 @@ class TestReadSBML(unittest.TestCase):
     "</listOfReactions>")
     self.D = libsbml.readSBMLFromString(s)
     self.M = self.D.getModel()
-    self.assert_( self.M.getNumReactions() == 1 )
+    self.assertTrue( self.M.getNumReactions() == 1 )
     r = self.M.getReaction(0)
-    self.assert_( r != None )
-    self.assert_( r.getNumReactants() == 1 )
+    self.assertTrue( r != None )
+    self.assertTrue( r.getNumReactants() == 1 )
     sr = r.getReactant(0)
-    self.assert_( sr != None )
+    self.assertTrue( sr != None )
     self.assertEqual( True, sr.isSetStoichiometryMath() )
     math = sr.getStoichiometryMath()
     formula = libsbml.formulaToString(math.getMath())
-    self.assert_( formula != None )
-    self.assert_((  "x" == formula ))
+    self.assertTrue( formula != None )
+    self.assertTrue((  "x" == formula ))
     pass  
 
   def test_ReadSBML_SpeciesReference_StoichiometryMath_2(self):
@@ -861,15 +953,15 @@ class TestReadSBML(unittest.TestCase):
     "</listOfReactions>")
     self.D = libsbml.readSBMLFromString(s)
     self.M = self.D.getModel()
-    self.assert_( self.M.getNumReactions() == 1 )
+    self.assertTrue( self.M.getNumReactions() == 1 )
     r = self.M.getReaction(0)
-    self.assert_( r != None )
-    self.assert_( r.getNumReactants() == 1 )
+    self.assertTrue( r != None )
+    self.assertTrue( r.getNumReactants() == 1 )
     sr = r.getReactant(0)
-    self.assert_( sr != None )
+    self.assertTrue( sr != None )
     self.assertEqual( False, sr.isSetStoichiometryMath() )
-    self.assert_( sr.getStoichiometry() == 3 )
-    self.assert_( sr.getDenominator() == 2 )
+    self.assertTrue( sr.getStoichiometry() == 3 )
+    self.assertTrue( sr.getDenominator() == 2 )
     pass  
 
   def test_ReadSBML_SpeciesReference_defaults(self):
@@ -882,15 +974,15 @@ class TestReadSBML(unittest.TestCase):
     "</listOfReactions>")
     self.D = libsbml.readSBMLFromString(s)
     self.M = self.D.getModel()
-    self.assert_( self.M.getNumReactions() == 1 )
+    self.assertTrue( self.M.getNumReactions() == 1 )
     r = self.M.getReaction(0)
-    self.assert_((  "reaction_1" == r.getId() ))
-    self.assert_( r.getReversible() == False )
-    self.assert_( r.getNumReactants() == 1 )
+    self.assertTrue((  "reaction_1" == r.getId() ))
+    self.assertTrue( r.getReversible() == False )
+    self.assertTrue( r.getNumReactants() == 1 )
     sr = r.getReactant(0)
-    self.assert_((  "X0" == sr.getSpecies() ))
-    self.assert_( sr.getStoichiometry() == 1 )
-    self.assert_( sr.getDenominator() == 1 )
+    self.assertTrue((  "X0" == sr.getSpecies() ))
+    self.assertTrue( sr.getStoichiometry() == 1 )
+    self.assertTrue( sr.getDenominator() == 1 )
     pass  
 
   def test_ReadSBML_Species_L2_1(self):
@@ -901,7 +993,7 @@ class TestReadSBML(unittest.TestCase):
     "</listOfSpecies>")
     self.D = libsbml.readSBMLFromString(s)
     self.M = self.D.getModel()
-    self.assert_( self.M.getNumSpecies() == 1 )
+    self.assertTrue( self.M.getNumSpecies() == 1 )
     sp = self.M.getSpecies(0)
     self.assertEqual( True, sp.isSetId() )
     self.assertEqual( False, sp.isSetName() )
@@ -911,15 +1003,15 @@ class TestReadSBML(unittest.TestCase):
     self.assertEqual( True, sp.isSetSubstanceUnits() )
     self.assertEqual( True, sp.isSetSpatialSizeUnits() )
     self.assertEqual( True, sp.isSetCharge() )
-    self.assert_((  "Glucose"  == sp.getId() ))
-    self.assert_((  "cell"     == sp.getCompartment() ))
-    self.assert_((  "item"     == sp.getSubstanceUnits() ))
-    self.assert_((  "volume"   == sp.getSpatialSizeUnits() ))
-    self.assert_( sp.getInitialConcentration() == 4.1 )
-    self.assert_( sp.getHasOnlySubstanceUnits() == False )
-    self.assert_( sp.getBoundaryCondition() == True )
-    self.assert_( sp.getCharge() == 6 )
-    self.assert_( sp.getConstant() == True )
+    self.assertTrue((  "Glucose"  == sp.getId() ))
+    self.assertTrue((  "cell"     == sp.getCompartment() ))
+    self.assertTrue((  "item"     == sp.getSubstanceUnits() ))
+    self.assertTrue((  "volume"   == sp.getSpatialSizeUnits() ))
+    self.assertTrue( sp.getInitialConcentration() == 4.1 )
+    self.assertTrue( sp.getHasOnlySubstanceUnits() == False )
+    self.assertTrue( sp.getBoundaryCondition() == True )
+    self.assertTrue( sp.getCharge() == 6 )
+    self.assertTrue( sp.getConstant() == True )
     pass  
 
   def test_ReadSBML_Species_L2_2(self):
@@ -928,7 +1020,7 @@ class TestReadSBML(unittest.TestCase):
     "</listOfSpecies>")
     self.D = libsbml.readSBMLFromString(s)
     self.M = self.D.getModel()
-    self.assert_( self.M.getNumSpecies() == 1 )
+    self.assertTrue( self.M.getNumSpecies() == 1 )
     sp = self.M.getSpecies(0)
     self.assertEqual( True, sp.isSetId() )
     self.assertEqual( False, sp.isSetName() )
@@ -938,11 +1030,11 @@ class TestReadSBML(unittest.TestCase):
     self.assertEqual( False, sp.isSetSubstanceUnits() )
     self.assertEqual( False, sp.isSetSpatialSizeUnits() )
     self.assertEqual( False, sp.isSetCharge() )
-    self.assert_((  "s"  == sp.getId() ))
-    self.assert_((  "c"  == sp.getCompartment() ))
-    self.assert_( sp.getHasOnlySubstanceUnits() == True )
-    self.assert_( sp.getBoundaryCondition() == False )
-    self.assert_( sp.getConstant() == False )
+    self.assertTrue((  "s"  == sp.getId() ))
+    self.assertTrue((  "c"  == sp.getCompartment() ))
+    self.assertTrue( sp.getHasOnlySubstanceUnits() == True )
+    self.assertTrue( sp.getBoundaryCondition() == False )
+    self.assertTrue( sp.getConstant() == False )
     pass  
 
   def test_ReadSBML_Species_L2_defaults(self):
@@ -951,7 +1043,7 @@ class TestReadSBML(unittest.TestCase):
     "</listOfSpecies>")
     self.D = libsbml.readSBMLFromString(s)
     self.M = self.D.getModel()
-    self.assert_( self.M.getNumSpecies() == 1 )
+    self.assertTrue( self.M.getNumSpecies() == 1 )
     sp = self.M.getSpecies(0)
     self.assertEqual( True, sp.isSetId() )
     self.assertEqual( False, sp.isSetName() )
@@ -961,11 +1053,11 @@ class TestReadSBML(unittest.TestCase):
     self.assertEqual( False, sp.isSetSubstanceUnits() )
     self.assertEqual( False, sp.isSetSpatialSizeUnits() )
     self.assertEqual( False, sp.isSetCharge() )
-    self.assert_((  "Glucose_6_P"  == sp.getId() ))
-    self.assert_((  "cell"         == sp.getCompartment() ))
-    self.assert_( sp.getHasOnlySubstanceUnits() == False )
-    self.assert_( sp.getBoundaryCondition() == False )
-    self.assert_( sp.getConstant() == False )
+    self.assertTrue((  "Glucose_6_P"  == sp.getId() ))
+    self.assertTrue((  "cell"         == sp.getCompartment() ))
+    self.assertTrue( sp.getHasOnlySubstanceUnits() == False )
+    self.assertTrue( sp.getBoundaryCondition() == False )
+    self.assertTrue( sp.getConstant() == False )
     pass  
 
   def test_ReadSBML_Unit(self):
@@ -976,14 +1068,14 @@ class TestReadSBML(unittest.TestCase):
     "</listOfUnitDefinitions>")
     self.D = libsbml.readSBMLFromString(s)
     self.M = self.D.getModel()
-    self.assert_( self.M.getNumUnitDefinitions() == 1 )
+    self.assertTrue( self.M.getNumUnitDefinitions() == 1 )
     ud = self.M.getUnitDefinition(0)
-    self.assert_((  "substance" == ud.getId() ))
-    self.assert_( ud.getNumUnits() == 1 )
+    self.assertTrue((  "substance" == ud.getId() ))
+    self.assertTrue( ud.getNumUnits() == 1 )
     u = ud.getUnit(0)
-    self.assert_( u.getKind() == libsbml.UNIT_KIND_MOLE )
-    self.assert_( u.getExponent() == 1 )
-    self.assert_( u.getScale() == -3 )
+    self.assertTrue( u.getKind() == libsbml.UNIT_KIND_MOLE )
+    self.assertTrue( u.getExponent() == 1 )
+    self.assertTrue( u.getScale() == -3 )
     pass  
 
   def test_ReadSBML_UnitDefinition(self):
@@ -992,9 +1084,9 @@ class TestReadSBML(unittest.TestCase):
     "</listOfUnitDefinitions>")
     self.D = libsbml.readSBMLFromString(s)
     self.M = self.D.getModel()
-    self.assert_( self.M.getNumUnitDefinitions() == 1 )
+    self.assertTrue( self.M.getNumUnitDefinitions() == 1 )
     ud = self.M.getUnitDefinition(0)
-    self.assert_((  "mmls" == ud.getId() ))
+    self.assertTrue((  "mmls" == ud.getId() ))
     pass  
 
   def test_ReadSBML_UnitDefinition_L2(self):
@@ -1003,12 +1095,12 @@ class TestReadSBML(unittest.TestCase):
     "</listOfUnitDefinitions>")
     self.D = libsbml.readSBMLFromString(s)
     self.M = self.D.getModel()
-    self.assert_( self.M.getNumUnitDefinitions() == 1 )
+    self.assertTrue( self.M.getNumUnitDefinitions() == 1 )
     ud = self.M.getUnitDefinition(0)
     self.assertEqual( True, ud.isSetId() )
     self.assertEqual( True, ud.isSetName() )
-    self.assert_((  "mmls" == ud.getId() ))
-    self.assert_((  "mmol/ls" == ud.getName() ))
+    self.assertTrue((  "mmls" == ud.getId() ))
+    self.assertTrue((  "mmol/ls" == ud.getName() ))
     pass  
 
   def test_ReadSBML_Unit_L2(self):
@@ -1021,37 +1113,41 @@ class TestReadSBML(unittest.TestCase):
     "</listOfUnitDefinitions>")
     self.D = libsbml.readSBMLFromString(s)
     self.M = self.D.getModel()
-    self.assert_( self.M.getNumUnitDefinitions() == 1 )
+    self.assertTrue( self.M.getNumUnitDefinitions() == 1 )
     ud = self.M.getUnitDefinition(0)
     self.assertEqual( True, ud.isSetId() )
-    self.assert_((  "Fahrenheit" == ud.getId() ))
-    self.assert_( ud.getNumUnits() == 1 )
+    self.assertTrue((  "Fahrenheit" == ud.getId() ))
+    self.assertTrue( ud.getNumUnits() == 1 )
     u = ud.getUnit(0)
-    self.assert_( u.getKind() == libsbml.UNIT_KIND_CELSIUS )
-    self.assert_( u.getExponent() == 1 )
-    self.assert_( u.getScale() == 0 )
-    self.assert_( u.getMultiplier() == 1.8 )
-    self.assert_( u.getOffset() == 32 )
+    self.assertTrue( u.getKind() == libsbml.UNIT_KIND_CELSIUS )
+    self.assertTrue( u.getExponent() == 1 )
+    self.assertTrue( u.getScale() == 0 )
+    self.assertTrue( u.getMultiplier() == 1.8 )
+    self.assertTrue( u.getOffset() == 32 )
     pass  
 
   def test_ReadSBML_Unit_defaults_L1_L2(self):
-    s = wrapSBML_L1v2("<listOfUnitDefinitions>" + 
-    "  <unitDefinition name='bogomips'>" + 
-    "    <listOfUnits> <unit kind='second'/> </listOfUnits>" + 
-    "  </unitDefinition>" + 
-    "</listOfUnitDefinitions>")
+    s = wrapSBML_L1v2("    <listOfUnitDefinitions>\n" + 
+    "      <unitDefinition name=\"bogomips\">\n" + 
+    "        <listOfUnits>\n" + 
+    "          <unit kind=\"second\"/>\n" + 
+    "        </listOfUnits>\n" + 
+    "      </unitDefinition>\n" + 
+    "    </listOfUnitDefinitions>\n")
     self.D = libsbml.readSBMLFromString(s)
     self.M = self.D.getModel()
-    self.assert_( self.M.getNumUnitDefinitions() == 1 )
+    self.assertTrue( self.M.getNumUnitDefinitions() == 1 )
     ud = self.M.getUnitDefinition(0)
-    self.assert_((  "bogomips" == ud.getId() ))
-    self.assert_( ud.getNumUnits() == 1 )
+    self.assertTrue((  "bogomips" == ud.getId() ))
+    self.assertTrue( ud.getNumUnits() == 1 )
     u = ud.getUnit(0)
-    self.assert_( u.getKind() == libsbml.UNIT_KIND_SECOND )
-    self.assert_( u.getExponent() == 1 )
-    self.assert_( u.getScale() == 0 )
-    self.assert_( u.getMultiplier() == 1.0 )
-    self.assert_( u.getOffset() == 0.0 )
+    self.assertTrue( u.getKind() == libsbml.UNIT_KIND_SECOND )
+    self.assertTrue( u.getExponent() == 1 )
+    self.assertTrue( u.getScale() == 0 )
+    self.assertTrue( u.getMultiplier() == 1.0 )
+    self.assertTrue( u.getOffset() == 0.0 )
+    output = libsbml.writeSBMLToString(self.D)
+    self.assertEqual( True, self.equals(s,output) )
     pass  
 
   def test_ReadSBML_annotation(self):
@@ -1062,24 +1158,24 @@ class TestReadSBML(unittest.TestCase):
     "</annotation>")
     self.D = libsbml.readSBMLFromString(s)
     self.M = self.D.getModel()
-    self.assert_( self.M.getAnnotation() != None )
+    self.assertTrue( self.M.getAnnotation() != None )
     ann = self.M.getAnnotation()
-    self.assert_( ann.getNumChildren() == 2 )
+    self.assertTrue( ann.getNumChildren() == 2 )
     pass  
 
   def test_ReadSBML_annotation_sbml(self):
     s = wrapXML("<sbml level=\"1\" version=\"1\">" + 
-    "  <annotation xmlns:jd = \"http://www.sys-bio.org/sbml\">" + 
+    "  <annotation xmlns:jd=\"http://www.sys-bio.org/sbml\">" + 
     "    <jd:header>" + 
-    "      <VersionHeader SBMLVersion = \"1.0\"/>" + 
+    "      <VersionHeader SBMLVersion=\"1.0\"/>" + 
     "    </jd:header>" + 
     "    <jd:display>" + 
-    "      <SBMLGraphicsHeader BackGroundColor = \"15728639\"/>" + 
+    "      <SBMLGraphicsHeader BackGroundColor=\"15728639\"/>" + 
     "    </jd:display>" + 
     "  </annotation>" + 
     "</sbml>")
     self.D = libsbml.readSBMLFromString(s)
-    self.assert_( self.D.getNumErrors() > 0 )
+    self.assertTrue( self.D.getNumErrors() > 0 )
     pass  
 
   def test_ReadSBML_annotation_sbml_L2(self):
@@ -1093,7 +1189,99 @@ class TestReadSBML(unittest.TestCase):
     " </sbml>")
     self.D = libsbml.readSBMLFromString(s)
     self.M = self.D.getModel()
-    self.assert_( self.D.getNumErrors() == 0 )
+    self.assertTrue( self.D.getNumErrors() == 0 )
+    pass  
+
+  def test_ReadSBML_bad_indents(self):
+    valid = wrapXML("<sbml xmlns=\"http://www.sbml.org/sbml/level2/version4\" level=\"2\" version=\"4\">\n" + 
+    "  <model>\n" + 
+    "    <notes>\n" + 
+    "      <body xmlns=\"http://www.w3.org/1999/xhtml\">\n" + 
+    "        <div class=\"dc:publisher\">This file has been produced by\n" + 
+    "          <a href=\"https://livermetabolism.com/contact.html\" title=\"Matthias Koenig\" target=\"_blank\">Matthias Koenig</a>.\n" + 
+    "        </div>\n" + 
+    "        <div class=\"dc:license\">\n" + 
+    "          <p>Redistribution and use of any part of this model_COMMA_ with or without modification_COMMA_ are permitted provided that " + 
+    "the following conditions are met :\n" + 
+    "            <ol>\n" + 
+    "            <li>Redistributions of this SBML file must retain the above copyright notice_COMMA_ this list of conditions " + 
+    "and the following disclaimer.</li>\n" + 
+    "          </ol>\n" + 
+    "            This model is distributed in the hope that it will be useful_COMMA_ but WITHOUT ANY WARRANTY; without even " + 
+    "the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.</p>\n" + 
+    "        </div>\n" + 
+    "      </body>\n" + 
+    "    </notes>\n" + 
+    "    <listOfCompartments>\n" + 
+    "      <compartment id=\"compartmentOne\" size=\"1\"/>\n" + 
+    "    </listOfCompartments>\n" + 
+    "    <listOfSpecies>\n" + 
+    "      <species id=\"S1\" compartment=\"compartmentOne\" initialConcentration=\"1\"/>\n" + 
+    "      <species id=\"S2\" compartment=\"compartmentOne\" initialConcentration=\"0\"/>\n" + 
+    "    </listOfSpecies>\n" + 
+    "  </model>\n" + 
+    "</sbml>\n")
+    self.D = libsbml.readSBMLFromString(valid)
+    self.assertTrue( self.D.getNumErrors() == 0 )
+    output = libsbml.writeSBMLToString(self.D)
+    self.assertEqual( True, self.equals(valid,output) )
+    pass  
+
+  def test_ReadSBML_bad_indents_2(self):
+    valid = wrapXML("<sbml xmlns=\"http://www.sbml.org/sbml/level2/version4\" level=\"2\" version=\"4\">\n" + 
+    "  <model>\n" + 
+    "    <notes>\n" + 
+    "      <p xmlns=\"http://www.w3.org/1999/xhtml\">Hello<a href=\"test\">link</a></p>\n" + 
+    "    </notes>\n" + 
+    "  </model>\n" + 
+    "</sbml>\n")
+    d = libsbml.SBMLDocument(2,4)
+    m = d.createModel()
+    newnotes =  "<p xmlns=\"http://www.w3.org/1999/xhtml\">Hello<a href=\"test\">link</a></p>";
+    m.setNotes(newnotes)
+    output = libsbml.writeSBMLToString(d)
+    self.assertEqual( True, self.equals(valid,output) )
+    d = None
+    pass  
+
+  def test_ReadSBML_bad_indents_3(self):
+    valid = wrapXML("<sbml xmlns=\"http://www.sbml.org/sbml/level2/version4\" level=\"2\" version=\"4\">\n" + 
+    "  <model>\n" + 
+    "    <notes>\n" + 
+    "      <p xmlns=\"http://www.w3.org/1999/xhtml\">Hello<a href=\"test\">link</a></p>\n" + 
+    "      <p xmlns=\"http://www.w3.org/1999/xhtml\">Hello</p>\n" + 
+    "      <p xmlns=\"http://www.w3.org/1999/xhtml\">Hello<a href=\"test\">link</a>\n" + 
+    "      <a href=\"foo\">foolink</a></p>\n" + 
+    "    </notes>\n" + 
+    "  </model>\n" + 
+    "</sbml>\n")
+    d = libsbml.SBMLDocument(2,4)
+    m = d.createModel()
+    newnotes =  "<p xmlns=\"http://www.w3.org/1999/xhtml\">Hello<a href=\"test\">link</a></p>";
+    m.setNotes(newnotes)
+    m.appendNotes("<p xmlns=\"http://www.w3.org/1999/xhtml\">Hello</p>")
+    m.appendNotes("<p xmlns=\"http://www.w3.org/1999/xhtml\">Hello<a href=\"test\">link</a><a href=\"foo\">foolink</a></p>")
+    output = libsbml.writeSBMLToString(d)
+    self.assertEqual( True, self.equals(valid,output) )
+    d = None
+    pass  
+
+  def test_ReadSBML_bad_indents_4(self):
+    valid = wrapXML("<sbml xmlns=\"http://www.sbml.org/sbml/level2/version4\" level=\"2\" version=\"4\">\n" + 
+    "  <model>\n" + 
+    "    <notes>\n" + 
+    "      <p xmlns=\"http://www.w3.org/1999/xhtml\">\n" + 
+    "        <a href=\"test\">link</a>\n" + 
+    "      </p>\n" + 
+    "    </notes>\n" + 
+    "  </model>\n" + 
+    "</sbml>\n")
+    d = libsbml.SBMLDocument(2,4)
+    m = d.createModel()
+    m.setNotes("<p xmlns=\"http://www.w3.org/1999/xhtml\"><a href=\"test\">link</a></p>")
+    output = libsbml.writeSBMLToString(d)
+    self.assertEqual( True, self.equals(valid,output) )
+    d = None
     pass  
 
   def test_ReadSBML_invalid_default_namespace(self):
@@ -1113,7 +1301,7 @@ class TestReadSBML(unittest.TestCase):
     "       <species id=\"S2\" initialConcentration=\"0\" compartment=\"compartmentOne\"/>" + 
     "     </listOfSpecies>" + 
     "     <listOfParameters>" + 
-    "       <parameter id=\"t\" value = \"1\" units=\"second\"/>" + 
+    "       <parameter id=\"t\" value=\"1\" units=\"second\"/>" + 
     "     </listOfParameters>" + 
     "     <listOfConstraints>" + 
     "       <constraint sboTerm=\"SBO:0000064\">" + 
@@ -1164,7 +1352,7 @@ class TestReadSBML(unittest.TestCase):
     "       <species id=\"S2\" initialConcentration=\"0\" compartment=\"compartmentOne\"/>" + 
     "     </listOfSpecies>" + 
     "     <listOfParameters>" + 
-    "       <parameter id=\"t\" value = \"1\" units=\"second\"/>" + 
+    "       <parameter id=\"t\" value=\"1\" units=\"second\"/>" + 
     "     </listOfParameters>" + 
     "     <listOfConstraints>" + 
     "       <constraint sboTerm=\"SBO:0000064\">" + 
@@ -1200,14 +1388,14 @@ class TestReadSBML(unittest.TestCase):
     "   </model>" + 
     " </sbml>")
     self.D = libsbml.readSBMLFromString(valid)
-    self.assert_( self.D.getNumErrors() == 0 )
+    self.assertTrue( self.D.getNumErrors() == 0 )
     _dummyList = [ self.D ]; _dummyList[:] = []; del _dummyList
     self.D = libsbml.readSBMLFromString(invalid)
-    self.assert_( self.D.getNumErrors() == 9 )
+    self.assertTrue( self.D.getNumErrors() == 9 )
     pass  
 
   def test_ReadSBML_line_col_numbers(self):
-    #setXMLParser()
+    setXMLParser()
 
     s = wrapString("<?xml version='1.0' encoding='UTF-8'?>\n" + 
     "<sbml xmlns='http://www.sbml.org/sbml/level2' level='2' version='1'>\n" + 
@@ -1217,10 +1405,11 @@ class TestReadSBML(unittest.TestCase):
     "</sbml>\n")
     self.D = libsbml.readSBMLFromString(s)
     self.M = self.D.getModel()
-    self.assert_( self.M != None )
+    self.assertTrue( self.M != None )
     sb = self.M
     sb = self.M.getListOfReactions()
     sb = self.M.getReaction(0)
+    sb = None
     pass  
 
   def test_ReadSBML_metaid(self):
@@ -1250,31 +1439,31 @@ class TestReadSBML(unittest.TestCase):
     "</listOfEvents>")
     self.D = libsbml.readSBMLFromString(s)
     self.M = self.D.getModel()
-    self.assert_( self.M != None )
+    self.assertTrue( self.M != None )
     sb = self.M.getFunctionDefinition(0)
     self.assertEqual( True, sb.isSetMetaId() )
-    self.assert_((  "fd" == sb.getMetaId() ))
+    self.assertTrue((  "fd" == sb.getMetaId() ))
     sb = self.M.getUnitDefinition(0)
     self.assertEqual( True, sb.isSetMetaId() )
-    self.assert_((  "ud" == sb.getMetaId() ))
+    self.assertTrue((  "ud" == sb.getMetaId() ))
     sb = self.M.getCompartment(0)
     self.assertEqual( True, sb.isSetMetaId() )
-    self.assert_((  "c" == sb.getMetaId() ))
+    self.assertTrue((  "c" == sb.getMetaId() ))
     sb = self.M.getSpecies(0)
     self.assertEqual( True, sb.isSetMetaId() )
-    self.assert_((  "s" == sb.getMetaId() ))
+    self.assertTrue((  "s" == sb.getMetaId() ))
     sb = self.M.getParameter(0)
     self.assertEqual( True, sb.isSetMetaId() )
-    self.assert_((  "p" == sb.getMetaId() ))
+    self.assertTrue((  "p" == sb.getMetaId() ))
     sb = self.M.getRule(0)
     self.assertEqual( True, sb.isSetMetaId() )
-    self.assert_((  "rr" == sb.getMetaId() ))
+    self.assertTrue((  "rr" == sb.getMetaId() ))
     sb = self.M.getReaction(0)
     self.assertEqual( True, sb.isSetMetaId() )
-    self.assert_((  "rx" == sb.getMetaId() ))
+    self.assertTrue((  "rx" == sb.getMetaId() ))
     sb = self.M.getEvent(0)
     self.assertEqual( True, sb.isSetMetaId() )
-    self.assert_((  "e" == sb.getMetaId() ))
+    self.assertTrue((  "e" == sb.getMetaId() ))
     pass  
 
   def test_ReadSBML_metaid_Event(self):
@@ -1287,17 +1476,17 @@ class TestReadSBML(unittest.TestCase):
     "</listOfEvents>")
     self.D = libsbml.readSBMLFromString(s)
     self.M = self.D.getModel()
-    self.assert_( self.M != None )
+    self.assertTrue( self.M != None )
     e = self.M.getEvent(0)
     sb = e
     self.assertEqual( True, sb.isSetMetaId() )
-    self.assert_((  "e" == sb.getMetaId() ))
+    self.assertTrue((  "e" == sb.getMetaId() ))
     sb = e.getListOfEventAssignments()
     self.assertEqual( True, sb.isSetMetaId() )
-    self.assert_((  "loea" == sb.getMetaId() ))
+    self.assertTrue((  "loea" == sb.getMetaId() ))
     sb = e.getEventAssignment(0)
     self.assertEqual( True, sb.isSetMetaId() )
-    self.assert_((  "ea" == sb.getMetaId() ))
+    self.assertTrue((  "ea" == sb.getMetaId() ))
     pass  
 
   def test_ReadSBML_metaid_ListOf(self):
@@ -1311,31 +1500,31 @@ class TestReadSBML(unittest.TestCase):
     "<listOfEvents              metaid='loe'/>")
     self.D = libsbml.readSBMLFromString(s)
     self.M = self.D.getModel()
-    self.assert_( self.M != None )
+    self.assertTrue( self.M != None )
     sb = self.M.getListOfFunctionDefinitions()
     self.assertEqual( True, sb.isSetMetaId() )
-    self.assert_((  "lofd" == sb.getMetaId() ))
+    self.assertTrue((  "lofd" == sb.getMetaId() ))
     sb = self.M.getListOfUnitDefinitions()
     self.assertEqual( True, sb.isSetMetaId() )
-    self.assert_((  "loud" == sb.getMetaId() ))
+    self.assertTrue((  "loud" == sb.getMetaId() ))
     sb = self.M.getListOfCompartments()
     self.assertEqual( True, sb.isSetMetaId() )
-    self.assert_((  "loc" == sb.getMetaId() ))
+    self.assertTrue((  "loc" == sb.getMetaId() ))
     sb = self.M.getListOfSpecies()
     self.assertEqual( True, sb.isSetMetaId() )
-    self.assert_((  "los" == sb.getMetaId() ))
+    self.assertTrue((  "los" == sb.getMetaId() ))
     sb = self.M.getListOfParameters()
     self.assertEqual( True, sb.isSetMetaId() )
-    self.assert_((  "lop" == sb.getMetaId() ))
+    self.assertTrue((  "lop" == sb.getMetaId() ))
     sb = self.M.getListOfRules()
     self.assertEqual( True, sb.isSetMetaId() )
-    self.assert_((  "lor" == sb.getMetaId() ))
+    self.assertTrue((  "lor" == sb.getMetaId() ))
     sb = self.M.getListOfReactions()
     self.assertEqual( True, sb.isSetMetaId() )
-    self.assert_((  "lorx" == sb.getMetaId() ))
+    self.assertTrue((  "lorx" == sb.getMetaId() ))
     sb = self.M.getListOfEvents()
     self.assertEqual( True, sb.isSetMetaId() )
-    self.assert_((  "loe" == sb.getMetaId() ))
+    self.assertTrue((  "loe" == sb.getMetaId() ))
     pass  
 
   def test_ReadSBML_metaid_Reaction(self):
@@ -1355,32 +1544,32 @@ class TestReadSBML(unittest.TestCase):
     "</listOfReactions>")
     self.D = libsbml.readSBMLFromString(s)
     self.M = self.D.getModel()
-    self.assert_( self.M != None )
+    self.assertTrue( self.M != None )
     r = self.M.getReaction(0)
     sb = r
     self.assertEqual( True, sb.isSetMetaId() )
-    self.assert_((  "r" == sb.getMetaId() ))
+    self.assertTrue((  "r" == sb.getMetaId() ))
     sb = r.getListOfReactants()
     self.assertEqual( True, sb.isSetMetaId() )
-    self.assert_((  "lor" == sb.getMetaId() ))
+    self.assertTrue((  "lor" == sb.getMetaId() ))
     sb = r.getReactant(0)
     self.assertEqual( True, sb.isSetMetaId() )
-    self.assert_((  "sr1" == sb.getMetaId() ))
+    self.assertTrue((  "sr1" == sb.getMetaId() ))
     sb = r.getListOfProducts()
     self.assertEqual( True, sb.isSetMetaId() )
-    self.assert_((  "lop" == sb.getMetaId() ))
+    self.assertTrue((  "lop" == sb.getMetaId() ))
     sb = r.getProduct(0)
     self.assertEqual( True, sb.isSetMetaId() )
-    self.assert_((  "sr2" == sb.getMetaId() ))
+    self.assertTrue((  "sr2" == sb.getMetaId() ))
     sb = r.getListOfModifiers()
     self.assertEqual( True, sb.isSetMetaId() )
-    self.assert_((  "lom" == sb.getMetaId() ))
+    self.assertTrue((  "lom" == sb.getMetaId() ))
     sb = r.getModifier(0)
     self.assertEqual( True, sb.isSetMetaId() )
-    self.assert_((  "msr" == sb.getMetaId() ))
+    self.assertTrue((  "msr" == sb.getMetaId() ))
     sb = r.getKineticLaw()
     self.assertEqual( True, sb.isSetMetaId() )
-    self.assert_((  "kl" == sb.getMetaId() ))
+    self.assertTrue((  "kl" == sb.getMetaId() ))
     pass  
 
   def test_ReadSBML_metaid_Unit(self):
@@ -1393,17 +1582,26 @@ class TestReadSBML(unittest.TestCase):
     "</listOfUnitDefinitions>")
     self.D = libsbml.readSBMLFromString(s)
     self.M = self.D.getModel()
-    self.assert_( self.M != None )
+    self.assertTrue( self.M != None )
     ud = self.M.getUnitDefinition(0)
     sb = ud
     self.assertEqual( True, sb.isSetMetaId() )
-    self.assert_((  "ud" == sb.getMetaId() ))
+    self.assertTrue((  "ud" == sb.getMetaId() ))
     sb = ud.getListOfUnits()
     self.assertEqual( True, sb.isSetMetaId() )
-    self.assert_((  "lou" == sb.getMetaId() ))
+    self.assertTrue((  "lou" == sb.getMetaId() ))
     sb = ud.getUnit(0)
     self.assertEqual( True, sb.isSetMetaId() )
-    self.assert_((  "u" == sb.getMetaId() ))
+    self.assertTrue((  "u" == sb.getMetaId() ))
+    pass  
+
+  def test_ReadSBML_no_sbml(self):
+    invalid1 = wrapXML("<html/>"  
+    )
+    self.D = libsbml.readSBMLFromString(invalid1)
+    self.M = self.D.getModel()
+    self.assertTrue( self.M == None )
+    self.assertEqual( True, self.D.getErrorLog().contains(NotSchemaConformant) )
     pass  
 
   def test_ReadSBML_notes(self):
@@ -1421,9 +1619,9 @@ class TestReadSBML(unittest.TestCase):
     self.M = self.D.getModel()
     r = self.M.getReaction(0)
     kl = r.getKineticLaw()
-    self.assert_( kl.getNotes() != None )
+    self.assertTrue( kl.getNotes() != None )
     notes = kl.getNotes().getChild(0).getCharacters()
-    self.assert_( (  "This is a test note." != notes ) == False )
+    self.assertTrue( (  "This is a test note." != notes ) == False )
     pass  
 
   def test_ReadSBML_notes_ListOf(self):
@@ -1441,19 +1639,19 @@ class TestReadSBML(unittest.TestCase):
     "</listOfCompartments>")
     self.D = libsbml.readSBMLFromString(s)
     self.M = self.D.getModel()
-    self.assert_( self.M != None )
+    self.assertTrue( self.M != None )
     sb = self.M.getListOfFunctionDefinitions()
     self.assertEqual( True, sb.isSetNotes() )
     notes = sb.getNotes().getChild(0).getCharacters()
-    self.assert_( (  "My Functions" != notes ) == False )
+    self.assertTrue( (  "My Functions" != notes ) == False )
     sb = self.M.getListOfUnitDefinitions()
     self.assertEqual( True, sb.isSetNotes() )
     notes = sb.getNotes().getChild(0).getCharacters()
-    self.assert_( (  "My Units" != notes ) == False )
+    self.assertTrue( (  "My Units" != notes ) == False )
     sb = self.M.getListOfCompartments()
     self.assertEqual( True, sb.isSetNotes() )
     notes = sb.getNotes().getChild(0).getCharacters()
-    self.assert_( (  "My Compartments" != notes ) == False )
+    self.assertTrue( (  "My Compartments" != notes ) == False )
     pass  
 
   def test_ReadSBML_notes_sbml(self):
@@ -1461,10 +1659,10 @@ class TestReadSBML(unittest.TestCase):
     "  <notes>Notes are not allowed as part of the SBML element.</notes>" + 
     "</sbml>")
     self.D = libsbml.readSBMLFromString(s)
-    self.assert_( self.D.getNotes() != None )
+    self.assertTrue( self.D.getNotes() != None )
     notes = self.D.getNotes().getChild(0).getCharacters()
-    self.assert_( (  "Notes are not allowed as part of the SBML element." != notes ) == False )
-    self.assert_( self.D.getNumErrors() > 0 )
+    self.assertTrue( (  "Notes are not allowed as part of the SBML element." != notes ) == False )
+    self.assertTrue( self.D.getNumErrors() > 0 )
     pass  
 
   def test_ReadSBML_notes_sbml_L2(self):
@@ -1477,8 +1675,8 @@ class TestReadSBML(unittest.TestCase):
     "   </model>" + 
     " </sbml>")
     self.D = libsbml.readSBMLFromString(s)
-    self.assert_( self.D.getNotes() != None )
-    self.assert_( self.D.getNumErrors() == 0 )
+    self.assertTrue( self.D.getNotes() != None )
+    self.assertTrue( self.D.getNumErrors() == 0 )
     pass  
 
   def test_ReadSBML_notes_xmlns(self):
@@ -1487,12 +1685,50 @@ class TestReadSBML(unittest.TestCase):
     "</notes>")
     self.D = libsbml.readSBMLFromString(s)
     self.M = self.D.getModel()
-    self.assert_( self.M.getNotes() != None )
+    self.assertTrue( self.M.getNotes() != None )
     ns = self.M.getNotes().getChild(0).getNamespaces()
-    self.assert_( ns.getLength() == 1 )
-    self.assert_((  "http://www.w3.org/1999/xhtml" == ns.getURI(0) ))
+    self.assertTrue( ns.getLength() == 1 )
+    uri = ns.getURI(0)
+    self.assertTrue((  "http://www.w3.org/1999/xhtml" == uri ))
     notes = self.M.getNotes().getChild(0).getChild(0).getCharacters()
-    self.assert_( (  "Some text." != notes ) == False )
+    self.assertTrue( (  "Some text." != notes ) == False )
+    pass  
+
+  def test_ReadSBML_prefix(self):
+    unprefixed = wrapString("<?xml version='1.0' encoding='UTF-8'?>" + 
+    "<sbml xmlns='http://www.sbml.org/sbml/level2/version4' level='2' version='4'>" + 
+    "  <model id='Model1' name='New Model'>" + 
+    "    <listOfCompartments>" + 
+    "      <compartment id='compartment_2' name='compartment_2' size='1'/>" + 
+    "    </listOfCompartments>" + 
+    "    <listOfSpecies>" + 
+    "      <species id='species_2' name='species_2' compartment='compartment_2' initialConcentration='1'/>" + 
+    "    </listOfSpecies>" + 
+    "  </model>" + 
+    "</sbml>")
+    prefixed = wrapString("<?xml version='1.0' encoding='UTF-8'?>" + 
+    "<sbml:sbml xmlns:sbml='http://www.sbml.org/sbml/level2/version4' sbml:level='2' sbml:version='4'>" + 
+    "  <sbml:model sbml:id='Model1' sbml:name='New Model'>" + 
+    "    <sbml:listOfCompartments>" + 
+    "      <sbml:compartment sbml:id='compartment_1' sbml:name='compartment_1' sbml:size='1'/>" + 
+    "    </sbml:listOfCompartments>" + 
+    "    <sbml:listOfSpecies>" + 
+    "      <sbml:species sbml:id='species_1' sbml:name='species_1' sbml:compartment='compartment_1' sbml:initialConcentration='1'/>" + 
+    "    </sbml:listOfSpecies>" + 
+    "  </sbml:model>" + 
+    "</sbml:sbml>")
+    doc1 = libsbml.readSBMLFromString(unprefixed)
+    doc2 = libsbml.readSBMLFromString(prefixed)
+    model1 = doc1.getModel()
+    model2 = doc2.getModel()
+    self.assertTrue( model1 != None )
+    self.assertTrue( model2 != None )
+    self.assertTrue( model1.addCompartment(model2.getCompartment(0)) == libsbml.LIBSBML_OPERATION_SUCCESS )
+    self.assertTrue( model1.addSpecies(model2.getSpecies(0)) == libsbml.LIBSBML_OPERATION_SUCCESS )
+    self.assertTrue( model2.addCompartment(model1.getCompartment(0)) == libsbml.LIBSBML_OPERATION_SUCCESS )
+    self.assertTrue( model2.addSpecies(model1.getSpecies(0)) == libsbml.LIBSBML_OPERATION_SUCCESS )
+    doc1 = None
+    doc2 = None
     pass  
 
 def suite():
@@ -1506,4 +1742,3 @@ if __name__ == "__main__":
     sys.exit(0)
   else:
     sys.exit(1)
-

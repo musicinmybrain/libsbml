@@ -18,11 +18,6 @@
  * This file is part of libSBML.  Please visit http://sbml.org for more
  * information about SBML, and the latest version of libSBML.
  *
- * Copyright (C) 2020 jointly by the following organizations:
- *     1. California Institute of Technology, Pasadena, CA, USA
- *     2. University of Heidelberg, Heidelberg, Germany
- *     3. University College London, London, UK
- *
  * Copyright 2005-2010 California Institute of Technology.
  * Copyright 2002-2005 California Institute of Technology and
  *                     Japan Science and Technology Corporation.
@@ -194,6 +189,8 @@ public class TestCompartment {
     assertTrue( c.getSpatialDimensions() == 3 );
     assertTrue( c.getConstant() == true );
     c = null;
+    xmlns = null;
+    sbmlns = null;
   }
 
   public void test_Compartment_free_NULL()
@@ -202,14 +199,34 @@ public class TestCompartment {
 
   public void test_Compartment_getSpatialDimensions()
   {
+    assertEquals( true, C.isSetSpatialDimensions() );
+    assertTrue( C.getSpatialDimensions() == 3 );
     C.setSpatialDimensions(1);
     assertTrue( C.getSpatialDimensions() == 1 );
+    assertEquals( true, C.isSetSpatialDimensions() );
+    assertTrue( C.unsetSpatialDimensions() == libsbml.LIBSBML_UNEXPECTED_ATTRIBUTE );
+    assertTrue( C.getSpatialDimensions() == 3 );
+    assertEquals( true, C.isSetSpatialDimensions() );
   }
 
   public void test_Compartment_getsetConstant()
   {
+    assertTrue( C.getConstant() == true );
+    assertTrue( C.isSetConstant() == true );
     C.setConstant(true);
     assertTrue( C.getConstant() == true );
+    assertTrue( C.isSetConstant() == true );
+    int ret = C.unsetConstant();
+    assertTrue( ret == libsbml.LIBSBML_UNEXPECTED_ATTRIBUTE );
+    assertTrue( C.getConstant() == true );
+    assertTrue( C.isSetConstant() == true );
+    C.setConstant(false);
+    assertTrue( C.getConstant() == false );
+    assertTrue( C.isSetConstant() == true );
+    ret = C.unsetConstant();
+    assertTrue( ret == libsbml.LIBSBML_UNEXPECTED_ATTRIBUTE );
+    assertTrue( C.getConstant() == true );
+    assertTrue( C.isSetConstant() == true );
   }
 
   public void test_Compartment_getsetType()

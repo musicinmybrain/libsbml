@@ -2,8 +2,7 @@
 ///  @brief   L3FormulaParser unit tests
 ///  @author  Frank Bergmann (Csharp conversion)
 ///  @author  Akiya Jouraku (Csharp conversion)
-///  @author  Ben Bornstein
- 
+///  @author  Ben Bornstein 
 ///  
 ///  ====== WARNING ===== WARNING ===== WARNING ===== WARNING ===== WARNING ======
 /// 
@@ -130,7 +129,7 @@ namespace LibSBMLCSTest.math {
 
     public void test_SBML_C_parseL3Formula_1()
     {
-      ASTNode r = libsbml.parseL3Formula("1");
+      ASTNode r = "1".parseL3Formula();
       assertTrue( r.getType() == libsbml.AST_INTEGER );
       assertTrue( r.getInteger() == 1 );
       assertTrue( r.getNumChildren() == 0 );
@@ -139,7 +138,7 @@ namespace LibSBMLCSTest.math {
 
     public void test_SBML_C_parseL3Formula_10()
     {
-      ASTNode r = libsbml.parseL3Formula("1 + -2e100 / 3");
+      ASTNode r = "1 + -2e100 / 3".parseL3Formula();
       ASTNode c;
       assertTrue( r.getType() == libsbml.AST_PLUS );
       assertTrue( r.getCharacter() == '+' );
@@ -170,7 +169,7 @@ namespace LibSBMLCSTest.math {
 
     public void test_SBML_C_parseL3Formula_11()
     {
-      ASTNode r = libsbml.parseL3Formula("1 - -foo / 3");
+      ASTNode r = "1 - -foo / 3".parseL3Formula();
       ASTNode c;
       assertTrue( r.getType() == libsbml.AST_MINUS );
       assertTrue( r.getCharacter() == '-' );
@@ -200,7 +199,7 @@ namespace LibSBMLCSTest.math {
 
     public void test_SBML_C_parseL3Formula_12()
     {
-      ASTNode r = libsbml.parseL3Formula("2 * foo^bar + 3.0");
+      ASTNode r = "2 * foo^bar + 3.0".parseL3Formula();
       ASTNode c;
       assertTrue( r.getType() == libsbml.AST_PLUS );
       assertTrue( r.getCharacter() == '+' );
@@ -234,7 +233,7 @@ namespace LibSBMLCSTest.math {
 
     public void test_SBML_C_parseL3Formula_13()
     {
-      ASTNode r = libsbml.parseL3Formula("foo()");
+      ASTNode r = "foo()".parseL3Formula();
       assertTrue( r.getType() == libsbml.AST_FUNCTION );
       assertTrue((  "foo" == r.getName() ));
       assertTrue( r.getNumChildren() == 0 );
@@ -243,7 +242,7 @@ namespace LibSBMLCSTest.math {
 
     public void test_SBML_C_parseL3Formula_14()
     {
-      ASTNode r = libsbml.parseL3Formula("foo(1)");
+      ASTNode r = "foo(1)".parseL3Formula();
       ASTNode c;
       assertTrue( r.getType() == libsbml.AST_FUNCTION );
       assertTrue((  "foo" == r.getName() ));
@@ -257,7 +256,7 @@ namespace LibSBMLCSTest.math {
 
     public void test_SBML_C_parseL3Formula_15()
     {
-      ASTNode r = libsbml.parseL3Formula("foo(1, bar)");
+      ASTNode r = "foo(1, bar)".parseL3Formula();
       ASTNode c;
       assertTrue( r.getType() == libsbml.AST_FUNCTION );
       assertTrue((  "foo" == r.getName() ));
@@ -275,7 +274,7 @@ namespace LibSBMLCSTest.math {
 
     public void test_SBML_C_parseL3Formula_16()
     {
-      ASTNode r = libsbml.parseL3Formula("foo(1, bar, 2^-3)");
+      ASTNode r = "foo(1, bar, 2^-3)".parseL3Formula();
       ASTNode c;
       assertTrue( r.getType() == libsbml.AST_FUNCTION );
       assertTrue((  "foo" == r.getName() ));
@@ -309,21 +308,25 @@ namespace LibSBMLCSTest.math {
 
     public void test_SBML_C_parseL3Formula_17()
     {
-      ASTNode r = libsbml.parseL3Formula("1//1");
+      ASTNode r = "1//1".parseL3Formula();
+      string error;
       assertTrue( r == null );
-      assertTrue((  "Error when parsing input '1//1' at position 3:  syntax error, unexpected '/'" == libsbml.getLastParseL3Error() ));
+      error = .getLastParseL3Error();
+      assertTrue((  "Error when parsing input '1//1' at position 3:  syntax error, unexpected '/'" == error ));
     }
 
     public void test_SBML_C_parseL3Formula_18()
     {
-      ASTNode r = libsbml.parseL3Formula("1+2*3 4");
+      ASTNode r = "1+2*3 4".parseL3Formula();
+      string error;
       assertTrue( r == null );
-      assertTrue((  "Error when parsing input '1+2*3 4' at position 7:  syntax error, unexpected integer" == libsbml.getLastParseL3Error() ));
+      error = .getLastParseL3Error();
+      assertTrue((  "Error when parsing input '1+2*3 4' at position 7:  syntax error, unexpected integer" == error ));
     }
 
     public void test_SBML_C_parseL3Formula_2()
     {
-      ASTNode r = libsbml.parseL3Formula("2.1");
+      ASTNode r = "2.1".parseL3Formula();
       assertTrue( r.getType() == libsbml.AST_REAL );
       assertTrue( r.getReal() == 2.1 );
       assertTrue( r.getNumChildren() == 0 );
@@ -332,7 +335,7 @@ namespace LibSBMLCSTest.math {
 
     public void test_SBML_C_parseL3Formula_3()
     {
-      ASTNode r = libsbml.parseL3Formula("2.1e5");
+      ASTNode r = "2.1e5".parseL3Formula();
       assertTrue( r.getType() == libsbml.AST_REAL_E );
       assertTrue( r.getMantissa() == 2.1 );
       assertTrue( r.getExponent() == 5 );
@@ -342,7 +345,7 @@ namespace LibSBMLCSTest.math {
 
     public void test_SBML_C_parseL3Formula_4()
     {
-      ASTNode r = libsbml.parseL3Formula("foo");
+      ASTNode r = "foo".parseL3Formula();
       assertTrue( r.getType() == libsbml.AST_NAME );
       assertTrue((  "foo" == r.getName() ));
       assertTrue( r.getNumChildren() == 0 );
@@ -351,7 +354,7 @@ namespace LibSBMLCSTest.math {
 
     public void test_SBML_C_parseL3Formula_5()
     {
-      ASTNode r = libsbml.parseL3Formula("1 + foo");
+      ASTNode r = "1 + foo".parseL3Formula();
       ASTNode c;
       assertTrue( r.getType() == libsbml.AST_PLUS );
       assertTrue( r.getCharacter() == '+' );
@@ -369,7 +372,7 @@ namespace LibSBMLCSTest.math {
 
     public void test_SBML_C_parseL3Formula_6()
     {
-      ASTNode r = libsbml.parseL3Formula("1 + 2");
+      ASTNode r = "1 + 2".parseL3Formula();
       ASTNode c;
       assertTrue( r.getType() == libsbml.AST_PLUS );
       assertTrue( r.getCharacter() == '+' );
@@ -387,7 +390,7 @@ namespace LibSBMLCSTest.math {
 
     public void test_SBML_C_parseL3Formula_7()
     {
-      ASTNode r = libsbml.parseL3Formula("1 + 2 * 3");
+      ASTNode r = "1 + 2 * 3".parseL3Formula();
       ASTNode c;
       assertTrue( r.getType() == libsbml.AST_PLUS );
       assertTrue( r.getCharacter() == '+' );
@@ -413,7 +416,7 @@ namespace LibSBMLCSTest.math {
 
     public void test_SBML_C_parseL3Formula_8()
     {
-      ASTNode r = libsbml.parseL3Formula("(1 - 2) * 3");
+      ASTNode r = "(1 - 2) * 3".parseL3Formula();
       ASTNode c;
       assertTrue( r.getType() == libsbml.AST_TIMES );
       assertTrue( r.getCharacter() == '*' );
@@ -439,7 +442,7 @@ namespace LibSBMLCSTest.math {
 
     public void test_SBML_C_parseL3Formula_9()
     {
-      ASTNode r = libsbml.parseL3Formula("1 + -2 / 3");
+      ASTNode r = "1 + -2 / 3".parseL3Formula();
       ASTNode c;
       assertTrue( r.getType() == libsbml.AST_PLUS );
       assertTrue( r.getCharacter() == '+' );
@@ -469,46 +472,54 @@ namespace LibSBMLCSTest.math {
 
     public void test_SBML_C_parseL3Formula_arguments()
     {
-      ASTNode r = libsbml.parseL3Formula("sin(x,y)");
+      string error;
+      ASTNode r = "sin(x,y)".parseL3Formula();
       assertTrue( r == null );
-      assertTrue((  "Error when parsing input 'sin(x,y)' at position 8:  The function 'sin' takes exactly one argument, but 2 were found." == libsbml.getLastParseL3Error() ));
-      r = libsbml.parseL3Formula("delay(x)");
+      error = .getLastParseL3Error();
+      assertTrue((  "Error when parsing input 'sin(x,y)' at position 8:  The function 'sin' takes exactly one argument, but 2 were found." == error ));
+      r = "delay(x)".parseL3Formula();
       assertTrue( r == null );
-      assertTrue((  "Error when parsing input 'delay(x)' at position 8:  The function 'delay' takes exactly two arguments, but 1 were found." == libsbml.getLastParseL3Error() ));
-      r = libsbml.parseL3Formula("piecewise()");
+      error = .getLastParseL3Error();
+      assertTrue((  "Error when parsing input 'delay(x)' at position 8:  The function 'delay' takes exactly two arguments, but 1 were found." == error ));
+      r = "piecewise()".parseL3Formula();
       assertTrue( r == null );
-      assertTrue((  "Error when parsing input 'piecewise()' at position 11:  The function 'piecewise' takes at least one argument, but none were found." == libsbml.getLastParseL3Error() ));
-      r = libsbml.parseL3Formula("gt(x)");
+      error = .getLastParseL3Error();
+      assertTrue((  "Error when parsing input 'piecewise()' at position 11:  The function 'piecewise' takes at least one argument, but none were found." == error ));
+      r = "gt(x)".parseL3Formula();
       assertTrue( r == null );
-      assertTrue((  "Error when parsing input 'gt(x)' at position 5:  The function 'gt' takes at least two arguments, but 1 were found." == libsbml.getLastParseL3Error() ));
-      r = libsbml.parseL3Formula("minus()");
+      error = .getLastParseL3Error();
+      assertTrue((  "Error when parsing input 'gt(x)' at position 5:  The function 'gt' takes at least two arguments, but 1 were found." == error ));
+      r = "minus()".parseL3Formula();
       assertTrue( r == null );
-      assertTrue((  "Error when parsing input 'minus()' at position 7:  The function 'minus' takes exactly one or two arguments, but 0 were found." == libsbml.getLastParseL3Error() ));
-      r = libsbml.parseL3Formula("root(x, y, z)");
+      error = .getLastParseL3Error();
+      assertTrue((  "Error when parsing input 'minus()' at position 7:  The function 'minus' takes exactly one or two arguments, but 0 were found." == error ));
+      r = "root(x, y, z)".parseL3Formula();
       assertTrue( r == null );
-      assertTrue((  "Error when parsing input 'root(x, y, z)' at position 13:  The function 'root' takes exactly one or two arguments, but 3 were found." == libsbml.getLastParseL3Error() ));
-      r = libsbml.parseL3Formula("power()");
+      error = .getLastParseL3Error();
+      assertTrue((  "Error when parsing input 'root(x, y, z)' at position 13:  The function 'root' takes exactly one or two arguments, but 3 were found." == error ));
+      r = "power()".parseL3Formula();
       assertTrue( r == null );
-      assertTrue((  "Error when parsing input 'power()' at position 7:  The function 'power' takes exactly two arguments, but 0 were found." == libsbml.getLastParseL3Error() ));
+      error = .getLastParseL3Error();
+      assertTrue((  "Error when parsing input 'power()' at position 7:  The function 'power' takes exactly two arguments, but 0 were found." == error ));
     }
 
     public void test_SBML_C_parseL3Formula_avogadrosettings()
     {
-      ASTNode r = libsbml.parseL3Formula("avogadro");
+      ASTNode r = "avogadro".parseL3Formula();
       assertTrue( r.getType() == libsbml.AST_NAME_AVOGADRO );
       assertTrue( r.getNumChildren() == 0 );
       r = null;
-      L3ParserSettings settings = libsbml.getDefaultL3ParserSettings();
-      settings.setParseAvogadroCsymbol(false);
-      assertTrue( settings.getParseAvogadroCsymbol() == false );
-      r = libsbml.parseL3FormulaWithSettings("avogadro", settings);
+      L3ParserSettings settings = .getDefaultL3ParserSettings();
+      settings.setParseAvogadroCsymbol(0);
+      assertTrue( settings.getParseAvogadroCsymbol() == 0 );
+      r = "avogadro".parseL3FormulaWithSettings(settings);
       assertTrue( r.getType() == libsbml.AST_NAME );
       assertTrue((  "avogadro" == r.getName() ));
       assertTrue( r.getNumChildren() == 0 );
       r = null;
-      settings.setParseAvogadroCsymbol(true);
-      assertTrue( settings.getParseAvogadroCsymbol() == true );
-      r = libsbml.parseL3FormulaWithSettings("avogadro", settings);
+      settings.setParseAvogadroCsymbol(1);
+      assertTrue( settings.getParseAvogadroCsymbol() == 1 );
+      r = "avogadro".parseL3FormulaWithSettings(settings);
       assertTrue( r.getType() == libsbml.AST_NAME_AVOGADRO );
       assertTrue( r.getNumChildren() == 0 );
       r = null;
@@ -517,7 +528,7 @@ namespace LibSBMLCSTest.math {
 
     public void test_SBML_C_parseL3Formula_collapseminussettings1()
     {
-      ASTNode r = libsbml.parseL3Formula("--4.4");
+      ASTNode r = "--4.4".parseL3Formula();
       ASTNode c;
       assertTrue( r.getType() == libsbml.AST_MINUS );
       assertTrue( r.getNumChildren() == 1 );
@@ -529,17 +540,17 @@ namespace LibSBMLCSTest.math {
       assertTrue( c.getReal() == 4.4 );
       assertTrue( c.getNumChildren() == 0 );
       r = null;
-      L3ParserSettings settings = libsbml.getDefaultL3ParserSettings();
-      settings.setParseCollapseMinus(true);
-      assertTrue( settings.getParseCollapseMinus() == true );
-      r = libsbml.parseL3FormulaWithSettings("--4.4", settings);
+      L3ParserSettings settings = .getDefaultL3ParserSettings();
+      settings.setParseCollapseMinus(1);
+      assertTrue( settings.getParseCollapseMinus() == 1 );
+      r = "--4.4".parseL3FormulaWithSettings(settings);
       assertTrue( r.getType() == libsbml.AST_REAL );
       assertTrue( r.getReal() == 4.4 );
       assertTrue( r.getNumChildren() == 0 );
       r = null;
-      settings.setParseCollapseMinus(false);
-      assertTrue( settings.getParseCollapseMinus() == false );
-      r = libsbml.parseL3FormulaWithSettings("--4.4", settings);
+      settings.setParseCollapseMinus(0);
+      assertTrue( settings.getParseCollapseMinus() == 0 );
+      r = "--4.4".parseL3FormulaWithSettings(settings);
       assertTrue( r.getType() == libsbml.AST_MINUS );
       assertTrue( r.getNumChildren() == 1 );
       c = r.getLeftChild();
@@ -555,7 +566,7 @@ namespace LibSBMLCSTest.math {
 
     public void test_SBML_C_parseL3Formula_collapseminussettings2()
     {
-      ASTNode r = libsbml.parseL3Formula("--x");
+      ASTNode r = "--x".parseL3Formula();
       ASTNode c;
       assertTrue( r.getType() == libsbml.AST_MINUS );
       assertTrue( r.getNumChildren() == 1 );
@@ -567,17 +578,17 @@ namespace LibSBMLCSTest.math {
       assertTrue((  "x" == c.getName() ));
       assertTrue( c.getNumChildren() == 0 );
       r = null;
-      L3ParserSettings settings = libsbml.getDefaultL3ParserSettings();
-      settings.setParseCollapseMinus(true);
-      assertTrue( settings.getParseCollapseMinus() == true );
-      r = libsbml.parseL3FormulaWithSettings("--x", settings);
+      L3ParserSettings settings = .getDefaultL3ParserSettings();
+      settings.setParseCollapseMinus(1);
+      assertTrue( settings.getParseCollapseMinus() == 1 );
+      r = "--x".parseL3FormulaWithSettings(settings);
       assertTrue( r.getType() == libsbml.AST_NAME );
       assertTrue((  "x" == r.getName() ));
       assertTrue( r.getNumChildren() == 0 );
       r = null;
-      settings.setParseCollapseMinus(false);
-      assertTrue( settings.getParseCollapseMinus() == false );
-      r = libsbml.parseL3FormulaWithSettings("--x", settings);
+      settings.setParseCollapseMinus(0);
+      assertTrue( settings.getParseCollapseMinus() == 0 );
+      r = "--x".parseL3FormulaWithSettings(settings);
       assertTrue( r.getType() == libsbml.AST_MINUS );
       assertTrue( r.getNumChildren() == 1 );
       c = r.getLeftChild();
@@ -593,7 +604,7 @@ namespace LibSBMLCSTest.math {
 
     public void test_SBML_C_parseL3Formula_collapseminussettings3()
     {
-      ASTNode r = libsbml.parseL3Formula("x---4.4");
+      ASTNode r = "x---4.4".parseL3Formula();
       ASTNode c;
       assertTrue( r.getType() == libsbml.AST_MINUS );
       assertTrue( r.getNumChildren() == 2 );
@@ -612,10 +623,10 @@ namespace LibSBMLCSTest.math {
       assertTrue( c.getReal() == 4.4 );
       assertTrue( c.getNumChildren() == 0 );
       r = null;
-      L3ParserSettings settings = libsbml.getDefaultL3ParserSettings();
-      settings.setParseCollapseMinus(true);
-      assertTrue( settings.getParseCollapseMinus() == true );
-      r = libsbml.parseL3FormulaWithSettings("x---4.4", settings);
+      L3ParserSettings settings = .getDefaultL3ParserSettings();
+      settings.setParseCollapseMinus(1);
+      assertTrue( settings.getParseCollapseMinus() == 1 );
+      r = "x---4.4".parseL3FormulaWithSettings(settings);
       assertTrue( r.getType() == libsbml.AST_MINUS );
       assertTrue( r.getNumChildren() == 2 );
       c = r.getLeftChild();
@@ -627,9 +638,9 @@ namespace LibSBMLCSTest.math {
       assertTrue( c.getReal() == 4.4 );
       assertTrue( c.getNumChildren() == 0 );
       r = null;
-      settings.setParseCollapseMinus(false);
-      assertTrue( settings.getParseCollapseMinus() == false );
-      r = libsbml.parseL3FormulaWithSettings("x---4.4", settings);
+      settings.setParseCollapseMinus(0);
+      assertTrue( settings.getParseCollapseMinus() == 0 );
+      r = "x---4.4".parseL3FormulaWithSettings(settings);
       assertTrue( r.getType() == libsbml.AST_MINUS );
       assertTrue( r.getNumChildren() == 2 );
       c = r.getLeftChild();
@@ -652,7 +663,7 @@ namespace LibSBMLCSTest.math {
 
     public void test_SBML_C_parseL3Formula_collapseminussettings4()
     {
-      ASTNode r = libsbml.parseL3Formula("x---y");
+      ASTNode r = "x---y".parseL3Formula();
       ASTNode c;
       assertTrue( r.getType() == libsbml.AST_MINUS );
       assertTrue( r.getNumChildren() == 2 );
@@ -671,10 +682,10 @@ namespace LibSBMLCSTest.math {
       assertTrue((  "y" == c.getName() ));
       assertTrue( c.getNumChildren() == 0 );
       r = null;
-      L3ParserSettings settings = libsbml.getDefaultL3ParserSettings();
-      settings.setParseCollapseMinus(true);
-      assertTrue( settings.getParseCollapseMinus() == true );
-      r = libsbml.parseL3FormulaWithSettings("x---y", settings);
+      L3ParserSettings settings = .getDefaultL3ParserSettings();
+      settings.setParseCollapseMinus(1);
+      assertTrue( settings.getParseCollapseMinus() == 1 );
+      r = "x---y".parseL3FormulaWithSettings(settings);
       assertTrue( r.getType() == libsbml.AST_MINUS );
       assertTrue( r.getNumChildren() == 2 );
       c = r.getLeftChild();
@@ -686,9 +697,9 @@ namespace LibSBMLCSTest.math {
       assertTrue((  "y" == c.getName() ));
       assertTrue( c.getNumChildren() == 0 );
       r = null;
-      settings.setParseCollapseMinus(false);
-      assertTrue( settings.getParseCollapseMinus() == false );
-      r = libsbml.parseL3FormulaWithSettings("x---y", settings);
+      settings.setParseCollapseMinus(0);
+      assertTrue( settings.getParseCollapseMinus() == 0 );
+      r = "x---y".parseL3FormulaWithSettings(settings);
       assertTrue( r.getType() == libsbml.AST_MINUS );
       assertTrue( r.getNumChildren() == 2 );
       c = r.getLeftChild();
@@ -711,38 +722,38 @@ namespace LibSBMLCSTest.math {
 
     public void test_SBML_C_parseL3Formula_collapseminussettings5()
     {
-      L3ParserSettings settings = libsbml.getDefaultL3ParserSettings();
-      settings.setParseCollapseMinus(true);
-      assertTrue( settings.getParseCollapseMinus() == true );
-      ASTNode r = libsbml.parseL3FormulaWithSettings("---4", settings);
+      L3ParserSettings settings = .getDefaultL3ParserSettings();
+      settings.setParseCollapseMinus(1);
+      assertTrue( settings.getParseCollapseMinus() == 1 );
+      ASTNode r = "---4".parseL3FormulaWithSettings(settings);
       assertTrue( r.getType() == libsbml.AST_INTEGER );
       assertTrue( r.getInteger() == -4 );
       assertTrue( r.getNumChildren() == 0 );
       r = null;
-      r = libsbml.parseL3FormulaWithSettings("---(3/8)", settings);
+      r = "---(3/8)".parseL3FormulaWithSettings(settings);
       assertTrue( r.getType() == libsbml.AST_RATIONAL );
       assertTrue( r.getNumerator() == -3 );
       assertTrue( r.getDenominator() == 8 );
       assertTrue( r.getNumChildren() == 0 );
       r = null;
-      r = libsbml.parseL3FormulaWithSettings("---(-3/8)", settings);
+      r = "---(-3/8)".parseL3FormulaWithSettings(settings);
       assertTrue( r.getType() == libsbml.AST_RATIONAL );
       assertTrue( r.getNumerator() == 3 );
       assertTrue( r.getDenominator() == 8 );
       assertTrue( r.getNumChildren() == 0 );
       r = null;
-      r = libsbml.parseL3FormulaWithSettings("---4.4", settings);
+      r = "---4.4".parseL3FormulaWithSettings(settings);
       assertTrue( r.getType() == libsbml.AST_REAL );
       assertTrue( r.getReal() == -4.4 );
       assertTrue( r.getNumChildren() == 0 );
       r = null;
-      r = libsbml.parseL3FormulaWithSettings("---4e-3", settings);
+      r = "---4e-3".parseL3FormulaWithSettings(settings);
       assertTrue( r.getType() == libsbml.AST_REAL_E );
       assertTrue( r.getMantissa() == -4 );
       assertTrue( r.getExponent() == -3 );
       assertTrue( r.getNumChildren() == 0 );
       r = null;
-      r = libsbml.parseL3FormulaWithSettings("---.4", settings);
+      r = "---.4".parseL3FormulaWithSettings(settings);
       assertTrue( r.getType() == libsbml.AST_REAL );
       assertTrue( r.getReal() == -.4 );
       assertTrue( r.getNumChildren() == 0 );
@@ -752,7 +763,7 @@ namespace LibSBMLCSTest.math {
 
     public void test_SBML_C_parseL3Formula_constants1()
     {
-      ASTNode r = libsbml.parseL3Formula("true");
+      ASTNode r = "true".parseL3Formula();
       assertTrue( r.getType() == libsbml.AST_CONSTANT_TRUE );
       assertTrue( r.getNumChildren() == 0 );
       r = null;
@@ -760,31 +771,34 @@ namespace LibSBMLCSTest.math {
 
     public void test_SBML_C_parseL3Formula_constants10()
     {
-      ASTNode r = libsbml.parseL3Formula("notanumber");
+      ASTNode r = "notanumber".parseL3Formula();
       assertTrue( r.getType() == libsbml.AST_REAL );
+      assertTrue( util_isNaN == 1 );
       assertTrue( r.getNumChildren() == 0 );
       r = null;
     }
 
     public void test_SBML_C_parseL3Formula_constants11()
     {
-      ASTNode r = libsbml.parseL3Formula("nan");
+      ASTNode r = "nan".parseL3Formula();
       assertTrue( r.getType() == libsbml.AST_REAL );
+      assertTrue( util_isNaN == 1 );
       assertTrue( r.getNumChildren() == 0 );
       r = null;
     }
 
     public void test_SBML_C_parseL3Formula_constants12()
     {
-      ASTNode r = libsbml.parseL3Formula("NaN");
+      ASTNode r = "NaN".parseL3Formula();
       assertTrue( r.getType() == libsbml.AST_REAL );
+      assertTrue( util_isNaN == 1 );
       assertTrue( r.getNumChildren() == 0 );
       r = null;
     }
 
     public void test_SBML_C_parseL3Formula_constants2()
     {
-      ASTNode r = libsbml.parseL3Formula("false");
+      ASTNode r = "false".parseL3Formula();
       assertTrue( r.getType() == libsbml.AST_CONSTANT_FALSE );
       assertTrue( r.getNumChildren() == 0 );
       r = null;
@@ -792,7 +806,7 @@ namespace LibSBMLCSTest.math {
 
     public void test_SBML_C_parseL3Formula_constants3()
     {
-      ASTNode r = libsbml.parseL3Formula("pi");
+      ASTNode r = "pi".parseL3Formula();
       assertTrue( r.getType() == libsbml.AST_CONSTANT_PI );
       assertTrue( r.getNumChildren() == 0 );
       r = null;
@@ -800,7 +814,7 @@ namespace LibSBMLCSTest.math {
 
     public void test_SBML_C_parseL3Formula_constants4()
     {
-      ASTNode r = libsbml.parseL3Formula("exponentiale");
+      ASTNode r = "exponentiale".parseL3Formula();
       assertTrue( r.getType() == libsbml.AST_CONSTANT_E );
       assertTrue( r.getNumChildren() == 0 );
       r = null;
@@ -808,7 +822,7 @@ namespace LibSBMLCSTest.math {
 
     public void test_SBML_C_parseL3Formula_constants5()
     {
-      ASTNode r = libsbml.parseL3Formula("avogadro");
+      ASTNode r = "avogadro".parseL3Formula();
       assertTrue( r.getType() == libsbml.AST_NAME_AVOGADRO );
       assertTrue( r.getNumChildren() == 0 );
       r = null;
@@ -816,7 +830,7 @@ namespace LibSBMLCSTest.math {
 
     public void test_SBML_C_parseL3Formula_constants6()
     {
-      ASTNode r = libsbml.parseL3Formula("time");
+      ASTNode r = "time".parseL3Formula();
       assertTrue( r.getType() == libsbml.AST_NAME_TIME );
       assertTrue( r.getNumChildren() == 0 );
       r = null;
@@ -824,31 +838,34 @@ namespace LibSBMLCSTest.math {
 
     public void test_SBML_C_parseL3Formula_constants7()
     {
-      ASTNode r = libsbml.parseL3Formula("inf");
+      ASTNode r = "inf".parseL3Formula();
       assertTrue( r.getType() == libsbml.AST_REAL );
+      assertTrue( util_isInf(r.getReal()) == true );
       assertTrue( r.getNumChildren() == 0 );
       r = null;
     }
 
     public void test_SBML_C_parseL3Formula_constants8()
     {
-      ASTNode r = libsbml.parseL3Formula("infinity");
+      ASTNode r = "infinity".parseL3Formula();
       assertTrue( r.getType() == libsbml.AST_REAL );
+      assertTrue( util_isInf(r.getReal()) == true );
       assertTrue( r.getNumChildren() == 0 );
       r = null;
     }
 
     public void test_SBML_C_parseL3Formula_constants9()
     {
-      ASTNode r = libsbml.parseL3Formula("INF");
+      ASTNode r = "INF".parseL3Formula();
       assertTrue( r.getType() == libsbml.AST_REAL );
+      assertTrue( util_isInf(r.getReal()) == true );
       assertTrue( r.getNumChildren() == 0 );
       r = null;
     }
 
     public void test_SBML_C_parseL3Formula_e1()
     {
-      ASTNode r = libsbml.parseL3Formula("2.001e+5");
+      ASTNode r = "2.001e+5".parseL3Formula();
       assertTrue( r.getType() == libsbml.AST_REAL_E );
       assertTrue( r.getMantissa() == 2.001 );
       assertTrue( r.getExponent() == 5 );
@@ -858,7 +875,7 @@ namespace LibSBMLCSTest.math {
 
     public void test_SBML_C_parseL3Formula_e2()
     {
-      ASTNode r = libsbml.parseL3Formula(".001e+5");
+      ASTNode r = ".001e+5".parseL3Formula();
       assertTrue( r.getType() == libsbml.AST_REAL_E );
       assertTrue( r.getMantissa() == .001 );
       assertTrue( r.getExponent() == 5 );
@@ -868,7 +885,7 @@ namespace LibSBMLCSTest.math {
 
     public void test_SBML_C_parseL3Formula_e3()
     {
-      ASTNode r = libsbml.parseL3Formula(".001e-5");
+      ASTNode r = ".001e-5".parseL3Formula();
       assertTrue( r.getType() == libsbml.AST_REAL_E );
       assertTrue( r.getMantissa() == .001 );
       assertTrue( r.getExponent() == -5 );
@@ -878,7 +895,7 @@ namespace LibSBMLCSTest.math {
 
     public void test_SBML_C_parseL3Formula_e4()
     {
-      ASTNode r = libsbml.parseL3Formula("2.e-005");
+      ASTNode r = "2.e-005".parseL3Formula();
       assertTrue( r.getType() == libsbml.AST_REAL_E );
       assertTrue( r.getMantissa() == 2 );
       assertTrue( r.getExponent() == -5 );
@@ -888,15 +905,17 @@ namespace LibSBMLCSTest.math {
 
     public void test_SBML_C_parseL3Formula_e5()
     {
-      ASTNode r = libsbml.parseL3Formula(".e+5");
+      ASTNode r = ".e+5".parseL3Formula();
+      string error;
       assertTrue( r == null );
-      assertTrue((  "Error when parsing input '.e+5' at position 1:  syntax error, unexpected $undefined" == libsbml.getLastParseL3Error() ));
+      error = .getLastParseL3Error();
+      assertTrue((  "Error when parsing input '.e+5' at position 1:  syntax error, unexpected $undefined" == error ));
       r = null;
     }
 
     public void test_SBML_C_parseL3Formula_logic1()
     {
-      ASTNode r = libsbml.parseL3Formula("1 && 2 == 3");
+      ASTNode r = "1 && 2 == 3".parseL3Formula();
       ASTNode c;
       assertTrue( r.getType() == libsbml.AST_LOGICAL_AND );
       assertTrue((  "and" == r.getName() ));
@@ -922,7 +941,7 @@ namespace LibSBMLCSTest.math {
 
     public void test_SBML_C_parseL3Formula_logic2()
     {
-      ASTNode r = libsbml.parseL3Formula("(1 && 2) == 3");
+      ASTNode r = "(1 && 2) == 3".parseL3Formula();
       ASTNode c;
       assertTrue( r.getType() == libsbml.AST_RELATIONAL_EQ );
       assertTrue((  "eq" == r.getName() ));
@@ -950,48 +969,52 @@ namespace LibSBMLCSTest.math {
     {
       Model model = new  Model(3,1);
       Parameter p = model.createParameter();
-      p.setId( "infinity");;
-      ASTNode r = libsbml.parseL3FormulaWithModel("infinity", model);
+      p.setId( "infinity");
+      ASTNode r = "infinity".parseL3FormulaWithModel(model);
       assertTrue( r.getType() == libsbml.AST_NAME );
       assertTrue((  "infinity" == r.getName() ));
       assertTrue( r.getNumChildren() == 0 );
       r = null;
+      model = null;
     }
 
     public void test_SBML_C_parseL3Formula_modelPresent2()
     {
       Model model = new  Model(3,1);
       Species p = model.createSpecies();
-      p.setId( "true");;
-      ASTNode r = libsbml.parseL3FormulaWithModel("true", model);
+      p.setId( "true");
+      ASTNode r = "true".parseL3FormulaWithModel(model);
       assertTrue( r.getType() == libsbml.AST_NAME );
       assertTrue((  "true" == r.getName() ));
       assertTrue( r.getNumChildren() == 0 );
       r = null;
+      model = null;
     }
 
     public void test_SBML_C_parseL3Formula_modelPresent3()
     {
       Model model = new  Model(3,1);
       Compartment p = model.createCompartment();
-      p.setId( "NaN");;
-      ASTNode r = libsbml.parseL3FormulaWithModel("NaN", model);
+      p.setId( "NaN");
+      ASTNode r = "NaN".parseL3FormulaWithModel(model);
       assertTrue( r.getType() == libsbml.AST_NAME );
       assertTrue((  "NaN" == r.getName() ));
       assertTrue( r.getNumChildren() == 0 );
       r = null;
+      model = null;
     }
 
     public void test_SBML_C_parseL3Formula_modelPresent4()
     {
       Model model = new  Model(3,1);
       Reaction p = model.createReaction();
-      p.setId( "pi");;
-      ASTNode r = libsbml.parseL3FormulaWithModel("pi", model);
+      p.setId( "pi");
+      ASTNode r = "pi".parseL3FormulaWithModel(model);
       assertTrue( r.getType() == libsbml.AST_NAME );
       assertTrue((  "pi" == r.getName() ));
       assertTrue( r.getNumChildren() == 0 );
       r = null;
+      model = null;
     }
 
     public void test_SBML_C_parseL3Formula_modelPresent5()
@@ -999,12 +1022,13 @@ namespace LibSBMLCSTest.math {
       Model model = new  Model(3,1);
       Reaction p = model.createReaction();
       SpeciesReference sr = p.createProduct();
-      sr.setId( "avogadro");;
-      ASTNode r = libsbml.parseL3FormulaWithModel("avogadro", model);
+      sr.setId( "avogadro");
+      ASTNode r = "avogadro".parseL3FormulaWithModel(model);
       assertTrue( r.getType() == libsbml.AST_NAME );
       assertTrue((  "avogadro" == r.getName() ));
       assertTrue( r.getNumChildren() == 0 );
       r = null;
+      model = null;
     }
 
     public void test_SBML_C_parseL3Formula_modelPresent6()
@@ -1012,53 +1036,58 @@ namespace LibSBMLCSTest.math {
       Model model = new  Model(3,1);
       Reaction p = model.createReaction();
       SpeciesReference sr = p.createProduct();
-      sr.setId( "AVOGADRO");;
-      ASTNode r = libsbml.parseL3FormulaWithModel("avogadro", model);
+      sr.setId( "AVOGADRO");
+      ASTNode r = "avogadro".parseL3FormulaWithModel(model);
       assertTrue( r.getType() == libsbml.AST_NAME_AVOGADRO );
       assertTrue((  "avogadro" == r.getName() ));
       assertTrue( r.getNumChildren() == 0 );
       r = null;
+      model = null;
     }
 
     public void test_SBML_C_parseL3Formula_modelPresent7()
     {
       Model model = new  Model(3,1);
       FunctionDefinition p = model.createFunctionDefinition();
-      p.setId( "sin");;
-      ASTNode r = libsbml.parseL3FormulaWithModel("sin(x, y)", model);
+      p.setId( "sin");
+      ASTNode r = "sin(x, y)".parseL3FormulaWithModel(model);
       assertTrue( r.getType() == libsbml.AST_FUNCTION );
       assertTrue((  "sin" == r.getName() ));
       assertTrue( r.getNumChildren() == 2 );
       r = null;
+      model = null;
     }
 
     public void test_SBML_C_parseL3Formula_modulo()
     {
-      ASTNode r = libsbml.parseL3Formula("x % y");
-      assertTrue((  "piecewise(x - y * ceil(x / y), xor(lt(x, 0), lt(y, 0)), x - y * floor(x / y))" == libsbml.formulaToString(r) ));
+      ASTNode r = "x % y".parseL3Formula();
+      string s = libsbml.formulaToString(r);
+      assertTrue((  "piecewise(x - y * ceil(x / y), xor(lt(x, 0), lt(y, 0)), x - y * floor(x / y))" == s ));
       r = null;
     }
 
     public void test_SBML_C_parseL3Formula_negInf()
     {
-      ASTNode r = libsbml.parseL3Formula("-inf");
+      ASTNode r = "-inf".parseL3Formula();
       assertTrue( r.getType() == libsbml.AST_MINUS );
       assertTrue( r.getCharacter() == '-' );
       assertTrue( r.getNumChildren() == 1 );
       ASTNode c = r.getLeftChild();
       assertTrue( c.getType() == libsbml.AST_REAL );
+      assertTrue( util_isInf(c.getReal()) == true );
       assertTrue( c.getNumChildren() == 0 );
       r = null;
     }
 
     public void test_SBML_C_parseL3Formula_negZero()
     {
-      ASTNode r = libsbml.parseL3Formula("-0.0");
+      ASTNode r = "-0.0".parseL3Formula();
       assertTrue( r.getType() == libsbml.AST_MINUS );
       assertTrue( r.getCharacter() == '-' );
       assertTrue( r.getNumChildren() == 1 );
       ASTNode c = r.getLeftChild();
       assertTrue( c.getType() == libsbml.AST_REAL );
+      assertTrue( util_isNegZero == 0 );
       assertTrue( c.getReal() == 0 );
       assertTrue( c.getNumChildren() == 0 );
       r = null;
@@ -1066,7 +1095,7 @@ namespace LibSBMLCSTest.math {
 
     public void test_SBML_C_parseL3Formula_oddMathML1()
     {
-      ASTNode r = libsbml.parseL3Formula("sqrt(3)");
+      ASTNode r = "sqrt(3)".parseL3Formula();
       assertTrue( r.getType() == libsbml.AST_FUNCTION_ROOT );
       assertTrue( r.getNumChildren() == 2 );
       ASTNode c = r.getLeftChild();
@@ -1082,7 +1111,7 @@ namespace LibSBMLCSTest.math {
 
     public void test_SBML_C_parseL3Formula_oddMathML2()
     {
-      ASTNode r = libsbml.parseL3Formula("sqr(3)");
+      ASTNode r = "sqr(3)".parseL3Formula();
       assertTrue( r.getType() == libsbml.AST_FUNCTION_POWER );
       assertTrue( r.getNumChildren() == 2 );
       ASTNode c = r.getLeftChild();
@@ -1098,7 +1127,7 @@ namespace LibSBMLCSTest.math {
 
     public void test_SBML_C_parseL3Formula_oddMathML3()
     {
-      ASTNode r = libsbml.parseL3Formula("log10(3)");
+      ASTNode r = "log10(3)".parseL3Formula();
       assertTrue( r.getType() == libsbml.AST_FUNCTION_LOG );
       assertTrue( r.getNumChildren() == 2 );
       ASTNode c = r.getLeftChild();
@@ -1114,7 +1143,7 @@ namespace LibSBMLCSTest.math {
 
     public void test_SBML_C_parseL3Formula_oddMathML4()
     {
-      ASTNode r = libsbml.parseL3Formula("log(4.4, 3)");
+      ASTNode r = "log(4.4, 3)".parseL3Formula();
       assertTrue( r.getType() == libsbml.AST_FUNCTION_LOG );
       assertTrue( r.getNumChildren() == 2 );
       ASTNode c = r.getLeftChild();
@@ -1130,7 +1159,7 @@ namespace LibSBMLCSTest.math {
 
     public void test_SBML_C_parseL3Formula_oddMathML5()
     {
-      ASTNode r = libsbml.parseL3Formula("root(1.1, 3)");
+      ASTNode r = "root(1.1, 3)".parseL3Formula();
       assertTrue( r.getType() == libsbml.AST_FUNCTION_ROOT );
       assertTrue( r.getNumChildren() == 2 );
       ASTNode c = r.getLeftChild();
@@ -1146,8 +1175,9 @@ namespace LibSBMLCSTest.math {
 
     public void test_SBML_C_parseL3Formula_parselogsettings()
     {
-      ASTNode r = libsbml.parseL3Formula("log(4.4)");
+      ASTNode r = "log(4.4)".parseL3Formula();
       ASTNode c;
+      string error;
       assertTrue( r.getType() == libsbml.AST_FUNCTION_LOG );
       assertTrue( r.getNumChildren() == 2 );
       c = r.getLeftChild();
@@ -1160,9 +1190,9 @@ namespace LibSBMLCSTest.math {
       assertTrue( c.getNumChildren() == 0 );
       r = null;
       L3ParserSettings settings = new  L3ParserSettings();
-      settings.setParseLog(libsbml.L3P_PARSE_LOG_AS_LN);
-      assertTrue( settings.getParseLog() == libsbml.L3P_PARSE_LOG_AS_LN );
-      r = libsbml.parseL3FormulaWithSettings("log(4.4)", settings);
+      settings.setParseLog(L3P_PARSE_LOG_AS_LN);
+      assertTrue( settings.getParseLog() == L3P_PARSE_LOG_AS_LN );
+      r = "log(4.4)".parseL3FormulaWithSettings(settings);
       assertTrue( r.getType() == libsbml.AST_FUNCTION_LN );
       assertTrue( r.getNumChildren() == 1 );
       c = r.getLeftChild();
@@ -1170,9 +1200,9 @@ namespace LibSBMLCSTest.math {
       assertTrue( c.getReal() == 4.4 );
       assertTrue( c.getNumChildren() == 0 );
       r = null;
-      settings.setParseLog(libsbml.L3P_PARSE_LOG_AS_LOG10);
-      assertTrue( settings.getParseLog() == libsbml.L3P_PARSE_LOG_AS_LOG10 );
-      r = libsbml.parseL3FormulaWithSettings("log(4.4)", settings);
+      settings.setParseLog(L3P_PARSE_LOG_AS_LOG10);
+      assertTrue( settings.getParseLog() == L3P_PARSE_LOG_AS_LOG10 );
+      r = "log(4.4)".parseL3FormulaWithSettings(settings);
       assertTrue( r.getType() == libsbml.AST_FUNCTION_LOG );
       assertTrue( r.getNumChildren() == 2 );
       c = r.getLeftChild();
@@ -1184,17 +1214,18 @@ namespace LibSBMLCSTest.math {
       assertTrue( c.getReal() == 4.4 );
       assertTrue( c.getNumChildren() == 0 );
       r = null;
-      settings.setParseLog(libsbml.L3P_PARSE_LOG_AS_ERROR);
-      assertTrue( settings.getParseLog() == libsbml.L3P_PARSE_LOG_AS_ERROR );
-      r = libsbml.parseL3FormulaWithSettings("log(4.4)", settings);
+      settings.setParseLog(L3P_PARSE_LOG_AS_ERROR);
+      assertTrue( settings.getParseLog() == L3P_PARSE_LOG_AS_ERROR );
+      r = "log(4.4)".parseL3FormulaWithSettings(settings);
+      error = .getLastParseL3Error();
       assertTrue( r == null );
-      assertTrue((  "Error when parsing input 'log(4.4)' at position 8:  Writing a function as 'log(x)' was legal in the L1 parser, but translated as the natural log, not the base-10 log.  This construct is disallowed entirely as being ambiguous, and you are encouraged instead to use 'ln(x)', 'log10(x)', or 'log(base, x)'." == libsbml.getLastParseL3Error() ));
+      assertTrue((  "Error when parsing input 'log(4.4)' at position 8:  Writing a function as 'log(x)' was legal in the L1 parser, but translated as the natural log, not the base-10 log.  This construct is disallowed entirely as being ambiguous, and you are encouraged instead to use 'ln(x)', 'log10(x)', or 'log(base, x)'." == error ));
       settings = null;
     }
 
     public void test_SBML_C_parseL3Formula_precedence()
     {
-      ASTNode root = libsbml.parseL3Formula("a && b == !(c - d * e^-f) ");
+      ASTNode root = "a && b == !(c - d * e^-f) ".parseL3Formula();
       ASTNode left;
       ASTNode right;
       assertTrue( root.getType() == libsbml.AST_LOGICAL_AND );
@@ -1253,7 +1284,7 @@ namespace LibSBMLCSTest.math {
 
     public void test_SBML_C_parseL3Formula_rational1()
     {
-      ASTNode r = libsbml.parseL3Formula("(3/4)");
+      ASTNode r = "(3/4)".parseL3Formula();
       assertTrue( r.getType() == libsbml.AST_RATIONAL );
       assertTrue( r.getNumerator() == 3 );
       assertTrue( r.getDenominator() == 4 );
@@ -1263,18 +1294,19 @@ namespace LibSBMLCSTest.math {
 
     public void test_SBML_C_parseL3Formula_rational2()
     {
-      ASTNode r = libsbml.parseL3Formula("(3/4) mL");
+      ASTNode r = "(3/4) mL".parseL3Formula();
+      string units = r.getUnits();
       assertTrue( r.getType() == libsbml.AST_RATIONAL );
       assertTrue( r.getNumerator() == 3 );
       assertTrue( r.getDenominator() == 4 );
-      assertTrue((  "mL" == r.getUnits() ));
+      assertTrue((  "mL" == units ));
       assertTrue( r.getNumChildren() == 0 );
       r = null;
     }
 
     public void test_SBML_C_parseL3Formula_rational3()
     {
-      ASTNode r = libsbml.parseL3Formula("3/4");
+      ASTNode r = "3/4".parseL3Formula();
       assertTrue( r.getType() == libsbml.AST_DIVIDE );
       assertTrue( r.getCharacter() == '/' );
       assertTrue( r.getNumChildren() == 2 );
@@ -1291,7 +1323,7 @@ namespace LibSBMLCSTest.math {
 
     public void test_SBML_C_parseL3Formula_rational4()
     {
-      ASTNode r = libsbml.parseL3Formula("(3/x)");
+      ASTNode r = "(3/x)".parseL3Formula();
       assertTrue( r.getType() == libsbml.AST_DIVIDE );
       assertTrue( r.getCharacter() == '/' );
       assertTrue( r.getNumChildren() == 2 );
@@ -1308,7 +1340,7 @@ namespace LibSBMLCSTest.math {
 
     public void test_SBML_C_parseL3Formula_rational5()
     {
-      ASTNode r = libsbml.parseL3Formula("(3/4.4)");
+      ASTNode r = "(3/4.4)".parseL3Formula();
       assertTrue( r.getType() == libsbml.AST_DIVIDE );
       assertTrue( r.getCharacter() == '/' );
       assertTrue( r.getNumChildren() == 2 );
@@ -1325,7 +1357,8 @@ namespace LibSBMLCSTest.math {
 
     public void test_SBML_C_parseL3Formula_rational6()
     {
-      ASTNode r = libsbml.parseL3Formula("3/4 ml");
+      ASTNode r = "3/4 ml".parseL3Formula();
+      string units;
       assertTrue( r.getType() == libsbml.AST_DIVIDE );
       assertTrue( r.getCharacter() == '/' );
       assertTrue( r.getNumChildren() == 2 );
@@ -1334,82 +1367,48 @@ namespace LibSBMLCSTest.math {
       assertTrue( c.getInteger() == 3 );
       assertTrue( c.getNumChildren() == 0 );
       c = r.getRightChild();
+      units = c.getUnits();
       assertTrue( c.getType() == libsbml.AST_INTEGER );
       assertTrue( c.getInteger() == 4 );
-      assertTrue((  "ml" == c.getUnits() ));
+      assertTrue((  "ml" == units ));
       assertTrue( c.getNumChildren() == 0 );
       r = null;
     }
 
     public void test_SBML_C_parseL3Formula_rational7()
     {
-      ASTNode r = libsbml.parseL3Formula("(3/4.4) ml");
+      ASTNode r = "(3/4.4) ml".parseL3Formula();
+      string error;
       assertTrue( r == null );
-      assertTrue((  "Error when parsing input '(3/4.4) ml' at position 10:  syntax error, unexpected element name" == libsbml.getLastParseL3Error() ));
-    }
-
-    public void test_SBML_C_parseL3Formula_targetl2settings()
-    {
-      ASTNode r = libsbml.parseL3Formula("4 mL");
-      assertTrue( r.getType() == libsbml.AST_INTEGER );
-      assertTrue( r.getInteger() == 4 );
-      assertTrue((  "mL" == r.getUnits() ));
-      assertTrue( r.getNumChildren() == 0 );
-      r = null;
-      r = libsbml.parseL3Formula("avogadro");
-      assertTrue( r.getType() == libsbml.AST_NAME_AVOGADRO );
-      assertTrue( r.getNumChildren() == 0 );
-      r = null;
-      L3ParserSettings settings = libsbml.getDefaultL3ParserSettings();
-      settings.setParseUnits(false);
-      settings.setParseAvogadroCsymbol(false);
-      assertTrue(settings.getParseUnits() == false);
-      assertTrue(settings.getParseAvogadroCsymbol() == false);
-      r = libsbml.parseL3FormulaWithSettings("4 mL", settings);
-      assertTrue( r == null );
-      assertTrue(("Error when parsing input '4 mL' at position 4:  The ability to associate units with numbers has been disabled." == libsbml.getLastParseL3Error()));
-      r = libsbml.parseL3FormulaWithSettings("avogadro", settings);
-      assertTrue( r.getType() == libsbml.AST_NAME );
-      assertTrue((  "avogadro" == r.getName() ));
-      assertTrue( r.getNumChildren() == 0 );
-      r = null;
-      settings.setParseUnits(true);
-      settings.setParseAvogadroCsymbol(true);
-      assertTrue(settings.getParseUnits() == true);
-      assertTrue(settings.getParseAvogadroCsymbol() == true);
-      r = libsbml.parseL3FormulaWithSettings("4 mL", settings);
-      assertTrue( r.getType() == libsbml.AST_INTEGER );
-      assertTrue( r.getInteger() == 4 );
-      assertTrue((  "mL" == r.getUnits() ));
-      assertTrue( r.getNumChildren() == 0 );
-      r = null;
-      r = libsbml.parseL3FormulaWithSettings("avogadro", settings);
-      assertTrue( r.getType() == libsbml.AST_NAME_AVOGADRO );
-      assertTrue( r.getNumChildren() == 0 );
-      r = null;
-      settings = null;
+      error = .getLastParseL3Error();
+      assertTrue((  "Error when parsing input '(3/4.4) ml' at position 10:  syntax error, unexpected element name" == error ));
     }
 
     public void test_SBML_C_parseL3Formula_unitssettings()
     {
-      ASTNode r = libsbml.parseL3Formula("4 mL");
+      ASTNode r = "4 mL".parseL3Formula();
+      string error;
+      string units;
       assertTrue( r.getType() == libsbml.AST_INTEGER );
       assertTrue( r.getInteger() == 4 );
-      assertTrue((  "mL" == r.getUnits() ));
+      units = r.getUnits();
+      assertTrue((  "mL" == units ));
       assertTrue( r.getNumChildren() == 0 );
       r = null;
-      L3ParserSettings settings = libsbml.getDefaultL3ParserSettings();
-      settings.setParseUnits(false);
-      assertTrue( settings.getParseUnits() == false );
-      r = libsbml.parseL3FormulaWithSettings("4 mL", settings);
+      L3ParserSettings settings = .getDefaultL3ParserSettings();
+      settings.setParseUnits(0);
+      assertTrue( settings.getParseUnits() == 0 );
+      r = "4 mL".parseL3FormulaWithSettings(settings);
+      error = .getLastParseL3Error();
       assertTrue( r == null );
-      assertTrue(("Error when parsing input '4 mL' at position 4:  The ability to associate units with numbers has been disabled." == libsbml.getLastParseL3Error()));
-      settings.setParseUnits(true);
-      assertTrue( settings.getParseUnits() == true );
-      r = libsbml.parseL3FormulaWithSettings("4 mL", settings);
+      assertTrue((  "Error when parsing input '4 mL' at position 4:  The ability to associate units with numbers has been disabled." == error ));
+      settings.setParseUnits(1);
+      assertTrue( settings.getParseUnits() == 1 );
+      r = "4 mL".parseL3FormulaWithSettings(settings);
       assertTrue( r.getType() == libsbml.AST_INTEGER );
       assertTrue( r.getInteger() == 4 );
-      assertTrue((  "mL" == r.getUnits() ));
+      units = r.getUnits();
+      assertTrue((  "mL" == units ));
       assertTrue( r.getNumChildren() == 0 );
       r = null;
       settings = null;

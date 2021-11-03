@@ -18,11 +18,6 @@
  * This file is part of libSBML.  Please visit http://sbml.org for more
  * information about SBML, and the latest version of libSBML.
  *
- * Copyright (C) 2020 jointly by the following organizations:
- *     1. California Institute of Technology, Pasadena, CA, USA
- *     2. University of Heidelberg, Heidelberg, Germany
- *     3. University College London, London, UK
- *
  * Copyright 2005-2010 California Institute of Technology.
  * Copyright 2002-2005 California Institute of Technology and
  *                     Japan Science and Technology Corporation.
@@ -176,6 +171,29 @@ public class TestCopyAndClone {
     o1 = null;
   }
 
+  public void test_Compartment_assignmentOperator_L3()
+  {
+    Compartment o1 = new Compartment(3,1);
+    o1.setId("c");
+    o1.setSpatialDimensions(2.5);
+    o1.setSize(2);
+    assertTrue( o1.getId().equals( "c") );
+    assertTrue( o1.getSpatialDimensionsAsDouble() == 2.5 );
+    assertTrue( o1.isSetSpatialDimensions() == true );
+    assertTrue( o1.getConstant() == true );
+    assertTrue( o1.isSetConstant() == false );
+    Compartment o2 = new Compartment(3,1);
+    o2 = o1;
+    assertTrue( o2.getId().equals( "c") );
+    assertTrue( o2.getSpatialDimensionsAsDouble() == 2.5 );
+    assertTrue( o2.isSetSpatialDimensions() == true );
+    assertTrue( o2.getConstant() == true );
+    assertTrue( o2.isSetConstant() == false );
+    assertTrue( o2.getParentSBMLObject() == o1.getParentSBMLObject() );
+    o2 = null;
+    o1 = null;
+  }
+
   public void test_Compartment_clone()
   {
     Compartment o1 = new Compartment(2,4);
@@ -201,6 +219,28 @@ public class TestCopyAndClone {
     Compartment o2 = new Compartment(o1);
     assertTrue( o2.getId().equals( "c") );
     assertTrue( o2.getOutside().equals( "c2") );
+    assertTrue( o2.getParentSBMLObject() == o1.getParentSBMLObject() );
+    o2 = null;
+    o1 = null;
+  }
+
+  public void test_Compartment_copyConstructor_L3()
+  {
+    Compartment o1 = new Compartment(3,1);
+    o1.setId("c");
+    o1.setSpatialDimensions(2.5);
+    o1.setSize(2);
+    assertTrue( o1.getId().equals( "c") );
+    assertTrue( o1.getSpatialDimensionsAsDouble() == 2.5 );
+    assertTrue( o1.isSetSpatialDimensions() == true );
+    assertTrue( o1.getConstant() == true );
+    assertTrue( o1.isSetConstant() == false );
+    Compartment o2 = new Compartment(o1);
+    assertTrue( o2.getId().equals( "c") );
+    assertTrue( o2.getSpatialDimensionsAsDouble() == 2.5 );
+    assertTrue( o2.isSetSpatialDimensions() == true );
+    assertTrue( o2.getConstant() == true );
+    assertTrue( o2.isSetConstant() == false );
     assertTrue( o2.getParentSBMLObject() == o1.getParentSBMLObject() );
     o2 = null;
     o1 = null;
@@ -240,6 +280,8 @@ public class TestCopyAndClone {
     assertTrue( o2.getParentSBMLObject() == o1.getParentSBMLObject() );
     o2 = null;
     o1 = null;
+    text = null;
+    p = null;
   }
 
   public void test_Constraint_clone()
@@ -275,6 +317,8 @@ public class TestCopyAndClone {
     assertTrue( o2.getParentSBMLObject() == o1.getParentSBMLObject() );
     o2 = null;
     o1 = null;
+    text = null;
+    p = null;
   }
 
   public void test_Constraint_copyConstructor()
@@ -310,6 +354,8 @@ public class TestCopyAndClone {
     assertTrue( o2.getParentSBMLObject() == o1.getParentSBMLObject() );
     o2 = null;
     o1 = null;
+    text = null;
+    p = null;
   }
 
   public void test_Delay_assignmentOperator()
@@ -420,6 +466,24 @@ public class TestCopyAndClone {
     o1 = null;
   }
 
+  public void test_Event_assignmentOperator_L3()
+  {
+    Event o1 = new Event(3,1);
+    o1.setId("c");
+    o1.setUseValuesFromTriggerTime(false);
+    assertTrue( o1.getId().equals( "c") );
+    assertTrue( o1.getUseValuesFromTriggerTime() == false );
+    assertTrue( o1.isSetUseValuesFromTriggerTime() == true );
+    Event o2 = new Event(2,4);
+    o2 = o1;
+    assertTrue( o2.getId().equals( "c") );
+    assertTrue( o2.getUseValuesFromTriggerTime() == false );
+    assertTrue( o2.isSetUseValuesFromTriggerTime() == true );
+    assertTrue( o2.getParentSBMLObject() == o1.getParentSBMLObject() );
+    o2 = null;
+    o1 = null;
+  }
+
   public void test_Event_clone()
   {
     Event o1 = new Event(2,4);
@@ -439,6 +503,22 @@ public class TestCopyAndClone {
     assertTrue( o1.getId().equals( "c") );
     Event o2 = new Event(o1);
     assertTrue( o2.getId().equals( "c") );
+    assertTrue( o2.getParentSBMLObject() == o1.getParentSBMLObject() );
+    o2 = null;
+    o1 = null;
+  }
+
+  public void test_Event_copyConstructor_L3()
+  {
+    Event o1 = new Event(3,1);
+    o1.setId("c");
+    assertTrue( o1.getId().equals( "c") );
+    assertTrue( o1.getUseValuesFromTriggerTime() == true );
+    assertTrue( o1.isSetUseValuesFromTriggerTime() == false );
+    Event o2 = new Event(o1);
+    assertTrue( o2.getId().equals( "c") );
+    assertTrue( o2.getUseValuesFromTriggerTime() == true );
+    assertTrue( o2.isSetUseValuesFromTriggerTime() == false );
     assertTrue( o2.getParentSBMLObject() == o1.getParentSBMLObject() );
     o2 = null;
     o1 = null;
@@ -674,7 +754,9 @@ public class TestCopyAndClone {
     o1.setId("c");
     assertTrue( o1.getId().equals( "c") );
     KineticLaw kl = new KineticLaw(2,4);
-    kl.setMath(libsbml.parseFormula("1"));
+    ASTNode math = libsbml.parseFormula("1");
+    kl.setMath(math);
+    math = null;
     o1.setKineticLaw(kl);
     kl = null;
     assertTrue( o1.isSetKineticLaw() == true );
@@ -695,7 +777,9 @@ public class TestCopyAndClone {
     o1.setId("c");
     assertTrue( o1.getId().equals( "c") );
     KineticLaw kl = new KineticLaw(2,4);
-    kl.setMath(libsbml.parseFormula("1"));
+    ASTNode math = libsbml.parseFormula("1");
+    kl.setMath(math);
+    math = null;
     o1.setKineticLaw(kl);
     kl = null;
     assertTrue( o1.isSetKineticLaw() == true );
@@ -715,7 +799,9 @@ public class TestCopyAndClone {
     o1.setId("c");
     assertTrue( o1.getId().equals( "c") );
     KineticLaw kl = new KineticLaw(2,4);
-    kl.setMath(libsbml.parseFormula("1"));
+    ASTNode math = libsbml.parseFormula("1");
+    kl.setMath(math);
+    math = null;
     o1.setKineticLaw(kl);
     kl = null;
     assertTrue( o1.isSetKineticLaw() == true );
@@ -787,11 +873,9 @@ public class TestCopyAndClone {
     o1.setLevelAndVersion(2,1,false);
     assertTrue( o1.getLevel() == 2 );
     assertTrue( o1.getVersion() == 1 );
-    SBMLDocument o2 = new SBMLDocument();
-    o2 = o1;
+    SBMLDocument o2 = o1;
     assertTrue( o2.getLevel() == 2 );
     assertTrue( o2.getVersion() == 1 );
-    o2 = null;
     o1 = null;
   }
 
@@ -800,10 +884,10 @@ public class TestCopyAndClone {
     SBMLDocument o1 = new SBMLDocument();
     o1.setLevelAndVersion(1,1,false);
     Model m = new Model(1,1);
-      m.createCompartment();
-      m.createSpecies();
-      m.createReaction();
     m.setId("foo");
+    m.createCompartment();
+    m.createSpecies();
+    m.createReaction();
     o1.setModel(m);
     assertTrue( o1.getLevel() == 1 );
     assertTrue( o1.getVersion() == 1 );
@@ -820,6 +904,7 @@ public class TestCopyAndClone {
     assertTrue( o2.getModel().getSBMLDocument().equals(o2) );
     o2 = null;
     o1 = null;
+    m = null;
   }
 
   public void test_SBMLDocument_copyConstructor()
@@ -1125,4 +1210,3 @@ public class TestCopyAndClone {
     }
   }
 }
-

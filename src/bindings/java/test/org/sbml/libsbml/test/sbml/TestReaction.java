@@ -18,11 +18,6 @@
  * This file is part of libSBML.  Please visit http://sbml.org for more
  * information about SBML, and the latest version of libSBML.
  *
- * Copyright (C) 2020 jointly by the following organizations:
- *     1. California Institute of Technology, Pasadena, CA, USA
- *     2. University of Heidelberg, Heidelberg, Germany
- *     3. University College London, London, UK
- *
  * Copyright 2005-2010 California Institute of Technology.
  * Copyright 2002-2005 California Institute of Technology and
  *                     Japan Science and Technology Corporation.
@@ -137,6 +132,22 @@ public class TestReaction {
     R = null;
   }
 
+  public void test_Reaction_addModifierBySpecies()
+  {
+    Species s = new  Species(2,4);
+    s.setId( "s");
+    R.addModifier(s, "sr");
+    assertTrue( R.getNumReactants() == 0 );
+    assertTrue( R.getNumProducts() == 0 );
+    assertTrue( R.getNumModifiers() == 1 );
+    SpeciesReference sr = R.getModifier(0);
+    assertTrue(sr.getSpecies().equals( "s"));
+    assertTrue(sr.getId().equals( "sr"));
+    assertTrue( R.addModifier(s, "sr") == libsbml.LIBSBML_DUPLICATE_OBJECT_ID );
+    assertTrue( R.getNumModifiers() == 1 );
+    s = null;
+  }
+
   public void test_Reaction_addProduct()
   {
     SpeciesReference sr = new  SpeciesReference(2,4);
@@ -148,6 +159,24 @@ public class TestReaction {
     sr = null;
   }
 
+  public void test_Reaction_addProductBySpecies()
+  {
+    Species s = new  Species(2,4);
+    s.setId( "s");
+    R.addProduct(s,2.0, "sr",0);
+    assertTrue( R.getNumReactants() == 0 );
+    assertTrue( R.getNumProducts() == 1 );
+    assertTrue( R.getNumModifiers() == 0 );
+    SpeciesReference sr = R.getProduct(0);
+    assertTrue(sr.getSpecies().equals( "s"));
+    assertTrue( util_isEqual == 1 );
+    assertTrue(sr.getId().equals( "sr"));
+    assertTrue( sr.getConstant() == false );
+    assertTrue( R.addProduct(s,1.0, "sr",0) == libsbml.LIBSBML_DUPLICATE_OBJECT_ID );
+    assertTrue( R.getNumProducts() == 1 );
+    s = null;
+  }
+
   public void test_Reaction_addReactant()
   {
     SpeciesReference sr = new  SpeciesReference(2,4);
@@ -157,6 +186,43 @@ public class TestReaction {
     assertTrue( R.getNumProducts() == 0 );
     assertTrue( R.getNumModifiers() == 0 );
     sr = null;
+  }
+
+  public void test_Reaction_addReactantBySpecies()
+  {
+    Species s = new  Species(2,4);
+    s.setId( "s");
+    R.addReactant(s,2.0, "sr",0);
+    assertTrue( R.getNumReactants() == 1 );
+    assertTrue( R.getNumProducts() == 0 );
+    assertTrue( R.getNumModifiers() == 0 );
+    SpeciesReference sr = R.getReactant(0);
+    assertTrue(sr.getSpecies().equals( "s"));
+    assertTrue( util_isEqual == 1 );
+    assertTrue(sr.getId().equals( "sr"));
+    assertTrue( sr.getConstant() == false );
+    assertTrue( R.addReactant(s,1.0, "sr",0) == libsbml.LIBSBML_DUPLICATE_OBJECT_ID );
+    s = null;
+  }
+
+  public void test_Reaction_compartment()
+  {
+    String name =  "Cell";
+    Reaction r = new  Reaction(3,1);
+    r.setCompartment(name);
+    assertTrue(r.getCompartment().equals(name));
+    assertEquals( true, r.isSetCompartment() );
+    if (r.getCompartment() == name);
+    {
+    }
+    r.setCompartment(r.getCompartment());
+    assertTrue(r.getCompartment().equals(name));
+    r.unsetCompartment();
+    assertEquals( false, r.isSetCompartment() );
+    if (r.getCompartment() != null);
+    {
+    }
+    r = null;
   }
 
   public void test_Reaction_create()
@@ -196,6 +262,24 @@ public class TestReaction {
     assertTrue( object.getNamespaces() != null );
     assertTrue( object.getNamespaces().getLength() == 2 );
     object = null;
+    xmlns = null;
+    sbmlns = null;
+  }
+
+  public void test_Reaction_fast()
+  {
+    R.setFast(true);
+    assertTrue( R.isSetFast() == true );
+    assertTrue( R.getFast() == true );
+    R.unsetFast();
+    assertTrue( R.isSetFast() == false );
+    assertTrue( R.getFast() == true );
+    R.setFast(false);
+    assertTrue( R.isSetFast() == true );
+    assertTrue( R.getFast() == false );
+    R.unsetFast();
+    assertTrue( R.isSetFast() == false );
+    assertTrue( R.getFast() == false );
   }
 
   public void test_Reaction_free_NULL()
@@ -312,6 +396,26 @@ public class TestReaction {
     o3 = null;
   }
 
+  public void test_Reaction_reversible()
+  {
+    assertTrue( R.isSetReversible() == true );
+    assertTrue( R.getReversible() == true );
+    R.setReversible(true);
+    assertTrue( R.isSetReversible() == true );
+    assertTrue( R.getReversible() == true );
+    int ret = R.unsetReversible();
+    assertTrue( ret == libsbml.LIBSBML_UNEXPECTED_ATTRIBUTE );
+    assertTrue( R.isSetReversible() == true );
+    assertTrue( R.getReversible() == true );
+    R.setReversible(false);
+    assertTrue( R.isSetReversible() == true );
+    assertTrue( R.getReversible() == false );
+    ret = R.unsetReversible();
+    assertTrue( ret == libsbml.LIBSBML_UNEXPECTED_ATTRIBUTE );
+    assertTrue( R.isSetReversible() == true );
+    assertTrue( R.getReversible() == true );
+  }
+
   public void test_Reaction_setId()
   {
     String id =  "J1";
@@ -401,4 +505,3 @@ public class TestReaction {
     }
   }
 }
-

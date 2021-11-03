@@ -18,11 +18,6 @@
  * This file is part of libSBML.  Please visit http://sbml.org for more
  * information about SBML, and the latest version of libSBML.
  *
- * Copyright (C) 2020 jointly by the following organizations:
- *     1. California Institute of Technology, Pasadena, CA, USA
- *     2. University of Heidelberg, Heidelberg, Germany
- *     3. University College London, London, UK
- *
  * Copyright 2005-2010 California Institute of Technology.
  * Copyright 2002-2005 California Institute of Technology and
  *                     Japan Science and Technology Corporation.
@@ -123,7 +118,6 @@ public class TestWriteSBML {
     throw new AssertionError();
   }
   private SBMLDocument D;
-  private String S;
 
   public String LV_L1v1()
   {
@@ -274,12 +268,10 @@ public class TestWriteSBML {
   protected void setUp() throws Exception
   {
     D = new SBMLDocument();
-    S = null;
   }
 
   protected void tearDown() throws Exception
   {
-    S = null;
   }
 
   public void test_SBMLWriter_create()
@@ -317,7 +309,8 @@ public class TestWriteSBML {
     String expected =  "<algebraicRule formula=\"x + 1\"/>";
     AlgebraicRule r = D.createModel().createAlgebraicRule();
     r.setFormula("x + 1");
-    assertEquals( true, equals(expected,r.toSBML()) );
+    String sbml = r.toSBML();
+    assertEquals( true, equals(expected,sbml) );
   }
 
   public void test_WriteSBML_AlgebraicRule_L2v1()
@@ -334,7 +327,8 @@ public class TestWriteSBML {
     "</algebraicRule>";
     AlgebraicRule r = D.createModel().createAlgebraicRule();
     r.setFormula("x + 1");
-    assertEquals( true, equals(expected,r.toSBML()) );
+    String sbml = r.toSBML();
+    assertEquals( true, equals(expected,sbml) );
   }
 
   public void test_WriteSBML_AlgebraicRule_L2v2()
@@ -352,7 +346,8 @@ public class TestWriteSBML {
     AlgebraicRule r = D.createModel().createAlgebraicRule();
     r.setFormula("x + 1");
     r.setSBOTerm(4);
-    assertEquals( true, equals(expected,r.toSBML()) );
+    String sbml = r.toSBML();
+    assertEquals( true, equals(expected,sbml) );
   }
 
   public void test_WriteSBML_Compartment()
@@ -363,7 +358,8 @@ public class TestWriteSBML {
     c.setId("A");
     c.setSize(2.1);
     c.setOutside("B");
-    assertEquals( true, equals(expected,c.toSBML()) );
+    String sbml = c.toSBML();
+    assertEquals( true, equals(expected,sbml) );
   }
 
   public void test_WriteSBML_CompartmentType()
@@ -373,7 +369,8 @@ public class TestWriteSBML {
     CompartmentType ct = D.createModel().createCompartmentType();
     ct.setId("ct");
     ct.setSBOTerm(4);
-    assertEquals( true, equals(expected,ct.toSBML()) );
+    String sbml = ct.toSBML();
+    assertEquals( true, equals(expected,sbml) );
   }
 
   public void test_WriteSBML_CompartmentType_withSBO()
@@ -383,7 +380,8 @@ public class TestWriteSBML {
     CompartmentType ct = D.createModel().createCompartmentType();
     ct.setId("ct");
     ct.setSBOTerm(4);
-    assertEquals( true, equals(expected,ct.toSBML()) );
+    String sbml = ct.toSBML();
+    assertEquals( true, equals(expected,sbml) );
   }
 
   public void test_WriteSBML_CompartmentVolumeRule()
@@ -395,7 +393,8 @@ public class TestWriteSBML {
     Rule r = D.getModel().createRateRule();
     r.setVariable("c");
     r.setFormula("v + c");
-    assertEquals( true, equals(expected,r.toSBML()) );
+    String sbml = r.toSBML();
+    assertEquals( true, equals(expected,sbml) );
   }
 
   public void test_WriteSBML_CompartmentVolumeRule_L2v1()
@@ -415,7 +414,8 @@ public class TestWriteSBML {
     Rule r = D.getModel().createAssignmentRule();
     r.setVariable("c");
     r.setFormula("v + c");
-    assertEquals( true, equals(expected,r.toSBML()) );
+    String sbml = r.toSBML();
+    assertEquals( true, equals(expected,sbml) );
   }
 
   public void test_WriteSBML_CompartmentVolumeRule_L2v2()
@@ -436,7 +436,8 @@ public class TestWriteSBML {
     r.setVariable("c");
     r.setFormula("v + c");
     r.setSBOTerm(5);
-    assertEquals( true, equals(expected,r.toSBML()) );
+    String sbml = r.toSBML();
+    assertEquals( true, equals(expected,sbml) );
   }
 
   public void test_WriteSBML_CompartmentVolumeRule_defaults()
@@ -448,7 +449,37 @@ public class TestWriteSBML {
     Rule r = D.getModel().createAssignmentRule();
     r.setVariable("c");
     r.setFormula("v + c");
-    assertEquals( true, equals(expected,r.toSBML()) );
+    String sbml = r.toSBML();
+    assertEquals( true, equals(expected,sbml) );
+  }
+
+  public void test_WriteSBML_Compartment_L1_explicit_defaults()
+  {
+    D.setLevelAndVersion(1,2,false);
+    String expected =  "<compartment name=\"A\"/>";
+    Compartment c = D.createModel().createCompartment();
+    c.setId("A");
+    String sbml = c.toSBML();
+    assertEquals( true, equals(expected,sbml) );
+    String expected1 =  "<compartment name=\"A\" volume=\"1\"/>";
+    c.setVolume(1);
+    sbml = c.toSBML();
+    assertEquals( true, equals(expected1,sbml) );
+  }
+
+  public void test_WriteSBML_Compartment_L2_explicit_defaults()
+  {
+    D.setLevelAndVersion(2,2,false);
+    String expected =  "<compartment id=\"A\"/>";
+    Compartment c = D.createModel().createCompartment();
+    c.setId("A");
+    String sbml = c.toSBML();
+    assertEquals( true, equals(expected,sbml) );
+    String expected1 =  "<compartment id=\"A\" spatialDimensions=\"3\" constant=\"true\"/>";
+    c.setSpatialDimensions((unsigned int)(3));
+    c.setConstant(true);
+    sbml = c.toSBML();
+    assertEquals( true, equals(expected1,sbml) );
   }
 
   public void test_WriteSBML_Compartment_L2v1()
@@ -460,7 +491,8 @@ public class TestWriteSBML {
     c.setSize(2.5);
     long dim = 2;
     c.setSpatialDimensions(dim);
-    assertEquals( true, equals(expected,c.toSBML()) );
+    String sbml = c.toSBML();
+    assertEquals( true, equals(expected,sbml) );
   }
 
   public void test_WriteSBML_Compartment_L2v1_constant()
@@ -471,7 +503,8 @@ public class TestWriteSBML {
     c.setId("cell");
     c.setSize(1.2);
     c.setConstant(false);
-    assertEquals( true, equals(expected,c.toSBML()) );
+    String sbml = c.toSBML();
+    assertEquals( true, equals(expected,sbml) );
   }
 
   public void test_WriteSBML_Compartment_L2v1_unsetSize()
@@ -481,7 +514,8 @@ public class TestWriteSBML {
     Compartment c = D.createModel().createCompartment();
     c.setId("A");
     c.unsetSize();
-    assertEquals( true, equals(expected,c.toSBML()) );
+    String sbml = c.toSBML();
+    assertEquals( true, equals(expected,sbml) );
   }
 
   public void test_WriteSBML_Compartment_L2v2_compartmentType()
@@ -491,7 +525,8 @@ public class TestWriteSBML {
     Compartment c = D.createModel().createCompartment();
     c.setId("cell");
     c.setCompartmentType("ct");
-    assertEquals( true, equals(expected,c.toSBML()) );
+    String sbml = c.toSBML();
+    assertEquals( true, equals(expected,sbml) );
   }
 
   public void test_WriteSBML_Compartment_L2v3_SBO()
@@ -501,7 +536,8 @@ public class TestWriteSBML {
     Compartment c = D.createModel().createCompartment();
     c.setId("cell");
     c.setSBOTerm(5);
-    assertEquals( true, equals(expected,c.toSBML()) );
+    String sbml = c.toSBML();
+    assertEquals( true, equals(expected,sbml) );
   }
 
   public void test_WriteSBML_Compartment_unsetVolume()
@@ -511,7 +547,8 @@ public class TestWriteSBML {
     Compartment c = D.createModel().createCompartment();
     c.setId("A");
     c.unsetVolume();
-    assertEquals( true, equals(expected,c.toSBML()) );
+    String sbml = c.toSBML();
+    assertEquals( true, equals(expected,sbml) );
   }
 
   public void test_WriteSBML_Constraint()
@@ -520,7 +557,8 @@ public class TestWriteSBML {
     String expected =  "<constraint sboTerm=\"SBO:0000064\"/>";
     Constraint ct = D.createModel().createConstraint();
     ct.setSBOTerm(64);
-    assertEquals( true, equals(expected,ct.toSBML()) );
+    String sbml = ct.toSBML();
+    assertEquals( true, equals(expected,sbml) );
   }
 
   public void test_WriteSBML_Constraint_full()
@@ -554,7 +592,12 @@ public class TestWriteSBML {
     XMLNode message = new XMLNode(triple1,att1);
     message.addChild(p);
     c.setMessage(message);
-    assertEquals( true, equals(expected,c.toSBML()) );
+    String sbml = c.toSBML();
+    assertEquals( true, equals(expected,sbml) );
+    node = null;
+    text = null;
+    message = null;
+    p = null;
   }
 
   public void test_WriteSBML_Constraint_math()
@@ -572,7 +615,9 @@ public class TestWriteSBML {
     Constraint c = D.createModel().createConstraint();
     ASTNode node = libsbml.parseFormula("leq(P1,t)");
     c.setMath(node);
-    assertEquals( true, equals(expected,c.toSBML()) );
+    String sbml = c.toSBML();
+    assertEquals( true, equals(expected,sbml) );
+    node = null;
   }
 
   public void test_WriteSBML_Event()
@@ -581,7 +626,22 @@ public class TestWriteSBML {
     String expected =  "<event id=\"e\"/>";
     Event e = D.createModel().createEvent();
     e.setId("e");
-    assertEquals( true, equals(expected,e.toSBML()) );
+    String sbml = e.toSBML();
+    assertEquals( true, equals(expected,sbml) );
+  }
+
+  public void test_WriteSBML_Event_L2v4_explicit_defaults()
+  {
+    D.setLevelAndVersion(2,1,false);
+    String expected =  "<event id=\"e\"/>";
+    Event e = D.createModel().createEvent();
+    e.setId("e");
+    String sbml = e.toSBML();
+    assertEquals( true, equals(expected,sbml) );
+    String expected1 =  "<event id=\"e\"/>";
+    e.setUseValuesFromTriggerTime(true);
+    sbml = e.toSBML();
+    assertEquals( true, equals(expected1,sbml) );
   }
 
   public void test_WriteSBML_Event_WithSBO()
@@ -591,7 +651,8 @@ public class TestWriteSBML {
     Event e = D.createModel().createEvent();
     e.setId("e");
     e.setSBOTerm(76);
-    assertEquals( true, equals(expected,e.toSBML()) );
+    String sbml = e.toSBML();
+    assertEquals( true, equals(expected,sbml) );
   }
 
   public void test_WriteSBML_Event_WithUseValuesFromTriggerTime()
@@ -601,7 +662,8 @@ public class TestWriteSBML {
     Event e = D.createModel().createEvent();
     e.setId("e");
     e.setUseValuesFromTriggerTime(false);
-    assertEquals( true, equals(expected,e.toSBML()) );
+    String sbml = e.toSBML();
+    assertEquals( true, equals(expected,sbml) );
   }
 
   public void test_WriteSBML_Event_both()
@@ -633,7 +695,10 @@ public class TestWriteSBML {
     d.setMath(node);
     e.setDelay(d);
     e.setTrigger(t);
-    assertEquals( true, equals(expected,e.toSBML()) );
+    String sbml = e.toSBML();
+    assertEquals( true, equals(expected,sbml) );
+    node = null;
+    node1 = null;
   }
 
   public void test_WriteSBML_Event_delay()
@@ -652,7 +717,9 @@ public class TestWriteSBML {
     Delay d = new Delay ( 2,1 );
     d.setMath(node);
     e.setDelay(d);
-    assertEquals( true, equals(expected,e.toSBML()) );
+    String sbml = e.toSBML();
+    assertEquals( true, equals(expected,sbml) );
+    node = null;
   }
 
   public void test_WriteSBML_Event_delayWithSBO()
@@ -672,7 +739,9 @@ public class TestWriteSBML {
     d.setMath(node);
     d.setSBOTerm(64);
     e.setDelay(d);
-    assertEquals( true, equals(expected,e.toSBML()) );
+    String sbml = e.toSBML();
+    assertEquals( true, equals(expected,sbml) );
+    node = null;
   }
 
   public void test_WriteSBML_Event_full()
@@ -708,7 +777,10 @@ public class TestWriteSBML {
     ea.setSBOTerm(64);
     e.setTrigger(t);
     e.addEventAssignment(ea);
-    assertEquals( true, equals(expected,e.toSBML()) );
+    String sbml = e.toSBML();
+    assertEquals( true, equals(expected,sbml) );
+    node = null;
+    math = null;
   }
 
   public void test_WriteSBML_Event_trigger()
@@ -731,7 +803,9 @@ public class TestWriteSBML {
     Trigger t = new Trigger ( 2,1 );
     t.setMath(node);
     e.setTrigger(t);
-    assertEquals( true, equals(expected,e.toSBML()) );
+    String sbml = e.toSBML();
+    assertEquals( true, equals(expected,sbml) );
+    node = null;
   }
 
   public void test_WriteSBML_Event_trigger_withSBO()
@@ -755,7 +829,9 @@ public class TestWriteSBML {
     t.setMath(node);
     t.setSBOTerm(64);
     e.setTrigger(t);
-    assertEquals( true, equals(expected,e.toSBML()) );
+    String sbml = e.toSBML();
+    assertEquals( true, equals(expected,sbml) );
+    node = null;
   }
 
   public void test_WriteSBML_FunctionDefinition()
@@ -776,8 +852,11 @@ public class TestWriteSBML {
     "</functionDefinition>";
     FunctionDefinition fd = new FunctionDefinition ( 2,4 );
     fd.setId("pow3");
-    fd.setMath(libsbml.parseFormula("lambda(x, x^3)"));
-    assertEquals( true, equals(expected,fd.toSBML()) );
+    ASTNode math = libsbml.parseFormula("lambda(x, x^3)");
+    fd.setMath(math);
+    math = null;
+    String sbml = fd.toSBML();
+    assertEquals( true, equals(expected,sbml) );
   }
 
   public void test_WriteSBML_FunctionDefinition_withSBO()
@@ -798,9 +877,12 @@ public class TestWriteSBML {
     "</functionDefinition>";
     FunctionDefinition fd = new FunctionDefinition ( 2,4 );
     fd.setId("pow3");
-    fd.setMath(libsbml.parseFormula("lambda(x, x^3)"));
+    ASTNode math = libsbml.parseFormula("lambda(x, x^3)");
+    fd.setMath(math);
+    math = null;
     fd.setSBOTerm(64);
-    assertEquals( true, equals(expected,fd.toSBML()) );
+    String sbml = fd.toSBML();
+    assertEquals( true, equals(expected,sbml) );
   }
 
   public void test_WriteSBML_INF()
@@ -809,7 +891,8 @@ public class TestWriteSBML {
     Parameter p = D.createModel().createParameter();
     p.setId("p");
     p.setValue(util_PosInf());
-    assertEquals( true, equals(expected,p.toSBML()) );
+    String sbml = p.toSBML();
+    assertEquals( true, equals(expected,sbml) );
   }
 
   public void test_WriteSBML_InitialAssignment()
@@ -819,7 +902,8 @@ public class TestWriteSBML {
     InitialAssignment ia = D.createModel().createInitialAssignment();
     ia.setSBOTerm(64);
     ia.setSymbol("c");
-    assertEquals( true, equals(expected,ia.toSBML()) );
+    String sbml = ia.toSBML();
+    assertEquals( true, equals(expected,sbml) );
   }
 
   public void test_WriteSBML_InitialAssignment_math()
@@ -837,7 +921,9 @@ public class TestWriteSBML {
     ASTNode node = libsbml.parseFormula("a + b");
     ia.setMath(node);
     ia.setSymbol("c");
-    assertEquals( true, equals(expected,ia.toSBML()) );
+    String sbml = ia.toSBML();
+    assertEquals( true, equals(expected,sbml) );
+    node = null;
   }
 
   public void test_WriteSBML_KineticLaw()
@@ -848,7 +934,8 @@ public class TestWriteSBML {
     kl.setFormula("k * e");
     kl.setTimeUnits("second");
     kl.setSubstanceUnits("item");
-    assertEquals( true, equals(expected,kl.toSBML()) );
+    String sbml = kl.toSBML();
+    assertEquals( true, equals(expected,sbml) );
   }
 
   public void test_WriteSBML_KineticLaw_ListOfParameters()
@@ -867,7 +954,8 @@ public class TestWriteSBML {
     Parameter p = kl.createParameter();
     p.setName("n");
     p.setValue(1.2);
-    assertEquals( true, equals(expected,kl.toSBML()) );
+    String sbml = kl.toSBML();
+    assertEquals( true, equals(expected,sbml) );
   }
 
   public void test_WriteSBML_KineticLaw_l2v1()
@@ -894,7 +982,8 @@ public class TestWriteSBML {
     kl.setTimeUnits("second");
     kl.setSubstanceUnits("item");
     kl.setFormula("(vm * s1)/(km + s1)");
-    assertEquals( true, equals(expected,kl.toSBML()) );
+    String sbml = kl.toSBML();
+    assertEquals( true, equals(expected,sbml) );
   }
 
   public void test_WriteSBML_KineticLaw_skipOptional()
@@ -903,7 +992,8 @@ public class TestWriteSBML {
     String expected =  "<kineticLaw formula=\"k * e\"/>";
     KineticLaw kl = D.createModel().createReaction().createKineticLaw();
     kl.setFormula("k * e");
-    assertEquals( true, equals(expected,kl.toSBML()) );
+    String sbml = kl.toSBML();
+    assertEquals( true, equals(expected,sbml) );
   }
 
   public void test_WriteSBML_KineticLaw_withSBO()
@@ -929,7 +1019,8 @@ public class TestWriteSBML {
     KineticLaw kl = D.createModel().createReaction().createKineticLaw();
     kl.setFormula("(vm * s1)/(km + s1)");
     kl.setSBOTerm(1);
-    assertEquals( true, equals(expected,kl.toSBML()) );
+    String sbml = kl.toSBML();
+    assertEquals( true, equals(expected,sbml) );
   }
 
   public void test_WriteSBML_Model()
@@ -937,8 +1028,8 @@ public class TestWriteSBML {
     D.setLevelAndVersion(1,1,false);
     String expected = wrapSBML_L1v1("  <model name=\"Branch\"/>\n");
     D.createModel("Branch");
-    S = libsbml.writeSBMLToString(D);
-    assertEquals( true, equals(expected,S) );
+    String S = writeSBMLToStdString;
+    assertEquals( true, equals(expected,) );
   }
 
   public void test_WriteSBML_Model_L2v1()
@@ -946,8 +1037,8 @@ public class TestWriteSBML {
     D.setLevelAndVersion(2,1,false);
     String expected = wrapSBML_L2v1("  <model id=\"Branch\"/>\n");
     D.createModel("Branch");
-    S = libsbml.writeSBMLToString(D);
-    assertEquals( true, equals(expected,S) );
+    String S = writeSBMLToStdString;
+    assertEquals( true, equals(expected,) );
   }
 
   public void test_WriteSBML_Model_L2v1_skipOptional()
@@ -955,8 +1046,8 @@ public class TestWriteSBML {
     D.setLevelAndVersion(2,1,false);
     String expected = wrapSBML_L2v1("  <model/>\n");
     D.createModel();
-    S = libsbml.writeSBMLToString(D);
-    assertEquals( true, equals(expected,S) );
+    String S = writeSBMLToStdString;
+    assertEquals( true, equals(expected,) );
   }
 
   public void test_WriteSBML_Model_L2v2()
@@ -965,8 +1056,8 @@ public class TestWriteSBML {
     String expected = wrapSBML_L2v2("  <model sboTerm=\"SBO:0000004\" id=\"Branch\"/>\n");
     Model m = D.createModel("Branch");
     m.setSBOTerm(4);
-    S = libsbml.writeSBMLToString(D);
-    assertEquals( true, equals(expected,S) );
+    String S = writeSBMLToStdString;
+    assertEquals( true, equals(expected,) );
   }
 
   public void test_WriteSBML_Model_skipOptional()
@@ -974,8 +1065,8 @@ public class TestWriteSBML {
     D.setLevelAndVersion(1,2,false);
     String expected = wrapSBML_L1v2("  <model/>\n");
     D.createModel();
-    S = libsbml.writeSBMLToString(D);
-    assertEquals( true, equals(expected,S) );
+    String S = writeSBMLToStdString;
+    assertEquals( true, equals(expected,) );
   }
 
   public void test_WriteSBML_NaN()
@@ -984,7 +1075,8 @@ public class TestWriteSBML {
     Parameter p = D.createModel().createParameter();
     p.setId("p");
     p.setValue(util_NaN());
-    assertEquals( true, equals(expected,p.toSBML()) );
+    String sbml = p.toSBML();
+    assertEquals( true, equals(expected,sbml) );
   }
 
   public void test_WriteSBML_NegINF()
@@ -993,7 +1085,8 @@ public class TestWriteSBML {
     Parameter p = D.createModel().createParameter();
     p.setId("p");
     p.setValue(util_NegInf());
-    assertEquals( true, equals(expected,p.toSBML()) );
+    String sbml = p.toSBML();
+    assertEquals( true, equals(expected,sbml) );
   }
 
   public void test_WriteSBML_Parameter()
@@ -1004,7 +1097,8 @@ public class TestWriteSBML {
     p.setId("Km1");
     p.setValue(2.3);
     p.setUnits("second");
-    assertEquals( true, equals(expected,p.toSBML()) );
+    String sbml = p.toSBML();
+    assertEquals( true, equals(expected,sbml) );
   }
 
   public void test_WriteSBML_ParameterRule()
@@ -1016,7 +1110,8 @@ public class TestWriteSBML {
     Rule r = D.getModel().createRateRule();
     r.setVariable("p");
     r.setFormula("p * t");
-    assertEquals( true, equals(expected,r.toSBML()) );
+    String sbml = r.toSBML();
+    assertEquals( true, equals(expected,sbml) );
   }
 
   public void test_WriteSBML_ParameterRule_L2v1()
@@ -1036,7 +1131,8 @@ public class TestWriteSBML {
     Rule r = D.getModel().createRateRule();
     r.setVariable("p");
     r.setFormula("p * t");
-    assertEquals( true, equals(expected,r.toSBML()) );
+    String sbml = r.toSBML();
+    assertEquals( true, equals(expected,sbml) );
   }
 
   public void test_WriteSBML_ParameterRule_L2v2()
@@ -1057,7 +1153,8 @@ public class TestWriteSBML {
     r.setVariable("p");
     r.setFormula("p * t");
     r.setSBOTerm(7);
-    assertEquals( true, equals(expected,r.toSBML()) );
+    String sbml = r.toSBML();
+    assertEquals( true, equals(expected,sbml) );
   }
 
   public void test_WriteSBML_ParameterRule_defaults()
@@ -1069,7 +1166,8 @@ public class TestWriteSBML {
     Rule r = D.getModel().createAssignmentRule();
     r.setVariable("p");
     r.setFormula("p * t");
-    assertEquals( true, equals(expected,r.toSBML()) );
+    String sbml = r.toSBML();
+    assertEquals( true, equals(expected,sbml) );
   }
 
   public void test_WriteSBML_Parameter_L1v1_required()
@@ -1079,7 +1177,8 @@ public class TestWriteSBML {
     Parameter p = D.createModel().createParameter();
     p.setId("Km1");
     p.unsetValue();
-    assertEquals( true, equals(expected,p.toSBML()) );
+    String sbml = p.toSBML();
+    assertEquals( true, equals(expected,sbml) );
   }
 
   public void test_WriteSBML_Parameter_L1v2_skipOptional()
@@ -1089,7 +1188,22 @@ public class TestWriteSBML {
     Parameter p = D.createModel().createParameter();
     p.setId("Km1");
     p.unsetValue();
-    assertEquals( true, equals(expected,p.toSBML()) );
+    String sbml = p.toSBML();
+    assertEquals( true, equals(expected,sbml) );
+  }
+
+  public void test_WriteSBML_Parameter_L2_explicit_defaults()
+  {
+    D.setLevelAndVersion(2,2,false);
+    String expected =  "<parameter id=\"Km1\"/>";
+    Parameter p = D.createModel().createParameter();
+    p.setId("Km1");
+    String sbml = p.toSBML();
+    assertEquals( true, equals(expected,sbml) );
+    String expected1 =  "<parameter id=\"Km1\" constant=\"false\"/>";
+    p.setConstant(false);
+    sbml = p.toSBML();
+    assertEquals( true, equals(expected1,sbml) );
   }
 
   public void test_WriteSBML_Parameter_L2v1()
@@ -1100,7 +1214,8 @@ public class TestWriteSBML {
     p.setId("Km1");
     p.setValue(2.3);
     p.setUnits("second");
-    assertEquals( true, equals(expected,p.toSBML()) );
+    String sbml = p.toSBML();
+    assertEquals( true, equals(expected,sbml) );
   }
 
   public void test_WriteSBML_Parameter_L2v1_constant()
@@ -1110,7 +1225,8 @@ public class TestWriteSBML {
     Parameter p = D.createModel().createParameter();
     p.setId("x");
     p.setConstant(false);
-    assertEquals( true, equals(expected,p.toSBML()) );
+    String sbml = p.toSBML();
+    assertEquals( true, equals(expected,sbml) );
   }
 
   public void test_WriteSBML_Parameter_L2v1_skipOptional()
@@ -1119,7 +1235,8 @@ public class TestWriteSBML {
     String expected =  "<parameter id=\"Km1\"/>";
     Parameter p = D.createModel().createParameter();
     p.setId("Km1");
-    assertEquals( true, equals(expected,p.toSBML()) );
+    String sbml = p.toSBML();
+    assertEquals( true, equals(expected,sbml) );
   }
 
   public void test_WriteSBML_Parameter_L2v2()
@@ -1131,7 +1248,8 @@ public class TestWriteSBML {
     p.setValue(2.3);
     p.setUnits("second");
     p.setSBOTerm(2);
-    assertEquals( true, equals(expected,p.toSBML()) );
+    String sbml = p.toSBML();
+    assertEquals( true, equals(expected,sbml) );
   }
 
   public void test_WriteSBML_Reaction()
@@ -1142,7 +1260,38 @@ public class TestWriteSBML {
     r.setId("r");
     r.setReversible(false);
     r.setFast(true);
-    assertEquals( true, equals(expected,r.toSBML()) );
+    String sbml = r.toSBML();
+    assertEquals( true, equals(expected,sbml) );
+  }
+
+  public void test_WriteSBML_Reaction_L1_explicit_defaults()
+  {
+    D.setLevelAndVersion(1,2,false);
+    String expected =  "<reaction name=\"r\"/>";
+    Reaction r = D.createModel().createReaction();
+    r.setId("r");
+    String sbml = r.toSBML();
+    assertEquals( true, equals(expected,sbml) );
+    String expected1 =  "<reaction name=\"r\" reversible=\"true\" fast=\"false\"/>";
+    r.setFast(false);
+    r.setReversible(true);
+    sbml = r.toSBML();
+    assertEquals( true, equals(expected1,sbml) );
+  }
+
+  public void test_WriteSBML_Reaction_L2_explicit_defaults()
+  {
+    D.setLevelAndVersion(2,2,false);
+    String expected =  "<reaction id=\"r\"/>";
+    Reaction r = D.createModel().createReaction();
+    r.setId("r");
+    String sbml = r.toSBML();
+    assertEquals( true, equals(expected,sbml) );
+    String expected1 =  "<reaction id=\"r\" reversible=\"true\" fast=\"false\"/>";
+    r.setFast(false);
+    r.setReversible(true);
+    sbml = r.toSBML();
+    assertEquals( true, equals(expected1,sbml) );
   }
 
   public void test_WriteSBML_Reaction_L2v1()
@@ -1152,7 +1301,8 @@ public class TestWriteSBML {
     Reaction r = D.createModel().createReaction();
     r.setId("r");
     r.setReversible(false);
-    assertEquals( true, equals(expected,r.toSBML()) );
+    String sbml = r.toSBML();
+    assertEquals( true, equals(expected,sbml) );
   }
 
   public void test_WriteSBML_Reaction_L2v1_full()
@@ -1193,7 +1343,8 @@ public class TestWriteSBML {
     r.createProduct().setSpecies("s1");
     r.createModifier().setSpecies("m1");
     r.createKineticLaw().setFormula("(vm * s1)/(km + s1)");
-    assertEquals( true, equals(expected,r.toSBML()) );
+    String sbml = r.toSBML();
+    assertEquals( true, equals(expected,sbml) );
   }
 
   public void test_WriteSBML_Reaction_L2v2()
@@ -1206,7 +1357,8 @@ public class TestWriteSBML {
     r.setReversible(false);
     r.setFast(true);
     r.setSBOTerm(64);
-    assertEquals( true, equals(expected,r.toSBML()) );
+    String sbml = r.toSBML();
+    assertEquals( true, equals(expected,sbml) );
   }
 
   public void test_WriteSBML_Reaction_defaults()
@@ -1215,7 +1367,8 @@ public class TestWriteSBML {
     String expected =  "<reaction name=\"r\"/>";
     Reaction r = D.createModel().createReaction();
     r.setId("r");
-    assertEquals( true, equals(expected,r.toSBML()) );
+    String sbml = r.toSBML();
+    assertEquals( true, equals(expected,sbml) );
   }
 
   public void test_WriteSBML_Reaction_full()
@@ -1236,39 +1389,103 @@ public class TestWriteSBML {
     r.createReactant().setSpecies("x0");
     r.createProduct().setSpecies("s1");
     r.createKineticLaw().setFormula("(vm * s1)/(km + s1)");
-    assertEquals( true, equals(expected,r.toSBML()) );
+    String sbml = r.toSBML();
+    assertEquals( true, equals(expected,sbml) );
   }
 
   public void test_WriteSBML_SBMLDocument_L1v1()
   {
     D.setLevelAndVersion(1,1,false);
     String expected = wrapXML("<sbml xmlns=\"http://www.sbml.org/sbml/level1\" " + "level=\"1\" version=\"1\"/>\n");
-    S = libsbml.writeSBMLToString(D);
-    assertEquals( true, equals(expected,S) );
+    String S = writeSBMLToStdString;
+    assertEquals( true, equals(expected,) );
   }
 
   public void test_WriteSBML_SBMLDocument_L1v2()
   {
     D.setLevelAndVersion(1,2,false);
     String expected = wrapXML("<sbml xmlns=\"http://www.sbml.org/sbml/level1\" " + "level=\"1\" version=\"2\"/>\n");
-    S = libsbml.writeSBMLToString(D);
-    assertEquals( true, equals(expected,S) );
+    String S = writeSBMLToStdString;
+    assertEquals( true, equals(expected,) );
   }
 
   public void test_WriteSBML_SBMLDocument_L2v1()
   {
     D.setLevelAndVersion(2,1,false);
     String expected = wrapXML("<sbml xmlns=\"http://www.sbml.org/sbml/level2\" " + "level=\"2\" version=\"1\"/>\n");
-    S = libsbml.writeSBMLToString(D);
-    assertEquals( true, equals(expected,S) );
+    String S = writeSBMLToStdString;
+    assertEquals( true, equals(expected,) );
   }
 
   public void test_WriteSBML_SBMLDocument_L2v2()
   {
     D.setLevelAndVersion(2,2,false);
     String expected = wrapXML("<sbml xmlns=\"http://www.sbml.org/sbml/level2/version2\" " + "level=\"2\" version=\"2\"/>\n");
-    S = libsbml.writeSBMLToString(D);
-    assertEquals( true, equals(expected,S) );
+    String S = writeSBMLToStdString;
+    assertEquals( true, equals(expected,) );
+  }
+
+  public void test_WriteSBML_SBMLDocument_updateNamespace_1()
+  {
+    String input = wrapXML("<sbml xmlns=\"http://www.sbml.org/sbml/level1\" " + "level=\"1\" version=\"2\"/>\n");
+    SBMLDocument d = libsbml.readSBMLFromString(input);
+    d.updateSBMLNamespace("",2,1);
+    String expected = wrapXML("<sbml xmlns=\"http://www.sbml.org/sbml/level2\" " + "level=\"2\" version=\"1\"/>\n");
+    String S = writeSBMLToStdString;
+    assertEquals( true, equals(expected,) );
+    d = null;
+  }
+
+  public void test_WriteSBML_SBMLDocument_updateNamespace_2()
+  {
+    String input = wrapXML("<sbml xmlns:foo=\"http://www.sbml.org/sbml/level2/version4\" " + "level=\"2\" version=\"4\"/>\n");
+    SBMLDocument d = libsbml.readSBMLFromString(input);
+    d.updateSBMLNamespace("",2,1);
+    String expected = wrapXML("<foo:sbml xmlns:foo=\"http://www.sbml.org/sbml/level2\" " + "level=\"2\" version=\"1\"/>\n");
+    String S = writeSBMLToStdString;
+    assertEquals( true, equals(expected,) );
+    d = null;
+  }
+
+  public void test_WriteSBML_SBMLDocument_updateNamespace_3()
+  {
+    String input = wrapXML("<foo:sbml xmlns:foo=\"http://www.sbml.org/sbml/level3/version1/core\" " + "level=\"3\" version=\"1\"/>\n");
+    SBMLDocument d = libsbml.readSBMLFromString(input);
+    d.updateSBMLNamespace("",2,1);
+    String expected = wrapXML("<foo:sbml xmlns:foo=\"http://www.sbml.org/sbml/level2\" " + "level=\"2\" version=\"1\"/>\n");
+    String S = writeSBMLToStdString;
+    assertEquals( true, equals(expected,) );
+    d = null;
+  }
+
+  public void test_WriteSBML_SBMLDocument_updateNamespace_4()
+  {
+    String input = wrapXML("<sbml xmlns=\"http://www.sbml.org/sbml/level3/version1/core\" " + 
+    "xmlns:foo=\"http://www.sbml.org/sbml/level3/version1/core\" " + 
+    "level=\"3\" version=\"1\"/>\n");
+    SBMLDocument d = libsbml.readSBMLFromString(input);
+    d.updateSBMLNamespace("",2,1);
+    String expected = wrapXML("<sbml xmlns=\"http://www.sbml.org/sbml/level2\" " + 
+    "xmlns:foo=\"http://www.sbml.org/sbml/level2\" " + 
+    "level=\"2\" version=\"1\"/>\n");
+    String S = writeSBMLToStdString;
+    assertEquals( true, equals(expected,) );
+    d = null;
+  }
+
+  public void test_WriteSBML_SBMLDocument_updateNamespace_5()
+  {
+    String input = wrapXML("<foo:sbml xmlns:foo=\"http://www.sbml.org/sbml/level3/version1/core\" " + 
+    "xmlns=\"http://www.sbml.org/sbml/level3/version1/core\" " + 
+    "level=\"3\" version=\"1\"/>\n");
+    SBMLDocument d = libsbml.readSBMLFromString(input);
+    d.updateSBMLNamespace("",2,1);
+    String expected = wrapXML("<foo:sbml xmlns:foo=\"http://www.sbml.org/sbml/level2\" " + 
+    "xmlns=\"http://www.sbml.org/sbml/level2\" " + 
+    "level=\"2\" version=\"1\"/>\n");
+    String S = writeSBMLToStdString;
+    assertEquals( true, equals(expected,) );
+    d = null;
   }
 
   public void test_WriteSBML_Species()
@@ -1282,7 +1499,8 @@ public class TestWriteSBML {
     s.setUnits("mole");
     s.setBoundaryCondition(true);
     s.setCharge(2);
-    assertEquals( true, equals(expected,s.toSBML()) );
+    String sbml = s.toSBML();
+    assertEquals( true, equals(expected,sbml) );
   }
 
   public void test_WriteSBML_SpeciesConcentrationRule()
@@ -1294,7 +1512,8 @@ public class TestWriteSBML {
     Rule r = D.getModel().createRateRule();
     r.setVariable("s");
     r.setFormula("t * s");
-    assertEquals( true, equals(expected,r.toSBML()) );
+    String sbml = r.toSBML();
+    assertEquals( true, equals(expected,sbml) );
   }
 
   public void test_WriteSBML_SpeciesConcentrationRule_L1v1()
@@ -1306,7 +1525,8 @@ public class TestWriteSBML {
     Rule r = D.getModel().createAssignmentRule();
     r.setVariable("s");
     r.setFormula("t * s");
-    assertEquals( true, equals(expected,r.toSBML()) );
+    String sbml = r.toSBML();
+    assertEquals( true, equals(expected,sbml) );
   }
 
   public void test_WriteSBML_SpeciesConcentrationRule_L2v1()
@@ -1326,7 +1546,8 @@ public class TestWriteSBML {
     Rule r = D.getModel().createAssignmentRule();
     r.setVariable("s");
     r.setFormula("t * s");
-    assertEquals( true, equals(expected,r.toSBML()) );
+    String sbml = r.toSBML();
+    assertEquals( true, equals(expected,sbml) );
   }
 
   public void test_WriteSBML_SpeciesConcentrationRule_L2v2()
@@ -1347,7 +1568,8 @@ public class TestWriteSBML {
     r.setVariable("s");
     r.setFormula("t * s");
     r.setSBOTerm(6);
-    assertEquals( true, equals(expected,r.toSBML()) );
+    String sbml = r.toSBML();
+    assertEquals( true, equals(expected,sbml) );
   }
 
   public void test_WriteSBML_SpeciesConcentrationRule_defaults()
@@ -1359,7 +1581,8 @@ public class TestWriteSBML {
     Rule r = D.getModel().createAssignmentRule();
     r.setVariable("s");
     r.setFormula("t * s");
-    assertEquals( true, equals(expected,r.toSBML()) );
+    String sbml = r.toSBML();
+    assertEquals( true, equals(expected,sbml) );
   }
 
   public void test_WriteSBML_SpeciesReference()
@@ -1370,7 +1593,23 @@ public class TestWriteSBML {
     sr.setSpecies("s");
     sr.setStoichiometry(3);
     sr.setDenominator(2);
-    assertEquals( true, equals(expected,sr.toSBML()) );
+    String sbml = sr.toSBML();
+    assertEquals( true, equals(expected,sbml) );
+  }
+
+  public void test_WriteSBML_SpeciesReference_L1_explicit_defaults()
+  {
+    D.setLevelAndVersion(1,2,false);
+    String expected =  "<speciesReference species=\"s\"/>";
+    SpeciesReference sr = D.createModel().createReaction().createReactant();
+    sr.setSpecies("s");
+    String sbml = sr.toSBML();
+    assertEquals( true, equals(expected,sbml) );
+    String expected1 =  "<speciesReference species=\"s\" stoichiometry=\"1\" denominator=\"1\"/>";
+    sr.setStoichiometry(1);
+    sr.setDenominator(1);
+    sbml = sr.toSBML();
+    assertEquals( true, equals(expected1,sbml) );
   }
 
   public void test_WriteSBML_SpeciesReference_L1v1()
@@ -1381,7 +1620,22 @@ public class TestWriteSBML {
     sr.setSpecies("s");
     sr.setStoichiometry(3);
     sr.setDenominator(2);
-    assertEquals( true, equals(expected,sr.toSBML()) );
+    String sbml = sr.toSBML();
+    assertEquals( true, equals(expected,sbml) );
+  }
+
+  public void test_WriteSBML_SpeciesReference_L2_explicit_defaults()
+  {
+    D.setLevelAndVersion(2,2,false);
+    String expected =  "<speciesReference species=\"s\"/>";
+    SpeciesReference sr = D.createModel().createReaction().createReactant();
+    sr.setSpecies("s");
+    String sbml = sr.toSBML();
+    assertEquals( true, equals(expected,sbml) );
+    String expected1 =  "<speciesReference species=\"s\" stoichiometry=\"1\"/>";
+    sr.setStoichiometry(1);
+    sbml = sr.toSBML();
+    assertEquals( true, equals(expected1,sbml) );
   }
 
   public void test_WriteSBML_SpeciesReference_L2v1_1()
@@ -1398,7 +1652,8 @@ public class TestWriteSBML {
     sr.setSpecies("s");
     sr.setStoichiometry(3);
     sr.setDenominator(2);
-    assertEquals( true, equals(expected,sr.toSBML()) );
+    String sbml = sr.toSBML();
+    assertEquals( true, equals(expected,sbml) );
   }
 
   public void test_WriteSBML_SpeciesReference_L2v1_2()
@@ -1408,7 +1663,8 @@ public class TestWriteSBML {
     SpeciesReference sr = D.createModel().createReaction().createReactant();
     sr.setSpecies("s");
     sr.setStoichiometry(3.2);
-    assertEquals( true, equals(expected,sr.toSBML()) );
+    String sbml = sr.toSBML();
+    assertEquals( true, equals(expected,sbml) );
   }
 
   public void test_WriteSBML_SpeciesReference_L2v1_3()
@@ -1431,7 +1687,9 @@ public class TestWriteSBML {
     StoichiometryMath stoich = sr.createStoichiometryMath();
     stoich.setMath(math);
     sr.setStoichiometryMath(stoich);
-    assertEquals( true, equals(expected,sr.toSBML()) );
+    String sbml = sr.toSBML();
+    assertEquals( true, equals(expected,sbml) );
+    math = null;
   }
 
   public void test_WriteSBML_SpeciesReference_L2v2_1()
@@ -1454,7 +1712,8 @@ public class TestWriteSBML {
     sr.setId("ss");
     sr.setName("odd");
     sr.setSBOTerm(9);
-    assertEquals( true, equals(expected,sr.toSBML()) );
+    String sbml = sr.toSBML();
+    assertEquals( true, equals(expected,sbml) );
   }
 
   public void test_WriteSBML_SpeciesReference_L2v3_1()
@@ -1467,7 +1726,8 @@ public class TestWriteSBML {
     sr.setId("ss");
     sr.setName("odd");
     sr.setSBOTerm(9);
-    assertEquals( true, equals(expected,sr.toSBML()) );
+    String sbml = sr.toSBML();
+    assertEquals( true, equals(expected,sbml) );
   }
 
   public void test_WriteSBML_SpeciesReference_defaults()
@@ -1476,7 +1736,8 @@ public class TestWriteSBML {
     String expected =  "<speciesReference species=\"s\"/>";
     SpeciesReference sr = D.createModel().createReaction().createReactant();
     sr.setSpecies("s");
-    assertEquals( true, equals(expected,sr.toSBML()) );
+    String sbml = sr.toSBML();
+    assertEquals( true, equals(expected,sbml) );
   }
 
   public void test_WriteSBML_SpeciesType()
@@ -1484,9 +1745,11 @@ public class TestWriteSBML {
     D.setLevelAndVersion(2,2,false);
     String expected =  "<speciesType id=\"st\"/>";
     SpeciesType st = D.createModel().createSpeciesType();
+    assertTrue( st != null );
     st.setId("st");
     st.setSBOTerm(4);
-    assertEquals( true, equals(expected,st.toSBML()) );
+    String sbml = st.toSBML();
+    assertEquals( true, equals(expected,sbml) );
   }
 
   public void test_WriteSBML_SpeciesType_withSBO()
@@ -1496,7 +1759,24 @@ public class TestWriteSBML {
     SpeciesType st = D.createModel().createSpeciesType();
     st.setId("st");
     st.setSBOTerm(4);
-    assertEquals( true, equals(expected,st.toSBML()) );
+    String sbml = st.toSBML();
+    assertEquals( true, equals(expected,sbml) );
+  }
+
+  public void test_WriteSBML_Species_L1_explicit_defaults()
+  {
+    D.setLevelAndVersion(1,2,false);
+    String expected = + "<species name=\"Ca2\" compartment=\"cell\" initialAmount=\"0.7\"/>";
+    Species s = D.createModel().createSpecies();
+    s.setName("Ca2");
+    s.setCompartment("cell");
+    s.setInitialAmount(0.7);
+    String sbml = s.toSBML();
+    assertEquals( true, equals(expected,sbml) );
+    String expected1 = + "<species name=\"Ca2\" compartment=\"cell\" initialAmount=\"0.7\" boundaryCondition=\"false\"/>";
+    s.setBoundaryCondition(false);
+    sbml = s.toSBML();
+    assertEquals( true, equals(expected1,sbml) );
   }
 
   public void test_WriteSBML_Species_L1v1()
@@ -1510,7 +1790,25 @@ public class TestWriteSBML {
     s.setUnits("mole");
     s.setBoundaryCondition(true);
     s.setCharge(2);
-    assertEquals( true, equals(expected,s.toSBML()) );
+    String sbml = s.toSBML();
+    assertEquals( true, equals(expected,sbml) );
+  }
+
+  public void test_WriteSBML_Species_L2_explicit_defaults()
+  {
+    D.setLevelAndVersion(2,2,false);
+    String expected = + "<species id=\"Ca2\" compartment=\"cell\"/>";
+    Species s = D.createModel().createSpecies();
+    s.setId("Ca2");
+    s.setCompartment("cell");
+    String sbml = s.toSBML();
+    assertEquals( true, equals(expected,sbml) );
+    String expected1 = "<species id=\"Ca2\" compartment=\"cell\" " + "hasOnlySubstanceUnits=\"false\" boundaryCondition=\"false\" constant=\"false\"/>";
+    s.setBoundaryCondition(false);
+    s.setHasOnlySubstanceUnits(false);
+    s.setConstant(false);
+    sbml = s.toSBML();
+    assertEquals( true, equals(expected1,sbml) );
   }
 
   public void test_WriteSBML_Species_L2v1()
@@ -1523,7 +1821,8 @@ public class TestWriteSBML {
     s.setInitialAmount(0.7);
     s.setSubstanceUnits("mole");
     s.setConstant(true);
-    assertEquals( true, equals(expected,s.toSBML()) );
+    String sbml = s.toSBML();
+    assertEquals( true, equals(expected,sbml) );
   }
 
   public void test_WriteSBML_Species_L2v1_skipOptional()
@@ -1533,7 +1832,8 @@ public class TestWriteSBML {
     Species s = D.createModel().createSpecies();
     s.setId("Ca2");
     s.setCompartment("cell");
-    assertEquals( true, equals(expected,s.toSBML()) );
+    String sbml = s.toSBML();
+    assertEquals( true, equals(expected,sbml) );
   }
 
   public void test_WriteSBML_Species_L2v2()
@@ -1547,7 +1847,8 @@ public class TestWriteSBML {
     s.setSubstanceUnits("mole");
     s.setConstant(true);
     s.setSpeciesType("st");
-    assertEquals( true, equals(expected,s.toSBML()) );
+    String sbml = s.toSBML();
+    assertEquals( true, equals(expected,sbml) );
   }
 
   public void test_WriteSBML_Species_L2v3()
@@ -1558,7 +1859,8 @@ public class TestWriteSBML {
     s.setId("Ca2");
     s.setCompartment("cell");
     s.setSBOTerm(7);
-    assertEquals( true, equals(expected,s.toSBML()) );
+    String sbml = s.toSBML();
+    assertEquals( true, equals(expected,sbml) );
   }
 
   public void test_WriteSBML_Species_defaults()
@@ -1571,7 +1873,8 @@ public class TestWriteSBML {
     s.setInitialAmount(0.7);
     s.setUnits("mole");
     s.setCharge(2);
-    assertEquals( true, equals(expected,s.toSBML()) );
+    String sbml = s.toSBML();
+    assertEquals( true, equals(expected,sbml) );
   }
 
   public void test_WriteSBML_Species_skipOptional()
@@ -1582,7 +1885,8 @@ public class TestWriteSBML {
     s.setId("Ca2");
     s.setCompartment("cell");
     s.setInitialAmount(0.7);
-    assertEquals( true, equals(expected,s.toSBML()) );
+    String sbml = s.toSBML();
+    assertEquals( true, equals(expected,sbml) );
   }
 
   public void test_WriteSBML_StoichiometryMath()
@@ -1600,7 +1904,9 @@ public class TestWriteSBML {
     ASTNode math = libsbml.parseFormula("1/d");
     StoichiometryMath stoich = D.createModel().createReaction().createReactant().createStoichiometryMath();
     stoich.setMath(math);
-    assertEquals( true, equals(expected,stoich.toSBML()) );
+    String sbml = stoich.toSBML();
+    assertEquals( true, equals(expected,sbml) );
+    math = null;
   }
 
   public void test_WriteSBML_StoichiometryMath_withSBO()
@@ -1619,7 +1925,9 @@ public class TestWriteSBML {
     StoichiometryMath stoich = D.createModel().createReaction().createReactant().createStoichiometryMath();
     stoich.setMath(math);
     stoich.setSBOTerm(333);
-    assertEquals( true, equals(expected,stoich.toSBML()) );
+    String sbml = stoich.toSBML();
+    assertEquals( true, equals(expected,sbml) );
+    math = null;
   }
 
   public void test_WriteSBML_Unit()
@@ -1630,7 +1938,8 @@ public class TestWriteSBML {
     u.setKind(libsbml.UNIT_KIND_KILOGRAM);
     u.setExponent(2);
     u.setScale(-3);
-    assertEquals( true, equals(expected,u.toSBML()) );
+    String sbml = u.toSBML();
+    assertEquals( true, equals(expected,sbml) );
   }
 
   public void test_WriteSBML_UnitDefinition()
@@ -1639,7 +1948,8 @@ public class TestWriteSBML {
     String expected =  "<unitDefinition name=\"mmls\"/>";
     UnitDefinition ud = D.createModel().createUnitDefinition();
     ud.setId("mmls");
-    assertEquals( true, equals(expected,ud.toSBML()) );
+    String sbml = ud.toSBML();
+    assertEquals( true, equals(expected,sbml) );
   }
 
   public void test_WriteSBML_UnitDefinition_L2v1()
@@ -1648,7 +1958,8 @@ public class TestWriteSBML {
     String expected =  "<unitDefinition id=\"mmls\"/>";
     UnitDefinition ud = D.createModel().createUnitDefinition();
     ud.setId("mmls");
-    assertEquals( true, equals(expected,ud.toSBML()) );
+    String sbml = ud.toSBML();
+    assertEquals( true, equals(expected,sbml) );
   }
 
   public void test_WriteSBML_UnitDefinition_L2v1_full()
@@ -1665,7 +1976,8 @@ public class TestWriteSBML {
     u1.setKind(libsbml.UnitKind_forName("Celsius"));
     u1.setMultiplier(1.8);
     u1.setOffset(32);
-    assertEquals( true, equals(expected,ud.toSBML()) );
+    String sbml = ud.toSBML();
+    assertEquals( true, equals(expected,sbml) );
   }
 
   public void test_WriteSBML_UnitDefinition_full()
@@ -1689,7 +2001,33 @@ public class TestWriteSBML {
     Unit u3 = ud.createUnit();
     u3.setKind(libsbml.UNIT_KIND_SECOND);
     u3.setExponent(-1);
-    assertEquals( true, equals(expected,ud.toSBML()) );
+    String sbml = ud.toSBML();
+    assertEquals( true, equals(expected,sbml) );
+  }
+
+  public void test_WriteSBML_Unit_L1_explicit_defaults()
+  {
+    D.setLevelAndVersion(1,2,false);
+    String expected =  "<unit kind=\"kilogram\" exponent=\"1\" scale=\"0\"/>";
+    Unit u = D.createModel().createUnitDefinition().createUnit();
+    u.setKind(libsbml.UNIT_KIND_KILOGRAM);
+    u.setExponent(1);
+    u.setScale(0);
+    String sbml = u.toSBML();
+    assertEquals( true, equals(expected,sbml) );
+  }
+
+  public void test_WriteSBML_Unit_L2_explicit_defaults()
+  {
+    D.setLevelAndVersion(2,2,false);
+    String expected =  "<unit kind=\"kilogram\" exponent=\"1\" scale=\"0\" multiplier=\"1\"/>";
+    Unit u = D.createModel().createUnitDefinition().createUnit();
+    u.setKind(libsbml.UNIT_KIND_KILOGRAM);
+    u.setExponent(1);
+    u.setScale(0);
+    u.setMultiplier(1.0);
+    String sbml = u.toSBML();
+    assertEquals( true, equals(expected,sbml) );
   }
 
   public void test_WriteSBML_Unit_L2v1()
@@ -1700,7 +2038,22 @@ public class TestWriteSBML {
     u.setKind(libsbml.UnitKind_forName("Celsius"));
     u.setMultiplier(1.8);
     u.setOffset(32);
-    assertEquals( true, equals(expected,u.toSBML()) );
+    String sbml = u.toSBML();
+    assertEquals( true, equals(expected,sbml) );
+  }
+
+  public void test_WriteSBML_Unit_L2v1_explicit_defaults()
+  {
+    D.setLevelAndVersion(2,1,false);
+    String expected =  "<unit kind=\"kilogram\" exponent=\"1\" scale=\"0\" multiplier=\"1\" offset=\"0\"/>";
+    Unit u = D.createModel().createUnitDefinition().createUnit();
+    u.setKind(libsbml.UNIT_KIND_KILOGRAM);
+    u.setExponent(1);
+    u.setScale(0);
+    u.setMultiplier(1.0);
+    u.setOffset(0);
+    String sbml = u.toSBML();
+    assertEquals( true, equals(expected,sbml) );
   }
 
   public void test_WriteSBML_Unit_defaults()
@@ -1709,7 +2062,8 @@ public class TestWriteSBML {
     String expected =  "<unit kind=\"kilogram\"/>";
     Unit u = D.createModel().createUnitDefinition().createUnit();
     u.setKind(libsbml.UNIT_KIND_KILOGRAM);
-    assertEquals( true, equals(expected,u.toSBML()) );
+    String sbml = u.toSBML();
+    assertEquals( true, equals(expected,sbml) );
   }
 
   public void test_WriteSBML_Unit_l2v3()
@@ -1721,7 +2075,8 @@ public class TestWriteSBML {
     u.setExponent(2);
     u.setScale(-3);
     u.setOffset(32);
-    assertEquals( true, equals(expected,u.toSBML()) );
+    String sbml = u.toSBML();
+    assertEquals( true, equals(expected,sbml) );
   }
 
   public void test_WriteSBML_elements_L1v2()
@@ -1754,8 +2109,8 @@ public class TestWriteSBML {
     m.createAlgebraicRule();
     m.createReaction();
     m.createSpecies();
-    S = libsbml.writeSBMLToString(D);
-    assertEquals( true, equals(expected,S) );
+    String S = writeSBMLToStdString;
+    assertEquals( true, equals(expected,) );
   }
 
   public void test_WriteSBML_elements_L2v1()
@@ -1798,8 +2153,8 @@ public class TestWriteSBML {
     m.createConstraint();
     m.createReaction();
     m.createSpecies();
-    S = libsbml.writeSBMLToString(D);
-    assertEquals( true, equals(expected,S) );
+    String S = writeSBMLToStdString;
+    assertEquals( true, equals(expected,) );
   }
 
   public void test_WriteSBML_elements_L2v2()
@@ -1856,8 +2211,8 @@ public class TestWriteSBML {
     m.createConstraint();
     m.createReaction();
     m.createSpecies();
-    S = libsbml.writeSBMLToString(D);
-    assertEquals( true, equals(expected,S) );
+    String S = writeSBMLToStdString;
+    assertEquals( true, equals(expected,) );
   }
 
   public void test_WriteSBML_error()
@@ -1878,7 +2233,8 @@ public class TestWriteSBML {
     p.setId("p");
     p.setValue(3.31);
     p.setConstant(true);
-    assertEquals( true, equals(expected,p.toSBML()) );
+    String sbml = p.toSBML();
+    assertEquals( true, equals(expected,sbml) );
   }
 
   /**

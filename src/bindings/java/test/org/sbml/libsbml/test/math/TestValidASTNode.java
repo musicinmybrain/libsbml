@@ -18,11 +18,6 @@
  * This file is part of libSBML.  Please visit http://sbml.org for more
  * information about SBML, and the latest version of libSBML.
  *
- * Copyright (C) 2020 jointly by the following organizations:
- *     1. California Institute of Technology, Pasadena, CA, USA
- *     2. University of Heidelberg, Heidelberg, Germany
- *     3. University College London, London, UK
- *
  * Copyright 2005-2010 California Institute of Technology.
  * Copyright 2002-2005 California Institute of Technology and
  *                     Japan Science and Technology Corporation.
@@ -127,20 +122,20 @@ public class TestValidASTNode {
   {
     ASTNode n = libsbml.parseFormula("c");
     assertEquals( true, n.isWellFormedASTNode() );
-    //ASTNode d = libsbml.parseFormula("d");
-    //int i = n.addChild(d);
-    //assertEquals(i, libsbml.LIBSBML_INVALID_OBJECT);
-    //n = null;
+    ASTNode d = libsbml.parseFormula("d");
+    int i = n.addChild(d);
+    assertEquals( false, (n.isWellFormedASTNode()) );
+    n = null;
   }
 
   public void test_ValidASTNode_Number()
   {
     ASTNode n = libsbml.parseFormula("1.2");
     assertEquals( true, n.isWellFormedASTNode() );
-    //ASTNode d = libsbml.parseFormula("d");
-    //int i = n.addChild(d);
-    //assertEquals(i, libsbml.LIBSBML_INVALID_OBJECT);
-    //n = null;
+    ASTNode d = libsbml.parseFormula("d");
+    int i = n.addChild(d);
+    assertEquals( false, (n.isWellFormedASTNode()) );
+    n = null;
   }
 
   public void test_ValidASTNode_binary()
@@ -234,17 +229,34 @@ public class TestValidASTNode {
     n = null;
   }
 
+  public void test_ValidASTNode_log()
+  {
+    ASTNode n = new ASTNode(libsbml.AST_FUNCTION_LOG);
+    assertEquals( false, (n.isWellFormedASTNode()) );
+    ASTNode c = libsbml.parseFormula("c");
+    n.addChild(c);
+    assertEquals( false, (n.isWellFormedASTNode()) );
+    ASTNode d = libsbml.parseFormula("3");
+    n.addChild(d);
+    assertEquals( true, n.isWellFormedASTNode() );
+    ASTNode e = libsbml.parseFormula("3");
+    n.addChild(e);
+    assertEquals( false, (n.isWellFormedASTNode()) );
+    n = null;
+  }
+
   public void test_ValidASTNode_nary()
   {
     ASTNode n = new ASTNode(libsbml.AST_DIVIDE);
     assertEquals( false, (n.isWellFormedASTNode()) );
     ASTNode c = libsbml.parseFormula("c");
-    n.addChild((ASTNode)c.deepCopy());
+    n.addChild(c.deepCopy());
     assertEquals( false, (n.isWellFormedASTNode()) );
-    n.addChild((ASTNode)c.deepCopy());
+    n.addChild(c.deepCopy());
     assertEquals( true, (n.isWellFormedASTNode()) );
-    n.addChild((ASTNode)c.deepCopy());
+    n.addChild(c.deepCopy());
     assertEquals( false, (n.isWellFormedASTNode()) );
+    n = null;
     n = new ASTNode(libsbml.AST_TIMES);
     assertEquals( true, (n.isWellFormedASTNode()) );
     n.addChild(c);

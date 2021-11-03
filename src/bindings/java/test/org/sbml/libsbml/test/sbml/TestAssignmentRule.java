@@ -18,11 +18,6 @@
  * This file is part of libSBML.  Please visit http://sbml.org for more
  * information about SBML, and the latest version of libSBML.
  *
- * Copyright (C) 2020 jointly by the following organizations:
- *     1. California Institute of Technology, Pasadena, CA, USA
- *     2. University of Heidelberg, Heidelberg, Germany
- *     3. University College London, London, UK
- *
  * Copyright 2005-2010 California Institute of Technology.
  * Copyright 2002-2005 California Institute of Technology and
  *                     Japan Science and Technology Corporation.
@@ -122,7 +117,7 @@ public class TestAssignmentRule {
     }
     throw new AssertionError();
   }
-  private Rule AR;
+  private AssignmentRule AR;
 
   protected void setUp() throws Exception
   {
@@ -153,7 +148,7 @@ public class TestAssignmentRule {
   {
     ASTNode math;
     String formula;
-    Rule ar = new  AssignmentRule(2,4);
+    AssignmentRule ar = new  AssignmentRule(2,4);
     ar.setVariable( "s");
     ar.setFormula( "1 + 1");
     assertTrue( ar.getTypeCode() == libsbml.SBML_ASSIGNMENT_RULE );
@@ -171,7 +166,7 @@ public class TestAssignmentRule {
   public void test_AssignmentRule_createWithMath()
   {
     ASTNode math = libsbml.parseFormula("1 + 1");
-    Rule ar = new  AssignmentRule(2,4);
+    AssignmentRule ar = new  AssignmentRule(2,4);
     ar.setVariable( "s");
     ar.setMath(math);
     assertTrue( ar.getTypeCode() == libsbml.SBML_ASSIGNMENT_RULE );
@@ -180,6 +175,7 @@ public class TestAssignmentRule {
     assertTrue(ar.getFormula().equals( "1 + 1"));
     assertTrue( !ar.getMath().equals(math) );
     ar = null;
+    math = null;
   }
 
   public void test_AssignmentRule_createWithNS()
@@ -188,7 +184,7 @@ public class TestAssignmentRule {
     xmlns.add( "http://www.sbml.org", "testsbml");
     SBMLNamespaces sbmlns = new  SBMLNamespaces(2,1);
     sbmlns.addNamespaces(xmlns);
-    Rule object = new  AssignmentRule(sbmlns);
+    AssignmentRule object = new  AssignmentRule(sbmlns);
     assertTrue( object.getTypeCode() == libsbml.SBML_ASSIGNMENT_RULE );
     assertTrue( object.getMetaId().equals("") == true );
     assertTrue( object.getNotes() == null );
@@ -196,8 +192,10 @@ public class TestAssignmentRule {
     assertTrue( object.getLevel() == 2 );
     assertTrue( object.getVersion() == 1 );
     assertTrue( object.getNamespaces() != null );
-    assertTrue( object.getNamespaces().getLength() == 2 );
-    object = null;
+    assertTrue( (object).getNamespaces().getLength() == 2 );
+    (object) = null;
+    xmlns = null;
+    sbmlns = null;
   }
 
   public void test_AssignmentRule_free_NULL()
@@ -216,6 +214,19 @@ public class TestAssignmentRule {
     AR.setVariable(AR.getVariable());
     assertTrue(AR.getVariable().equals(variable));
     AR.setVariable("");
+    assertEquals( false, AR.isSetVariable() );
+    if (AR.getVariable() != null);
+    {
+    }
+  }
+
+  public void test_AssignmentRule_unsetVariable()
+  {
+    String variable =  "x";
+    AR.setVariable(variable);
+    assertTrue(AR.getVariable().equals(variable));
+    assertEquals( true, AR.isSetVariable() );
+    AR.unsetVariable();
     assertEquals( false, AR.isSetVariable() );
     if (AR.getVariable() != null);
     {
@@ -275,4 +286,3 @@ public class TestAssignmentRule {
     }
   }
 }
-

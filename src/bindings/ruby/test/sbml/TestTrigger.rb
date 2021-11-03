@@ -65,6 +65,8 @@ class TestTrigger < Test::Unit::TestCase
     assert( object.getNamespaces() != nil )
     assert( object.getNamespaces().getLength() == 2 )
     object = nil
+    xmlns = nil
+    sbmlns = nil
   end
 
   def test_Trigger_free_NULL
@@ -90,6 +92,7 @@ class TestTrigger < Test::Unit::TestCase
     assert_equal false, @@d.isSetMath()
     if (@@d.getMath() != nil)
     end
+    math = nil
   end
 
   def test_Trigger_setMath1

@@ -94,8 +94,6 @@ def wrapXML(s):
 
 class TestWriteL3SBML(unittest.TestCase):
 
-  global S
-  S = None
   global D
   D = None
 
@@ -108,37 +106,35 @@ class TestWriteL3SBML(unittest.TestCase):
   def setUp(self):
     self.D = libsbml.SBMLDocument()
     self.D.setLevelAndVersion(3,1,False)
-    self.S = None
     pass  
 
   def tearDown(self):
     self.D = None
-    self.S = None
     pass  
 
   def test_SBMLWriter_L3_create(self):
     w = libsbml.SBMLWriter()
-    self.assert_( w != None )
+    self.assertTrue( w != None )
     _dummyList = [ w ]; _dummyList[:] = []; del _dummyList
     pass  
 
   def test_SBMLWriter_L3_setProgramName(self):
     w = libsbml.SBMLWriter()
-    self.assert_( w != None )
+    self.assertTrue( w != None )
     i = w.setProgramName( "sss")
-    self.assert_( i == libsbml.LIBSBML_OPERATION_SUCCESS )
+    self.assertTrue( i == libsbml.LIBSBML_OPERATION_SUCCESS )
     i = w.setProgramName("")
-    self.assert_( i == libsbml.LIBSBML_OPERATION_SUCCESS )
+    self.assertTrue( i == libsbml.LIBSBML_OPERATION_SUCCESS )
     _dummyList = [ w ]; _dummyList[:] = []; del _dummyList
     pass  
 
   def test_SBMLWriter_L3_setProgramVersion(self):
     w = libsbml.SBMLWriter()
-    self.assert_( w != None )
+    self.assertTrue( w != None )
     i = w.setProgramVersion( "sss")
-    self.assert_( i == libsbml.LIBSBML_OPERATION_SUCCESS )
+    self.assertTrue( i == libsbml.LIBSBML_OPERATION_SUCCESS )
     i = w.setProgramVersion("")
-    self.assert_( i == libsbml.LIBSBML_OPERATION_SUCCESS )
+    self.assertTrue( i == libsbml.LIBSBML_OPERATION_SUCCESS )
     _dummyList = [ w ]; _dummyList[:] = []; del _dummyList
     pass  
 
@@ -147,7 +143,8 @@ class TestWriteL3SBML(unittest.TestCase):
     c = self.D.createModel().createCompartment()
     c.setId("A")
     c.setConstant(True)
-    self.assertEqual( True, self.equals(expected,c.toSBML()) )
+    sbml = c.toSBML()
+    self.assertEqual( True, self.equals(expected,sbml) )
     pass  
 
   def test_WriteL3SBML_Compartment_spatialDimensions(self):
@@ -157,9 +154,11 @@ class TestWriteL3SBML(unittest.TestCase):
     c.setId("A")
     c.setConstant(False)
     c.setSpatialDimensions(2.1)
-    self.assertEqual( True, self.equals(expected,c.toSBML()) )
+    sbml = c.toSBML()
+    self.assertEqual( True, self.equals(expected,sbml) )
     c.unsetSpatialDimensions()
-    self.assertEqual( True, self.equals(expected1,c.toSBML()) )
+    sbml = c.toSBML()
+    self.assertEqual( True, self.equals(expected1,sbml) )
     pass  
 
   def test_WriteL3SBML_Event(self):
@@ -167,7 +166,8 @@ class TestWriteL3SBML(unittest.TestCase):
     e = self.D.createModel().createEvent()
     e.setId("e")
     e.setUseValuesFromTriggerTime(True)
-    self.assertEqual( True, self.equals(expected,e.toSBML()) )
+    sbml = e.toSBML()
+    self.assertEqual( True, self.equals(expected,sbml) )
     pass  
 
   def test_WriteL3SBML_Event_full(self):
@@ -193,7 +193,10 @@ class TestWriteL3SBML(unittest.TestCase):
     p = e.createPriority()
     math2 = libsbml.parseFormula("2")
     p.setMath(math2)
-    self.assertEqual( True, self.equals(expected,e.toSBML()) )
+    sbml = e.toSBML()
+    self.assertEqual( True, self.equals(expected,sbml) )
+    math1 = None
+    math2 = None
     pass  
 
   def test_WriteL3SBML_Event_useValues(self):
@@ -204,7 +207,8 @@ class TestWriteL3SBML(unittest.TestCase):
     e.setId("e")
     e.setUseValuesFromTriggerTime(False)
     e.createDelay()
-    self.assertEqual( True, self.equals(expected,e.toSBML()) )
+    sbml = e.toSBML()
+    self.assertEqual( True, self.equals(expected,sbml) )
     pass  
 
   def test_WriteL3SBML_INF(self):
@@ -213,7 +217,8 @@ class TestWriteL3SBML(unittest.TestCase):
     p.setId("p")
     p.setValue(util_PosInf())
     p.setConstant(True)
-    self.assertEqual( True, self.equals(expected,p.toSBML()) )
+    sbml = p.toSBML()
+    self.assertEqual( True, self.equals(expected,sbml) )
     pass  
 
   def test_WriteL3SBML_KineticLaw_ListOfParameters(self):
@@ -226,15 +231,17 @@ class TestWriteL3SBML(unittest.TestCase):
     p = kl.createLocalParameter()
     p.setId("n")
     p.setValue(1.2)
-    self.assertEqual( True, self.equals(expected,kl.toSBML()) )
+    sbml = kl.toSBML()
+    self.assertEqual( True, self.equals(expected,sbml) )
     pass  
 
   def test_WriteL3SBML_Model(self):
     expected = wrapSBML_L3v1("  <model/>\n"  
     )
     m = self.D.createModel("")
-    self.S = libsbml.writeSBMLToString(self.D)
-    self.assertEqual( True, self.equals(expected,self.S) )
+    (void) m
+    S = writeSBMLToStdString
+    self.assertEqual( True, self.equals(expected,) )
     pass  
 
   def test_WriteL3SBML_Model_conversionFactor(self):
@@ -242,8 +249,8 @@ class TestWriteL3SBML(unittest.TestCase):
     )
     m = self.D.createModel("")
     m.setConversionFactor("p")
-    self.S = libsbml.writeSBMLToString(self.D)
-    self.assertEqual( True, self.equals(expected,self.S) )
+    S = writeSBMLToStdString
+    self.assertEqual( True, self.equals(expected,) )
     pass  
 
   def test_WriteL3SBML_Model_otherUnits(self):
@@ -253,8 +260,8 @@ class TestWriteL3SBML(unittest.TestCase):
     m.setVolumeUnits("litre")
     m.setAreaUnits("area")
     m.setLengthUnits("metre")
-    self.S = libsbml.writeSBMLToString(self.D)
-    self.assertEqual( True, self.equals(expected,self.S) )
+    S = writeSBMLToStdString
+    self.assertEqual( True, self.equals(expected,) )
     pass  
 
   def test_WriteL3SBML_Model_substanceUnits(self):
@@ -262,8 +269,8 @@ class TestWriteL3SBML(unittest.TestCase):
     )
     m = self.D.createModel("")
     m.setSubstanceUnits("mole")
-    self.S = libsbml.writeSBMLToString(self.D)
-    self.assertEqual( True, self.equals(expected,self.S) )
+    S = writeSBMLToStdString
+    self.assertEqual( True, self.equals(expected,) )
     pass  
 
   def test_WriteL3SBML_Model_timeUnits(self):
@@ -271,8 +278,8 @@ class TestWriteL3SBML(unittest.TestCase):
     )
     m = self.D.createModel("")
     m.setTimeUnits("second")
-    self.S = libsbml.writeSBMLToString(self.D)
-    self.assertEqual( True, self.equals(expected,self.S) )
+    S = writeSBMLToStdString
+    self.assertEqual( True, self.equals(expected,) )
     pass  
 
   def test_WriteL3SBML_NaN(self):
@@ -281,7 +288,8 @@ class TestWriteL3SBML(unittest.TestCase):
     p.setId("p")
     p.setValue(util_NaN())
     p.setConstant(True)
-    self.assertEqual( True, self.equals(expected,p.toSBML()) )
+    sbml = p.toSBML()
+    self.assertEqual( True, self.equals(expected,sbml) )
     pass  
 
   def test_WriteL3SBML_NegINF(self):
@@ -290,7 +298,8 @@ class TestWriteL3SBML(unittest.TestCase):
     p.setId("p")
     p.setValue(util_NegInf())
     p.setConstant(True)
-    self.assertEqual( True, self.equals(expected,p.toSBML()) )
+    sbml = p.toSBML()
+    self.assertEqual( True, self.equals(expected,sbml) )
     pass  
 
   def test_WriteL3SBML_Parameter(self):
@@ -300,13 +309,15 @@ class TestWriteL3SBML(unittest.TestCase):
     p.setValue(2.3)
     p.setUnits("second")
     p.setConstant(True)
-    self.assertEqual( True, self.equals(expected,p.toSBML()) )
+    sbml = p.toSBML()
+    self.assertEqual( True, self.equals(expected,sbml) )
     pass  
 
   def test_WriteL3SBML_Priority(self):
     expected =  "<priority/>";
     p = self.D.createModel().createEvent().createPriority()
-    self.assertEqual( True, self.equals(expected,p.toSBML()) )
+    sbml = p.toSBML()
+    self.assertEqual( True, self.equals(expected,sbml) )
     pass  
 
   def test_WriteL3SBML_Reaction(self):
@@ -315,7 +326,8 @@ class TestWriteL3SBML(unittest.TestCase):
     r.setId("r")
     r.setReversible(False)
     r.setFast(True)
-    self.assertEqual( True, self.equals(expected,r.toSBML()) )
+    sbml = r.toSBML()
+    self.assertEqual( True, self.equals(expected,sbml) )
     pass  
 
   def test_WriteL3SBML_Reaction_compartment(self):
@@ -326,9 +338,11 @@ class TestWriteL3SBML(unittest.TestCase):
     r.setReversible(False)
     r.setFast(True)
     r.setCompartment("c")
-    self.assertEqual( True, self.equals(expected,r.toSBML()) )
+    sbml = r.toSBML()
+    self.assertEqual( True, self.equals(expected,sbml) )
     r.unsetCompartment()
-    self.assertEqual( True, self.equals(expected1,r.toSBML()) )
+    sbml = r.toSBML()
+    self.assertEqual( True, self.equals(expected1,sbml) )
     pass  
 
   def test_WriteL3SBML_Reaction_full(self):
@@ -369,13 +383,14 @@ class TestWriteL3SBML(unittest.TestCase):
     r.createProduct().setSpecies("s1")
     r.createModifier().setSpecies("m1")
     r.createKineticLaw().setFormula("(vm * s1)/(km + s1)")
-    self.assertEqual( True, self.equals(expected,r.toSBML()) )
+    sbml = r.toSBML()
+    self.assertEqual( True, self.equals(expected,sbml) )
     pass  
 
   def test_WriteL3SBML_SBMLDocument_L3v1(self):
     expected = wrapXML("<sbml xmlns=\"http://www.sbml.org/sbml/level3/version1/core\" " + "level=\"3\" version=\"1\"/>\n")
-    self.S = libsbml.writeSBMLToString(self.D)
-    self.assertEqual( True, self.equals(expected,self.S) )
+    S = writeSBMLToStdString
+    self.assertEqual( True, self.equals(expected,) )
     pass  
 
   def test_WriteL3SBML_Species(self):
@@ -390,7 +405,8 @@ class TestWriteL3SBML(unittest.TestCase):
     s.setBoundaryCondition(True)
     s.setHasOnlySubstanceUnits(False)
     s.setConstant(True)
-    self.assertEqual( True, self.equals(expected,s.toSBML()) )
+    sbml = s.toSBML()
+    self.assertEqual( True, self.equals(expected,sbml) )
     pass  
 
   def test_WriteL3SBML_SpeciesReference(self):
@@ -399,7 +415,8 @@ class TestWriteL3SBML(unittest.TestCase):
     sr.setSpecies("s")
     sr.setStoichiometry(3)
     sr.setConstant(True)
-    self.assertEqual( True, self.equals(expected,sr.toSBML()) )
+    sbml = sr.toSBML()
+    self.assertEqual( True, self.equals(expected,sbml) )
     pass  
 
   def test_WriteL3SBML_Species_conversionFactor(self):
@@ -417,15 +434,18 @@ class TestWriteL3SBML(unittest.TestCase):
     s.setHasOnlySubstanceUnits(False)
     s.setConstant(True)
     s.setConversionFactor("p")
-    self.assertEqual( True, self.equals(expected,s.toSBML()) )
+    sbml = s.toSBML()
+    self.assertEqual( True, self.equals(expected,sbml) )
     s.unsetConversionFactor()
-    self.assertEqual( True, self.equals(expected1,s.toSBML()) )
+    sbml = s.toSBML()
+    self.assertEqual( True, self.equals(expected1,sbml) )
     pass  
 
   def test_WriteL3SBML_Trigger(self):
     expected =  "<trigger/>";
     t = self.D.createModel().createEvent().createTrigger()
-    self.assertEqual( True, self.equals(expected,t.toSBML()) )
+    tsbml = t.toSBML()
+    self.assertEqual( True, self.equals(expected,tsbml) )
     pass  
 
   def test_WriteL3SBML_Trigger_initialValue(self):
@@ -433,7 +453,8 @@ class TestWriteL3SBML(unittest.TestCase):
     t = self.D.createModel().createEvent().createTrigger()
     t.setInitialValue(False)
     t.setPersistent(True)
-    self.assertEqual( True, self.equals(expected,t.toSBML()) )
+    tsbml = t.toSBML()
+    self.assertEqual( True, self.equals(expected,tsbml) )
     pass  
 
   def test_WriteL3SBML_Trigger_persistent(self):
@@ -441,7 +462,8 @@ class TestWriteL3SBML(unittest.TestCase):
     t = self.D.createModel().createEvent().createTrigger()
     t.setPersistent(False)
     t.setInitialValue(True)
-    self.assertEqual( True, self.equals(expected,t.toSBML()) )
+    tsbml = t.toSBML()
+    self.assertEqual( True, self.equals(expected,tsbml) )
     pass  
 
   def test_WriteL3SBML_Unit(self):
@@ -452,7 +474,8 @@ class TestWriteL3SBML(unittest.TestCase):
     u.setExponent(exp)
     u.setScale(-3)
     u.setMultiplier(3.2)
-    self.assertEqual( True, self.equals(expected,u.toSBML()) )
+    sbml = u.toSBML()
+    self.assertEqual( True, self.equals(expected,sbml) )
     pass  
 
   def test_WriteL3SBML_UnitDefinition(self):
@@ -468,13 +491,15 @@ class TestWriteL3SBML(unittest.TestCase):
     u1.setMultiplier(1.8)
     u1.setScale(0)
     u1.setExponent(1)
-    self.assertEqual( True, self.equals(expected,ud.toSBML()) )
+    sbml = ud.toSBML()
+    self.assertEqual( True, self.equals(expected,sbml) )
     pass  
 
   def test_WriteL3SBML_Unit_noValues(self):
     expected =  "<unit/>";
     u = self.D.createModel().createUnitDefinition().createUnit()
-    self.assertEqual( True, self.equals(expected,u.toSBML()) )
+    usbml = u.toSBML()
+    self.assertEqual( True, self.equals(expected,usbml) )
     pass  
 
   def test_WriteL3SBML_elements(self):
@@ -489,7 +514,7 @@ class TestWriteL3SBML(unittest.TestCase):
     "      <compartment/>\n" + 
     "    </listOfCompartments>\n" + 
     "    <listOfSpecies>\n" + 
-    "      <species/>\n" +
+    "      <species/>\n" + 
     "    </listOfSpecies>\n" + 
     "    <listOfParameters>\n" + 
     "      <parameter/>\n" + 
@@ -521,16 +546,16 @@ class TestWriteL3SBML(unittest.TestCase):
     m.createConstraint()
     m.createReaction()
     m.createSpecies()
-    self.S = libsbml.writeSBMLToString(self.D)
-    self.assertEqual( True, self.equals(expected,self.S) )
+    S = writeSBMLToStdString
+    self.assertEqual( True, self.equals(expected,) )
     pass  
 
   def test_WriteL3SBML_error(self):
     d = libsbml.SBMLDocument()
     w = libsbml.SBMLWriter()
     self.assertEqual( False, w.writeSBML(d, "/tmp/impossible/path/should/fail") )
-    self.assert_( d.getNumErrors() == 1 )
-    self.assert_( d.getError(0).getErrorId() == libsbml.XMLFileUnwritable )
+    self.assertTrue( d.getNumErrors() == 1 )
+    self.assertTrue( d.getError(0).getErrorId() == libsbml.XMLFileUnwritable )
     d = None
     w = None
     pass  
@@ -541,7 +566,8 @@ class TestWriteL3SBML(unittest.TestCase):
     p.setId("p")
     p.setValue(3.31)
     p.setConstant(True)
-    self.assertEqual( True, self.equals(expected,p.toSBML()) )
+    sbml = p.toSBML()
+    self.assertEqual( True, self.equals(expected,sbml) )
     pass  
 
 def suite():

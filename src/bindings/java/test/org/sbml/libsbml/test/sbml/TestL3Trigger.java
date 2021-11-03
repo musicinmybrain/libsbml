@@ -18,11 +18,6 @@
  * This file is part of libSBML.  Please visit http://sbml.org for more
  * information about SBML, and the latest version of libSBML.
  *
- * Copyright (C) 2020 jointly by the following organizations:
- *     1. California Institute of Technology, Pasadena, CA, USA
- *     2. University of Heidelberg, Heidelberg, Germany
- *     3. University College London, London, UK
- *
  * Copyright 2005-2010 California Institute of Technology.
  * Copyright 2002-2005 California Institute of Technology and
  *                     Japan Science and Technology Corporation.
@@ -144,53 +139,77 @@ public class TestL3Trigger {
     assertTrue( T.getNotes() == null );
     assertTrue( T.getAnnotation() == null );
     assertTrue( T.getMath() == null );
-      assertTrue( T.getInitialValue() == true );
-      assertTrue( T.getPersistent() == true );
-      assertTrue( T.isSetInitialValue() == false );
-      assertTrue( T.isSetPersistent() == false );
+    assertTrue( T.getInitialValue() == 1 );
+    assertTrue( T.getPersistent() == 1 );
+    assertTrue( T.isSetInitialValue() == 0 );
+    assertTrue( T.isSetPersistent() == 0 );
   }
 
   public void test_L3Trigger_setInitialValue()
   {
-      int i = T.setInitialValue(false);
+    int i = T.setInitialValue(0);
     assertTrue( i == libsbml.LIBSBML_OPERATION_SUCCESS );
-      assertTrue( T.getInitialValue() == false );
-      assertTrue( T.isSetInitialValue() == true );
-      i = T.setInitialValue(true);
+    assertTrue( T.getInitialValue() == 0 );
+    assertTrue( T.isSetInitialValue() == 1 );
+    i = T.unsetInitialValue();
     assertTrue( i == libsbml.LIBSBML_OPERATION_SUCCESS );
-      assertTrue( T.getInitialValue() == true );
-      assertTrue( T.isSetInitialValue() == true );
+    assertTrue( T.getInitialValue() == 0 );
+    assertTrue( T.isSetInitialValue() == 0 );
+    i = T.setInitialValue(1);
+    assertTrue( i == libsbml.LIBSBML_OPERATION_SUCCESS );
+    assertTrue( T.getInitialValue() == 1 );
+    assertTrue( T.isSetInitialValue() == 1 );
+    i = T.unsetInitialValue();
+    assertTrue( i == libsbml.LIBSBML_OPERATION_SUCCESS );
+    assertTrue( T.getInitialValue() == 1 );
+    assertTrue( T.isSetInitialValue() == 0 );
   }
 
   public void test_L3Trigger_setInitialValue1()
   {
     Trigger t = new  Trigger(2,4);
-      int i = t.setInitialValue(false);
-      assertTrue( i == libsbml.LIBSBML_UNEXPECTED_ATTRIBUTE );
-      assertTrue( T.getInitialValue() == true );
-      assertTrue( T.isSetInitialValue() == false );
+    int i = t.setInitialValue(0);
+    assertTrue( i == libsbml.LIBSBML_UNEXPECTED_ATTRIBUTE );
+    assertTrue( T.getInitialValue() == 1 );
+    assertTrue( T.isSetInitialValue() == 0 );
+    i = t.unsetInitialValue();
+    assertTrue( i == libsbml.LIBSBML_UNEXPECTED_ATTRIBUTE );
+    assertTrue( T.getInitialValue() == 1 );
+    assertTrue( T.isSetInitialValue() == 0 );
     t = null;
   }
 
   public void test_L3Trigger_setPersistent()
   {
-      int i = T.setPersistent(false);
-      assertTrue( i == libsbml.LIBSBML_OPERATION_SUCCESS );
-      assertTrue( T.getPersistent() == false );
-      assertTrue( T.isSetPersistent() == true );
-      i = T.setPersistent(true);
-      assertTrue( i == libsbml.LIBSBML_OPERATION_SUCCESS );
-      assertTrue( T.getPersistent() == true );
-      assertTrue( T.isSetPersistent() == true );
+    int i = T.setPersistent(0);
+    assertTrue( i == libsbml.LIBSBML_OPERATION_SUCCESS );
+    assertTrue( T.getPersistent() == 0 );
+    assertTrue( T.isSetPersistent() == 1 );
+    i = T.unsetPersistent();
+    assertTrue( i == libsbml.LIBSBML_OPERATION_SUCCESS );
+    assertTrue( T.getPersistent() == 0 );
+    assertTrue( T.isSetPersistent() == 0 );
+    i = T.setPersistent(1);
+    assertTrue( i == libsbml.LIBSBML_OPERATION_SUCCESS );
+    assertTrue( T.getPersistent() == 1 );
+    assertTrue( T.isSetPersistent() == 1 );
+    i = T.unsetPersistent();
+    assertTrue( i == libsbml.LIBSBML_OPERATION_SUCCESS );
+    assertTrue( T.getPersistent() == 1 );
+    assertTrue( T.isSetPersistent() == 0 );
   }
 
   public void test_L3Trigger_setPersistent1()
   {
     Trigger t = new  Trigger(2,4);
-      int i = t.setPersistent(false);
-      assertTrue( i == libsbml.LIBSBML_UNEXPECTED_ATTRIBUTE );
-      assertTrue( T.getPersistent() == true );
-      assertTrue( T.isSetPersistent() == false );
+    int i = t.setPersistent(0);
+    assertTrue( i == libsbml.LIBSBML_UNEXPECTED_ATTRIBUTE );
+    assertTrue( T.getPersistent() == 1 );
+    assertTrue( T.isSetPersistent() == 0 );
+    i = t.unsetPersistent();
+    assertTrue( i == libsbml.LIBSBML_UNEXPECTED_ATTRIBUTE );
+    assertTrue( T.getPersistent() == 1 );
+    assertTrue( T.isSetPersistent() == 0 );
     t = null;
   }
 
@@ -247,4 +266,3 @@ public class TestL3Trigger {
     }
   }
 }
-

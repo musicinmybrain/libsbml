@@ -18,11 +18,6 @@
  * This file is part of libSBML.  Please visit http://sbml.org for more
  * information about SBML, and the latest version of libSBML.
  *
- * Copyright (C) 2020 jointly by the following organizations:
- *     1. California Institute of Technology, Pasadena, CA, USA
- *     2. University of Heidelberg, Heidelberg, Germany
- *     3. University College London, London, UK
- *
  * Copyright 2005-2010 California Institute of Technology.
  * Copyright 2002-2005 California Institute of Technology and
  *                     Japan Science and Technology Corporation.
@@ -164,11 +159,11 @@ public class TestL3KineticLaw {
   {
     KineticLaw kl = new  KineticLaw(3,1);
     LocalParameter lp = new  LocalParameter(3,1);
-    LocalParameter lp1 = new LocalParameter(3,1);
+    LocalParameter lp1 = new  LocalParameter(3,1);
     int i = kl.addLocalParameter(lp);
     assertTrue( i == libsbml.LIBSBML_INVALID_OBJECT );
     lp.setId( "p");
-	lp1.setId("p1");
+    lp1.setId( "p1");
     i = kl.addLocalParameter(lp);
     assertTrue( i == libsbml.LIBSBML_OPERATION_SUCCESS );
     assertTrue( kl.getNumParameters() == 1 );
@@ -178,6 +173,7 @@ public class TestL3KineticLaw {
     assertTrue( kl.getNumParameters() == 2 );
     assertTrue( kl.getNumLocalParameters() == 2 );
     lp = null;
+    lp1 = null;
     kl = null;
   }
 

@@ -18,11 +18,6 @@
  * This file is part of libSBML.  Please visit http://sbml.org for more
  * information about SBML, and the latest version of libSBML.
  *
- * Copyright (C) 2020 jointly by the following organizations:
- *     1. California Institute of Technology, Pasadena, CA, USA
- *     2. University of Heidelberg, Heidelberg, Germany
- *     3. University College London, London, UK
- *
  * Copyright 2005-2010 California Institute of Technology.
  * Copyright 2002-2005 California Institute of Technology and
  *                     Japan Science and Technology Corporation.
@@ -198,15 +193,53 @@ public class TestSBase {
     cv2 = null;
     cv1 = null;
     cv4 = null;
+    cv5 = null;
   }
+
+  public void test_SBase_addCVTerms_num_check()
+  {
+    term1.setQualifierType(libsbml.MODEL_QUALIFIER);
+    term1.setModelQualifierType((ModelQualifierType_t)i);
+    term1.addResource("http://myresource1");
+    CVTerm term2 = new CVTerm();
+    term2.setQualifierType(libsbml.MODEL_QUALIFIER);
+    term2.setModelQualifierType((ModelQualifierType_t)i);
+    term2.addResource("http://myresource2");
+    Species species = new Species(3,1);
+    species.setMetaId("meta1");
+    assertTrue( species.addCVTerm(term1,false) == libsbml.LIBSBML_OPERATION_SUCCESS );
+    assertTrue( species.getNumCVTerms() == 1 );
+    assertTrue( species.addCVTerm(term2,false) == libsbml.LIBSBML_OPERATION_SUCCESS );
+    assertTrue( species.getNumCVTerms() == 1 );
+    species.getCVTerm(0).removeResource(term2.getResourceURI(0));
+    assertTrue( species.addCVTerm(term2,true) == libsbml.LIBSBML_OPERATION_SUCCESS );
+    assertTrue( species.getNumCVTerms() == 2 );
+    term2 = null;
+    species = null;
+  }
+  term1.setQualifierType(libsbml.BIOLOGICAL_QUALIFIER);
+  term1.setBiologicalQualifierType((BiolQualifierType_t)i);
+  term1.addResource("http://myresource1");
+  CVTerm term2 = new CVTerm();
+  term2.setQualifierType(libsbml.BIOLOGICAL_QUALIFIER);
+  term2.setBiologicalQualifierType((BiolQualifierType_t)i);
+  term2.addResource("http://myresource2");
+  Species species = new Species(3,1);
+  species.setMetaId("meta1");
+  assertTrue( species.addCVTerm(term1,false) == libsbml.LIBSBML_OPERATION_SUCCESS );
+  assertTrue( species.getNumCVTerms() == 1 );
+  assertTrue( species.addCVTerm(term2,false) == libsbml.LIBSBML_OPERATION_SUCCESS );
+  assertTrue( species.getNumCVTerms() == 1 );
+  species.getCVTerm(0).removeResource(term2.getResourceURI(0));
+  assertTrue( species.addCVTerm(term2,true) == libsbml.LIBSBML_OPERATION_SUCCESS );
+  assertTrue( species.getNumCVTerms() == 2 );
+  term2 = null;
+  species = null;
+}
+}
 
   public void test_SBase_appendNotes()
   {
-    XMLToken token;
-    XMLNode node;
-    XMLToken token1;
-    XMLNode node1;
-    XMLNode node2;
     XMLTriple triple = new  XMLTriple("p", "", "");
     XMLAttributes att = new  XMLAttributes();
     XMLNamespaces ns = new  XMLNamespaces();
@@ -215,17 +248,17 @@ public class TestSBase {
     XMLNode node4 = new XMLNode(token4);
     XMLToken token5 = new  XMLToken("This is additional text");
     XMLNode node5 = new XMLNode(token5);
-    token = new  XMLToken(triple,att,ns);
-    node = new XMLNode(token);
+    XMLToken token = new  XMLToken(triple,att,ns);
+    XMLNode node = new XMLNode(token);
     node.addChild(node4);
     S.setNotes(node);
     assertTrue( S.isSetNotes() == true );
-    token1 = new  XMLToken(triple,att,ns);
-    node1 = new XMLNode(token1);
+    XMLToken token1 = new  XMLToken(triple,att,ns);
+    XMLNode node1 = new XMLNode(token1);
     node1.addChild(node5);
     S.appendNotes(node1);
     assertTrue( S.isSetNotes() == true );
-    node2 = S.getNotes();
+    XMLNode node2 = S.getNotes();
     assertTrue( node2.getNumChildren() == 2 );
     assertTrue(node2.getChild(0).getName().equals( "p"));
     assertTrue( node2.getChild(0).getNumChildren() == 1 );
@@ -237,6 +270,15 @@ public class TestSBase {
     assertTrue(chars2.equals( "This is additional text"));
     node = null;
     node1 = null;
+    triple = null;
+    att = null;
+    ns = null;
+    token4 = null;
+    node4 = null;
+    token5 = null;
+    node5 = null;
+    token = null;
+    token1 = null;
   }
 
   public void test_SBase_appendNotes1()
@@ -307,21 +349,25 @@ public class TestSBase {
     ns = null;
     html_triple = null;
     head_triple = null;
+    title_triple = null;
     body_triple = null;
     p_triple = null;
     html_token = null;
     head_token = null;
+    title_token = null;
     body_token = null;
     p_token = null;
     text_token = null;
     text_token1 = null;
     html_node = null;
     head_node = null;
+    title_node = null;
     body_node = null;
     p_node = null;
     text_node = null;
     html_node1 = null;
     head_node1 = null;
+    title_node1 = null;
     body_node1 = null;
     p_node1 = null;
     text_node1 = null;
@@ -390,10 +436,12 @@ public class TestSBase {
     ns = null;
     html_triple = null;
     head_triple = null;
+    title_triple = null;
     body_triple = null;
     p_triple = null;
     html_token = null;
     head_token = null;
+    title_token = null;
     body_token = null;
     p_token = null;
     text_token = null;
@@ -401,6 +449,7 @@ public class TestSBase {
     body_token1 = null;
     html_node = null;
     head_node = null;
+    title_node = null;
     body_node = null;
     p_node = null;
     text_node = null;
@@ -470,10 +519,12 @@ public class TestSBase {
     ns = null;
     html_triple = null;
     head_triple = null;
+    title_triple = null;
     body_triple = null;
     p_triple = null;
     html_token = null;
     head_token = null;
+    title_token = null;
     body_token = null;
     p_token = null;
     text_token = null;
@@ -481,6 +532,7 @@ public class TestSBase {
     p_token1 = null;
     html_node = null;
     head_node = null;
+    title_node = null;
     body_node = null;
     p_node = null;
     text_node = null;
@@ -551,8 +603,12 @@ public class TestSBase {
     ns = null;
     html_triple = null;
     head_triple = null;
+    title_triple = null;
     body_triple = null;
     p_triple = null;
+    html_token = null;
+    head_token = null;
+    title_token = null;
     body_token = null;
     p_token = null;
     text_token = null;
@@ -563,6 +619,7 @@ public class TestSBase {
     text_node = null;
     html_node1 = null;
     head_node1 = null;
+    title_node1 = null;
     body_node1 = null;
     p_node1 = null;
     text_node1 = null;
@@ -629,8 +686,12 @@ public class TestSBase {
     ns = null;
     html_triple = null;
     head_triple = null;
+    title_triple = null;
     body_triple = null;
     p_triple = null;
+    html_token = null;
+    head_token = null;
+    title_token = null;
     body_token = null;
     p_token = null;
     p_token1 = null;
@@ -640,6 +701,7 @@ public class TestSBase {
     text_node = null;
     html_node1 = null;
     head_node1 = null;
+    title_node1 = null;
     body_node1 = null;
     p_node1 = null;
     text_node1 = null;
@@ -1193,6 +1255,28 @@ public class TestSBase {
     assertTrue(taggednewnotes2.equals(notes4));
   }
 
+  public void test_SBase_appendNotesWithGlobalNamespace()
+  {
+    String notes = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" + 
+    "<sbml xmlns=\"http://www.sbml.org/sbml/level2/version4\" xmlns:html=\"http://www.w3.org/1999/xhtml\" level=\"2\" version=\"4\">\n" + 
+    "  <model id=\"test\" name=\"name\">\n" + 
+    "    <notes>\n" + 
+    "      <html:p>DATE: 2010/12/08 13:00:00</html:p>\n" + 
+    "      <html:p>VERSION: 0.99</html:p>\n" + 
+    "      <html:p>TAXONOMY: 9606</html:p>\n" + 
+    "    </notes>\n" + 
+    "  </model>\n" + 
+    "</sbml>\n";
+    SBMLDocument sbmlDoc = new SBMLDocument ( 2,4 );
+    sbmlDoc.getNamespaces().add("http://www.w3.org/1999/xhtml", "html");
+    Model sbmlModel = sbmlDoc.createModel();
+    sbmlModel.setId("test");
+    sbmlModel.setName("name");
+    SBMLWriter ttt = new SBMLWriter();
+    String documentString = ttt.writeToString(sbmlDoc);
+    assertTrue(documentString.equals(notes));
+  }
+
   public void test_SBase_getQualifiersFromResources()
   {
     CVTerm cv = new  CVTerm(libsbml.BIOLOGICAL_QUALIFIER);
@@ -1210,12 +1294,131 @@ public class TestSBase {
     cv1 = null;
   }
 
+  public void test_SBase_hasValidLevelVersionNamespaceCombination()
+  {
+    Species species = new Species(3,1);
+    assertTrue( species.hasValidLevelVersionNamespaceCombination() == true );
+    species = null;
+    XMLNamespaces invalidNamespaces = new XMLNamespaces();
+    species = new Species(3,1);
+    species.setNamespaces(invalidNamespaces);
+    invalidNamespaces.add(SBMLNamespaces.getSBMLNamespaceURI(2,3), "sbml23");
+    species.setNamespaces(invalidNamespaces);
+    assertTrue( species.hasValidLevelVersionNamespaceCombination() == false );
+    invalidNamespaces.add(SBMLNamespaces.getSBMLNamespaceURI(3,1), "sbml31");
+    species.setNamespaces(invalidNamespaces);
+    assertTrue( species.hasValidLevelVersionNamespaceCombination() == false );
+    invalidNamespaces.clear();
+    invalidNamespaces.add(SBMLNamespaces.getSBMLNamespaceURI(3,1), "sbml31");
+    species.setNamespaces(invalidNamespaces);
+    assertTrue( species.hasValidLevelVersionNamespaceCombination() == true );
+    species = null;
+  }
+
+  public void test_SBase_matchesRequiredSBMLNamespacesForAddition()
+  {
+    SBMLNamespaces sbmlns1 = new SBMLNamespaces ( 3,1 );
+    SBMLNamespaces sbmlns2 = new SBMLNamespaces ( 2,4 );
+    Species s = new Species ( sbmlns1 );
+    Parameter p = new Parameter ( sbmlns1 );
+    assertTrue( s.matchesRequiredSBMLNamespacesForAddition(p) == true );
+    assertTrue( p.matchesRequiredSBMLNamespacesForAddition(s) == true );
+    p = sbmlns2;
+    assertTrue( s.matchesRequiredSBMLNamespacesForAddition(p) == false );
+    assertTrue( p.matchesRequiredSBMLNamespacesForAddition(s) == false );
+    sbmlns1.addNamespace("http:foo", "bar");
+    Compartment c = new Compartment ( sbmlns1 );
+    assertTrue( s.matchesRequiredSBMLNamespacesForAddition(c) == true );
+    assertTrue( c.matchesRequiredSBMLNamespacesForAddition(s) == true );
+    assertTrue( p.matchesRequiredSBMLNamespacesForAddition(c) == false );
+    assertTrue( c.matchesRequiredSBMLNamespacesForAddition(p) == false );
+    sbmlns1.addNamespace("http://www.sbml.org/sbml/level3/version1/qual/version1", "bar1");
+    s = sbmlns1;
+    assertTrue( s.matchesRequiredSBMLNamespacesForAddition(c) == true );
+    assertTrue( c.matchesRequiredSBMLNamespacesForAddition(s) == false );
+    SBMLNamespaces sbmlns3 = new SBMLNamespaces ( 3,1 );
+    sbmlns3.addNamespace("http://www.sbml.org/sbml/level3/version1/qual/version1", "bar1");
+    c = sbmlns3;
+    assertTrue( s.matchesRequiredSBMLNamespacesForAddition(c) == true );
+    assertTrue( c.matchesRequiredSBMLNamespacesForAddition(s) == true );
+    SBMLNamespaces sbmlns4 = new SBMLNamespaces ( 3,1 );
+    p = sbmlns4;
+    assertTrue( p.matchesRequiredSBMLNamespacesForAddition(c) == false );
+    assertTrue( c.matchesRequiredSBMLNamespacesForAddition(p) == true );
+    sbmlns4.addNamespace("http://www.sbml.org/sbml/level3/version1/qual/version2", "bar2");
+    p = sbmlns4;
+    assertTrue( p.matchesRequiredSBMLNamespacesForAddition(c) == false );
+    assertTrue( c.matchesRequiredSBMLNamespacesForAddition(p) == false );
+    SBMLNamespaces sbmlns5 = new SBMLNamespaces ( 3,1 );
+    sbmlns5.addNamespace("http://www.sbml.org/sbml/level3/version1/qual/version1", "bar1");
+    sbmlns5.removeNamespace(SBMLNamespaces.getSBMLNamespaceURI(3,1));
+    p = sbmlns5;
+    assertTrue( p.matchesRequiredSBMLNamespacesForAddition(c) == false );
+    assertTrue( c.matchesRequiredSBMLNamespacesForAddition(p) == false );
+    SBMLNamespaces sbmlns6 = new SBMLNamespaces ( 3,1 );
+    sbmlns6.addNamespace("http://www.sbml.org/sbml/level3/version1/qual/version1", "bar1");
+    sbmlns6.addNamespace("http://www.sbml.org/sbml/level3/version1/comp/version1", "comp");
+    p = sbmlns6;
+    assertTrue( p.matchesRequiredSBMLNamespacesForAddition(c) == true );
+    assertTrue( c.matchesRequiredSBMLNamespacesForAddition(p) == false );
+  }
+
+  public void test_SBase_matchesSBMLNamespaces()
+  {
+    SBMLNamespaces sbmlns1 = new SBMLNamespaces ( 3,1 );
+    SBMLNamespaces sbmlns2 = new SBMLNamespaces ( 2,4 );
+    Species s = new Species ( sbmlns1 );
+    Parameter p = new Parameter ( sbmlns1 );
+    assertTrue( s.matchesSBMLNamespaces(p) == true );
+    assertTrue( p.matchesSBMLNamespaces(s) == true );
+    p = sbmlns2;
+    assertTrue( s.matchesSBMLNamespaces(p) == false );
+    assertTrue( p.matchesSBMLNamespaces(s) == false );
+    sbmlns1.addNamespace("http:foo", "bar");
+    Compartment c = new Compartment ( sbmlns1 );
+    assertTrue( s.matchesSBMLNamespaces(c) == false );
+    assertTrue( c.matchesSBMLNamespaces(s) == false );
+    assertTrue( p.matchesSBMLNamespaces(c) == false );
+    assertTrue( c.matchesSBMLNamespaces(p) == false );
+    s = sbmlns1;
+    assertTrue( s.matchesSBMLNamespaces(c) == true );
+    assertTrue( c.matchesSBMLNamespaces(s) == true );
+    SBMLNamespaces sbmlns3 = new SBMLNamespaces ( 3,1 );
+    c = sbmlns3;
+    assertTrue( s.matchesSBMLNamespaces(c) == false );
+    assertTrue( c.matchesSBMLNamespaces(s) == false );
+    sbmlns3.addNamespace("http:foo1", "bar1");
+    c = sbmlns3;
+    assertTrue( s.matchesSBMLNamespaces(c) == false );
+    assertTrue( c.matchesSBMLNamespaces(s) == false );
+    sbmlns3.addNamespace("http:foo", "bar");
+    sbmlns1.addNamespace("http:foo1", "bar1");
+    s = sbmlns1;
+    c = sbmlns3;
+    assertTrue( s.matchesSBMLNamespaces(c) == true );
+    assertTrue( c.matchesSBMLNamespaces(s) == true );
+  }
+
+  public void test_SBase_prefixMetaIdSBO()
+  {
+    Species species = new Species ( 3,1 );
+    species.setMetaId("meta1");
+    species.setSBOTerm(245);
+    String noPrefixch = species.toSBML();
+    assertTrue( !noPrefix.find(" metaid=").equals(string::npos) );
+    assertTrue( !noPrefix.find(" sboTerm=").equals(string::npos) );
+    species.getNamespaces().remove("");
+    species.getNamespaces().add(SBMLNamespaces.getSBMLNamespaceURI(3,1), "l3v1");
+    String prefixch = species.toSBML();
+    assertTrue( !prefix.find(" l3v1:metaid=").equals(string::npos) );
+    assertTrue( !prefix.find(" l3v1:sboTerm=").equals(string::npos) );
+    assertTrue( !noPrefix.equals(prefix) );
+  }
+
   public void test_SBase_setAnnotation()
   {
-    XMLToken token;
-    XMLNode node;
-    token = new  XMLToken("This is a test note");
-    node = new XMLNode(token);
+    XMLToken token = new  XMLToken("This is a test note");
+    XMLNode node = new XMLNode(token);
     S.setAnnotation(node);
     assertTrue( S.isSetAnnotation() == true );
     XMLNode t1 = S.getAnnotation();
@@ -1235,6 +1438,8 @@ public class TestSBase {
     assertTrue( S.isSetAnnotation() == true );
     S.unsetAnnotation();
     assertTrue( S.isSetAnnotation() == false );
+    token = null;
+    node = null;
     token = new  XMLToken("(CR) &#0168; &#x00a8; &#x00A8; (NOT CR) &#; &#x; &#00a8; &#0168 &#x00a8");
     node = new XMLNode(token);
     S.setAnnotation(node);
@@ -1243,6 +1448,8 @@ public class TestSBase {
     String s = t1.getChild(0).toXMLString();
     String expected =  "(CR) &#0168; &#x00a8; &#x00A8; (NOT CR) &amp;#; &amp;#x; &amp;#00a8; &amp;#0168 &amp;#x00a8";
     assertTrue(s.equals(expected));
+    token = null;
+    node = null;
     token = new  XMLToken("& ' > < \" &amp; &apos; &gt; &lt; &quot;");
     node = new XMLNode(token);
     S.setAnnotation(node);
@@ -1261,13 +1468,15 @@ public class TestSBase {
     String taggedannotation =  "<annotation>This is a test note</annotation>";
     S.setAnnotation(annotation);
     assertTrue( S.isSetAnnotation() == true );
-    if (!S.getAnnotationString().equals(taggedannotation));
+    String str = S.getAnnotationString();
+    if (!str.equals(taggedannotation));
     {
     }
     XMLNode t1 = S.getAnnotation();
     assertTrue( t1.getNumChildren() == 1 );
     assertTrue(t1.getChild(0).getCharacters().equals( "This is a test note"));
-    S.setAnnotation(S.getAnnotationString());
+    str = S.getAnnotationString();
+    S.setAnnotation(str);
     t1 = S.getAnnotation();
     assertTrue( t1.getNumChildren() == 1 );
     String chars = S.getAnnotationString();
@@ -1279,7 +1488,8 @@ public class TestSBase {
     }
     S.setAnnotation(taggedannotation);
     assertTrue( S.isSetAnnotation() == true );
-    if (!S.getAnnotationString().equals(taggedannotation));
+    str = S.getAnnotationString();
+    if (!str.equals(taggedannotation));
     {
     }
     t1 = S.getAnnotation();
@@ -1308,11 +1518,9 @@ public class TestSBase {
 
   public void test_SBase_setNotes()
   {
-    SBase c = new Model(1,2);
-    XMLToken token;
-    XMLNode node;
-    token = new  XMLToken("This is a test note");
-    node = new XMLNode(token);
+    Model c = new Model(1,2);
+    XMLToken token = new  XMLToken("This is a test note");
+    XMLNode node = new XMLNode(token);
     c.setNotes(node);
     assertTrue( c.isSetNotes() == true );
     if (c.getNotes() == node);
@@ -1333,6 +1541,8 @@ public class TestSBase {
     }
     c.setNotes(node);
     assertTrue( c.isSetNotes() == true );
+    token = null;
+    node = null;
     token = new  XMLToken("(CR) &#0168; &#x00a8; &#x00A8; (NOT CR) &#; &#x; &#00a8; &#0168 &#x00a8");
     node = new XMLNode(token);
     c.setNotes(node);
@@ -1341,6 +1551,8 @@ public class TestSBase {
     String s = t1.getChild(0).toXMLString();
     String expected =  "(CR) &#0168; &#x00a8; &#x00A8; (NOT CR) &amp;#; &amp;#x; &amp;#00a8; &amp;#0168 &amp;#x00a8";
     assertTrue(s.equals(expected));
+    token = null;
+    node = null;
     token = new  XMLToken("& ' > < \" &amp; &apos; &gt; &lt; &quot;");
     node = new XMLNode(token);
     c.setNotes(node);
@@ -1349,25 +1561,28 @@ public class TestSBase {
     String s2 = t1.getChild(0).toXMLString();
     String expected2 =  "&amp; &apos; &gt; &lt; &quot; &amp; &apos; &gt; &lt; &quot;";
     assertTrue(s2.equals(expected2));
+    c = null;
     token = null;
     node = null;
   }
 
   public void test_SBase_setNotesString()
   {
-    SBase c = new Model(1,2);
+    Model c = new Model(1,2);
     String notes =  "This is a test note";
     String taggednotes =  "<notes>This is a test note</notes>";
     c.setNotes(notes);
     assertTrue( c.isSetNotes() == true );
-    if (!c.getNotesString().equals(taggednotes));
+    String str = c.getNotesString();
+    if (!str.equals(taggednotes));
     {
     }
     XMLNode t1 = c.getNotes();
     assertTrue( t1.getNumChildren() == 1 );
     XMLNode t2 = t1.getChild(0);
     assertTrue(t2.getCharacters().equals( "This is a test note"));
-    c.setNotes(c.getNotesString());
+    str = c.getNotesString();
+    c.setNotes(str);
     t1 = c.getNotes();
     assertTrue( t1.getNumChildren() == 1 );
     String chars = c.getNotesString();
@@ -1379,32 +1594,35 @@ public class TestSBase {
     }
     c.setNotes(taggednotes);
     assertTrue( c.isSetNotes() == true );
-    if (!c.getNotesString().equals(taggednotes));
+    str = c.getNotesString();
+    if (!str.equals(taggednotes));
     {
     }
     t1 = c.getNotes();
     assertTrue( t1.getNumChildren() == 1 );
     t2 = t1.getChild(0);
     assertTrue(t2.getCharacters().equals( "This is a test note"));
+    c = null;
   }
 
   public void test_SBase_setNotesString_l3()
   {
-    SBase c = new Model(3,1);
+    Model c = new Model(3,1);
     String notes =  "This is a test note";
-    String taggednotes = "<notes>\n" + "  <p xmlns=\"http://www.w3.org/1999/xhtml\">This is a test note</p>\n" + "</notes>";
     c.setNotes(notes);
     assertTrue( c.isSetNotes() == false );
+    c = null;
   }
 
   public void test_SBase_setNotesString_l3_addMarkup()
   {
-    SBase c = new Model(3,1);
+    Model c = new Model(3,1);
     String notes =  "This is a test note";
-    String taggednotes = "<notes>\n" + "  <p xmlns=\"http://www.w3.org/1999/xhtml\">This is a test note</p>\n" + "</notes>";
-    c.setNotes(notes, true);
+    String taggednotes =  "<notes>\n  <p xmlns=\"http://www.w3.org/1999/xhtml\">This is a test note</p>\n</notes>";
+    c.setNotesAddMarkup(notes);
     assertTrue( c.isSetNotes() == true );
-    if (!c.getNotesString().equals(taggednotes));
+    String str = c.getNotesString();
+    if (!str.equals(taggednotes));
     {
     }
     XMLNode t1 = c.getNotes();
@@ -1413,19 +1631,10 @@ public class TestSBase {
     assertTrue( t2.getNumChildren() == 1 );
     XMLNode t3 = t2.getChild(0);
     assertTrue(t3.getCharacters().equals( "This is a test note"));
-    c.setNotes(c.getNotesString());
-    t1 = c.getNotes();
-    assertTrue( t1.getNumChildren() == 1 );
-    String chars = c.getNotesString();
-    assertTrue(chars.equals(taggednotes));
-    c.setNotes("", true);
-    assertTrue( c.isSetNotes() == false );
-    if (c.getNotesString() != null);
-    {
-    }
-    c.setNotes(taggednotes, true);
+    c.setNotesAddMarkup(taggednotes);
     assertTrue( c.isSetNotes() == true );
-    if (!c.getNotesString().equals(taggednotes));
+    str = c.getNotesString();
+    if (!str.equals(taggednotes));
     {
     }
     t1 = c.getNotes();
@@ -1434,7 +1643,9 @@ public class TestSBase {
     assertTrue( t2.getNumChildren() == 1 );
     t3 = t2.getChild(0);
     assertTrue(t3.getCharacters().equals( "This is a test note"));
+    c = null;
   }
+
   public void test_SBase_unsetAnnotationWithCVTerms()
   {
     CVTerm cv;
@@ -1460,7 +1671,8 @@ public class TestSBase {
     "</annotation>";
     S.setAnnotation(annt);
     assertTrue( S.isSetAnnotation() == true );
-    assertTrue(S.getAnnotationString().equals(annt));
+    String str = S.getAnnotationString();
+    assertTrue(str.equals(annt));
     S.unsetAnnotation();
     assertTrue( S.isSetAnnotation() == false );
     assertTrue( S.getAnnotation() == null );
@@ -1470,8 +1682,9 @@ public class TestSBase {
     cv.setBiologicalQualifierType(libsbml.BQB_IS);
     cv.addResource( "http://www.geneontology.org/#GO:0005895");
     S.addCVTerm(cv);
+    str = S.getAnnotationString();
     assertTrue( S.isSetAnnotation() == true );
-    assertTrue(S.getAnnotationString().equals(annt_with_cvterm));
+    assertTrue(str.equals(annt_with_cvterm));
     S.unsetAnnotation();
     assertTrue( S.isSetAnnotation() == false );
     assertTrue( S.getAnnotation() == null );
@@ -1518,7 +1731,8 @@ public class TestSBase {
     "</annotation>";
     S.setAnnotation(annt);
     assertTrue( S.isSetAnnotation() == true );
-    assertTrue(S.getAnnotationString().equals(annt));
+    String str = S.getAnnotationString();
+    assertTrue(str.equals(annt));
     S.unsetAnnotation();
     assertTrue( S.isSetAnnotation() == false );
     assertTrue( S.getAnnotation() == null );
@@ -1534,10 +1748,13 @@ public class TestSBase {
     h.setModifiedDate(dm);
     S.setModelHistory(h);
     assertTrue( S.isSetAnnotation() == true );
-    assertTrue(S.getAnnotationString().equals(annt_with_modelhistory));
+    str = S.getAnnotationString();
+    assertTrue(str.equals(annt_with_modelhistory));
     S.unsetAnnotation();
     assertTrue( S.isSetAnnotation() == false );
     assertTrue( S.getAnnotation() == null );
+    dc = null;
+    dm = null;
     c = null;
     h = null;
   }
@@ -1569,6 +1786,40 @@ public class TestSBase {
     cv2 = null;
     cv1 = null;
     cv4 = null;
+  }
+
+  public void test_SBase_userData()
+  {
+    Species s1 = new Species ( 3,1 );
+    int myValue = 10;
+    assertTrue( s1.getUserData() == null );
+    assertTrue( s1.isSetUserData() == false );
+    assertTrue( s1.setUserData(myValue) == libsbml.LIBSBML_OPERATION_SUCCESS );
+    assertTrue( (*(int*)s1.getUserData()) == 10 );
+    assertTrue( s1.isSetUserData() == true );
+    Species s2 = s1.cloneObject();
+    assertTrue( (*(int*)s2.getUserData()) == 10 );
+    assertTrue( s1.isSetUserData() == true );
+    s2 = null;
+    assertTrue( s1.setUserData(null) == libsbml.LIBSBML_OPERATION_SUCCESS );
+    assertTrue( s1.getUserData() == null );
+    assertTrue( s1.isSetUserData() == false );
+    assertTrue( null.getUserData() == null );
+    assertTrue( null.setUserData(null) == libsbml.LIBSBML_INVALID_OBJECT );
+  }
+
+  public void test_SBase_userData1()
+  {
+    Species s1 = new Species ( 3,1 );
+    int myValue = 10;
+    assertTrue( s1.getUserData() == null );
+    assertTrue( s1.isSetUserData() == false );
+    assertTrue( s1.setUserData(myValue) == libsbml.LIBSBML_OPERATION_SUCCESS );
+    assertTrue( (*(int*)s1.getUserData()) == 10 );
+    assertTrue( s1.isSetUserData() == true );
+    assertTrue( s1.unsetUserData() == libsbml.LIBSBML_OPERATION_SUCCESS );
+    assertTrue( s1.getUserData() == null );
+    assertTrue( s1.isSetUserData() == false );
   }
 
   /**
@@ -1624,4 +1875,3 @@ public class TestSBase {
     }
   }
 }
-
